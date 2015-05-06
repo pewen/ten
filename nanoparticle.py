@@ -41,7 +41,7 @@ class NanoParticle(object):
         """
         Generate random number of acceptors (n_acceptors) anywhere in the nanoparticle.
         
-        Is not easy generate random point usin spherical coordinates.
+        Is not easy generate random point using spherical coordinates.
         For now, we generate random point in cartesian coordinates.
         Reference link to implement in sphereic: http://mathworld.wolfram.com/SpherePointPicking.html
         """
