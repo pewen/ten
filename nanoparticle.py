@@ -3,7 +3,7 @@ import numpy as np
 from math import cos, sin
 
 class NanoParticle(object):
-    def __init__(self, r, n_acceptors, tau_D, R_Forster):
+    def __init__(self, r, n_acceptors, tau_D, R_Forster, L_D, delta_t):
         """
         Create a nanoparticle object
         
@@ -17,12 +17,20 @@ class NanoParticle(object):
             Lifetime of the donor
         R_Forster : float
             Radio de Forster
+        L_D : float
+            Length of exciton diffusion
+        delta_t : float
+            Time interval
         """
         self.R = r
         self.n_acceptors = n_acceptors
+        #Generate the acceptors positions array
         self.acceptors_positions = np.zeros((n_acceptors,3))
         self.tau_D = tau_D
         self.R_Forster = R_Forster
+        self.L_D = L_D
+        self.delta_t = delta_t
+        self.epsilon = L_D*delta_t/tau_D
         
     def deposit_superficial_acceptors(self):
         """
@@ -49,3 +57,10 @@ class NanoParticle(object):
             self.acceptors_positions[i][0] = np.random.uniform(low=-self.R, high=self.R)
             self.acceptors_positions[i][1] = np.random.uniform(low=-self.R, high=self.R)
             self.acceptors_positions[i][2] = np.random.uniform(low=-self.R, high=self.R)
+
+    def plot(self):
+        """
+        Plot, in a nice way and 3D, the nanoparticle and the acceptors.
+        Each acceptor have a different color, depending the distance to the center ot the nanoparticle.
+        """
+        pass
