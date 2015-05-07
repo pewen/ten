@@ -61,6 +61,6 @@ class NanoParticle(object):
     def plot(self):
         """
         Plot, in a nice way and 3D, the nanoparticle and the acceptors.
-        Each acceptor have a different color, depending the distance to the center ot the nanoparticle.
+        Each acceptor have a different color, depending the distance to the center of the nanoparticle.
         """
         pass
