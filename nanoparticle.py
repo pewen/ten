@@ -1,6 +1,6 @@
 from scipy.constants import pi
 import numpy as np
-from math import cos, sin
+from math import cos, sin, e
 
 class NanoParticle(object):
     def __init__(self, r, n_acceptors, tau_D, R_Forster, L_D, delta_t):
@@ -22,15 +22,20 @@ class NanoParticle(object):
         delta_t : float
             Time interval
         """
+        #Nanoparticle parameters
         self.R = r
         self.n_acceptors = n_acceptors
-        #Generate the acceptors positions array
-        self.acceptors_positions = np.zeros((n_acceptors,3))
         self.tau_D = tau_D
         self.R_Forster = R_Forster
         self.L_D = L_D
         self.delta_t = delta_t
         self.epsilon = L_D*delta_t/tau_D
+
+        #decay probability
+        self.P_decay = 1 - e**(-self.delta_t/self.tau_D)
+
+        #Generate the acceptors positions array
+        self.acceptors_positions = np.zeros((n_acceptors,3))
         
     def deposit_superficial_acceptors(self):
         """
