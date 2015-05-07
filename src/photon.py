@@ -1,6 +1,7 @@
 import numpy as np
+from math import e
 
-class Photon():
+class Photon(object):
     def __init__(self, nanoparticle):
         """
         Create a photon, whith a random position inside the nanoparticle.
@@ -59,4 +60,8 @@ class Photon():
         cte = self.NP.R_Forster**6/self.NP.tau_D
         prob = 1 - e**(self.np.delta_t * cte*sum(dist))
 
-    
+    def move(self):
+        """
+
+        """
+        pass
