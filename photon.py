@@ -36,20 +36,15 @@ class Photon():
             new_R[1] = np.sin(phi)*np.sin(theta)*self.np.epsilon
             new_R[2] = np.cos(phi)*self.np.epsilon
 
-            if (new_R + self.photon)**2 < self.photon.R:
+            if (new_R + self.photon)**2 < self.photon.R*self.photon.R:
                 a = 0
 
         self.photon += new_R
     
-    def distance(self, nanoparticle):
+    def distance(self):
         """
-        Calculate, for all acceptor, 1/(r**6), where r are the distace bewteen the photon and acceptors
-
-        Parameters
-        ----------
-        nanoparticle : NanoParticle
-        
+        Return the array 'dist' where each component is the account 1/(r[i]**6), where r[i] is the distace bewteen the photon and each acceptors[i].
         """
-        self.dist = np.zeros(nanoparticle.n_acceptors)
-        for i in range(nanoparticle.n_acceptors):
-            self.dist[i] = (sum((self.photon - nanoparticle.acceptors_positions[i])**2))**3
+        self.dist = np.zeros(self.np.n_acceptors)
+        for i in range(self.np.n_acceptors):
+            self.dist[i] = (sum((self.photon - self.np.acceptors_positions[i])**2))**3
