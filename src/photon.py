@@ -2,7 +2,7 @@ import numpy as np
 from math import e
 
 class Photon(object):
-    def __init__(self, nanoparticle):
+    def __init__(self, nanoparticle, num_exc):
         """
         Create a photon, whith a random position inside the nanoparticle.
         Have to study more correctly way to generate points in spherical coordinates, to avoid if.
@@ -11,17 +11,21 @@ class Photon(object):
         ----------
         nanoparticle : object
             Nanoparticle objects
+        num_exc : float
+            Numbers of exitation of the same nanoparticle
         """
         self.NP = nanoparticle
         
         a = 1
         while a == 1:
-            x = NP.random.uniform(low = -self.NP.R, high = self.NP.R)
-            y = NP.random.uniform(low = -self.NP.R, high = self.NP.R)
-            z = NP.random.uniform(low = -self.NP.R, high = self.NP.R)
+            x = np.random.uniform(low = -self.NP.R, high = self.NP.R)
+            y = np.random.uniform(low = -self.NP.R, high = self.NP.R)
+            z = np.random.uniform(low = -self.NP.R, high = self.NP.R)
             if x*x + y*y + z*z <= self.NP.R*self.NP.R:
                 a = 0
         self.photon = np.array([x, y, z])
+
+        self.num_exc = num_exc
             
     def walk(self):
         """
@@ -31,13 +35,13 @@ class Photon(object):
         new_R = np.zeros_like(self.photon)
         while a == 1:
             theta = 2*np.pi*np.random.uniform()
-            phi = np.arccos(2*np.random.uniform - 1)
+            phi = np.arccos(2*np.random.uniform() - 1)
         
             new_R[0] = np.sin(phi)*np.cos(theta)*self.NP.epsilon
             new_R[1] = np.sin(phi)*np.sin(theta)*self.NP.epsilon
             new_R[2] = np.cos(phi)*self.NP.epsilon
 
-            if sum((new_R + self.photon)**2) <= self.photon.R*self.photon.R:
+            if sum((new_R + self.photon)**2) <= self.NP.R*self.NP.R:
                 a = 0
 
         self.photon += new_R
@@ -53,15 +57,32 @@ class Photon(object):
         """
         dist = np.zeros(self.NP.n_acceptors)
         for i in range(self.NP.n_acceptors):
-            dist[i] = (self.photon - self.NP.acceptors_positions[i])**3
-
-        dist = 1/dist
+            dist[i] = 1/sum((self.photon - self.NP.acceptors_positions[i])**3)
 
         cte = self.NP.R_Forster**6/self.NP.tau_D
-        prob = 1 - e**(self.np.delta_t * cte*sum(dist))
+        prob = 1 - e**(self.NP.delta_t * cte*sum(dist))
+        return prob
 
     def move(self):
         """
-
+        
         """
-        pass
+        #number of random walks
+        num_walk = 0
+
+        a = 0
+        
+        #for i in range(self.num_exc):
+        while a == 0:
+            rand_num = np.random.random()
+            if self.NP.P_decay > rand_num:
+                print('Decae')
+                a = 1
+            elif self.P_ET() > rand_num:
+                print('Se transfiere')
+                a = 1
+            else:
+                self.walk()
+                num_walk += 1
+
+        print('Cantidad de pasos:', num_walk)
