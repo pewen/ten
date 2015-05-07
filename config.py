@@ -5,8 +5,8 @@ Parameters
 ----------
 r : float
     Nanoparticle radius. [r] = nm
-Fr : float
-    Forster radius. [Fr] = nm
+R_Forster : float
+    Forster radius. [R_Forster] = nm
 L_D : float
     Length  of exciton diffusion. [L_D] = nm
 tau_D : float
@@ -20,8 +20,9 @@ num_exc :float
 """
 
 r = 50
-Fr = 2.29
+R_Forster = 2.29
 L_D = 8
 tau_D = 344
 num_acceptors = 50
 delta_t = 1
+num_exc = 5

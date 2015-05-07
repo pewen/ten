@@ -3,7 +3,7 @@ import numpy as np
 from math import cos, sin, e
 
 class NanoParticle(object):
-    def __init__(self, r, n_acceptors, tau_D, R_Forster, L_D, delta_t):
+    def __init__(self, r, num_acceptors, tau_D, R_Forster, L_D, delta_t):
         """
         Create a nanoparticle object
         
@@ -24,7 +24,7 @@ class NanoParticle(object):
         """
         #Nanoparticle parameters
         self.R = r
-        self.n_acceptors = n_acceptors
+        self.n_acceptors = num_acceptors
         self.tau_D = tau_D
         self.R_Forster = R_Forster
         self.L_D = L_D
@@ -35,7 +35,7 @@ class NanoParticle(object):
         self.P_decay = 1 - e**(-self.delta_t/self.tau_D)
 
         #Generate the acceptors positions array
-        self.acceptors_positions = np.zeros((n_acceptors,3))
+        self.acceptors_positions = np.zeros((self.n_acceptors,3))
         
     def deposit_superficial_acceptors(self):
         """
