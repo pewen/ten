@@ -3,8 +3,10 @@
 
 ##Autores.
 
-*Chemical director:* **Dr. Roberto Palacio**  
-*Cloud computing director:* **Dr. Jose Luis Vazquez-Poletti**  
+*Directores:*  
+* Chemical: **Dr. Roberto Palacio**  
+* Cloud computing: **Dr. Jose Luis Vazquez-Poletti**
+
 *Students*:  
 * PhD student **Ponsio Rodrigo**
 * Master student **Daniel Bellomo**
