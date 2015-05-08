@@ -36,33 +36,35 @@ class NanoParticle(object):
 
         #Generate the acceptors positions array
         self.acceptors_positions = np.zeros((self.n_acceptors,3))
+
         
     def deposit_superficial_acceptors(self):
         """
         Generate random number of acceptors (n_acceptors) on the surface of the nanoparticle.
         """
-        for i in range(self.n_acceptors):
-            #Generate in spheric
-            theta = np.random.uniform(low=0, high=2*pi)
-            phi = np.random.uniform(low=0, high=pi)
-            #Transform to cartesian
-            self.acceptors_positions[i][0] = sin(phi)*cos(theta)*self.R
-            self.acceptors_positions[i][1] = sin(phi)*sin(theta)*self.R
-            self.acceptors_positions[i][2] = cos(phi)*self.R
+        theta = 2*np.pi*np.random.uniform(size=self.n_acceptors)
+        phi = np.arccos(2*np.random.uniform(size=self.n_acceptors) - 1)
+
+        self.acceptors_positions[:,0] = np.sin(phi)*np.cos(theta)*self.R
+        self.acceptors_positions[:,1] = np.sin(phi)*np.sin(theta)*self.R
+        self.acceptors_positions[:,2] = np.cos(phi)*self.R
+        
     
     def deposit_volumetrically_acceptors(self):
         """
-        Generate random number of acceptors (n_acceptors) anywhere in the nanoparticle.
+        Generate random position of n number acceptors (n_acceptors) uniformly distributed in the nanoparticle.
         
-        Is not easy generate random point using spherical coordinates.
-        For now, we generate random point in cartesian coordinates.
-        Reference link to implement in sphereic: http://mathworld.wolfram.com/SpherePointPicking.html
+        Is not trivial generate random point in a sphere.
+        See the ipython notebook in: ten/doc/notebooks/Random_points_in_sphere.ipynb to understan why we generate for this form.
         """
-        for i in range(self.n_acceptors):
-            self.acceptors_positions[i][0] = np.random.uniform(low=-self.R, high=self.R)
-            self.acceptors_positions[i][1] = np.random.uniform(low=-self.R, high=self.R)
-            self.acceptors_positions[i][2] = np.random.uniform(low=-self.R, high=self.R)
+        U = np.random.random(self.n_acceptors)
+        X = np.random.randn(3, self.n_acceptors)
 
+        uniform_in_sphere = self.R * U**(1/3) / np.sqrt(X[0]**2 + X[1]**2 + X[2]**2)
+
+        self.acceptors_positions[:,0], self.acceptors_positions[:,1], self.acceptors_positions[:,2] = uniform_in_sphere * X
+
+        
     def plot(self):
         """
         Plot, in a nice way and 3D, the nanoparticle and the acceptors.
