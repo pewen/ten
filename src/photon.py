@@ -1,6 +1,13 @@
 import numpy as np
 from math import e
 
+#Used to print the day in the output file
+from datetime import datetime
+#To save machine info
+import platform
+#to measure time
+import time
+
 class Photon(object):
     def __init__(self, nanoparticle, num_exc):
         """
@@ -67,22 +74,64 @@ class Photon(object):
         """
         
         """
-        #number of random walks
-        num_walk = 0
-
-        a = 0
+        self.cant_decay = 0
+        self.cant_transf = 0
         
-        #for i in range(self.num_exc):
-        while a == 0:
-            rand_num = np.random.random()
-            if self.NP.P_decay > rand_num:
-                print('Decae')
-                a = 1
-            elif self.P_ET() > rand_num:
-                print('Se transfiere')
-                a = 1
-            else:
-                self.walk()
-                num_walk += 1
+        time_ini = time.time()
+        
+        for i in range(self.num_exc):
+            a = 0
+            num_walk = 0
+            while a == 0:
+                rand_num = np.random.random()
+                if self.NP.P_decay > rand_num:
+                    self.cant_decay += 1
+                    a = 1
+                elif self.P_ET() > rand_num:
+                    self.cant_transf += 1
+                    a = 1
+                else:
+                    self.walk()
+                    num_walk += 1
 
-        print('Cantidad de pasos:', num_walk)
+        self.total_time = time.time() - time_ini
+        self.efficiency = self.cant_transf / self.num_exc
+
+    def save_out(self, file_path = '.'):
+        """
+        Save the output of the simulations to a file.
+        Then, you can us 'Nombre del método' method to make the plot.
+        Parameters
+        ----------
+        file_path : str
+            Path to save the file
+        """
+        
+        text = """TEN %s
+
+%s
+%s
+
+Input parameters:
+-----------------
+NP radius: %.3f
+Forster radius: %.3f
+Length of excition diffusion: %.3f
+Tau_D: %.3f
+Number of acceptors: %.0f
+Delta_t: %.3f
+Epsilon: %.3f
+Probability of decay: %.3f
+Number of exitations: %.0f
+
+Outputs:
+--------
+Amount of decays: %.0f
+Amount of transfers: %.0f
+Quenching efficiency: %f
+
+Total time in seg: %.3f""" %(datetime.now(), platform.platform(), platform.uname(), self.NP.R, self.NP.R_Forster, self.NP.L_D, self.NP.tau_D, self.NP.n_acceptors, self.NP.delta_t, self.NP.epsilon, self.NP.P_decay, self.num_exc, self.cant_decay, self.cant_transf, self.efficiency, self.total_time)
+        
+        f = open(file_path+'/tets.txt', 'a')
+        f.write(text)
+        f.close()
