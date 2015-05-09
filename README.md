@@ -5,7 +5,7 @@
 
 *Directores:*  
 * Chemical: **Dr. Roberto Palacio**  
-* Cloud computing: **Dr. Jose Luis Vazquez-Poletti**
+* Cloud computing: [**Dr. Jose Luis Vazquez-Poletti**](http://www.dsa-research.org/doku.php?id=people:poletti)
 
 *Students*:  
 * PhD student **Ponsio Rodrigo**
@@ -15,7 +15,16 @@
 
 ##Objetivo.
 
+Comprobar eficiencia de Quenching.
+
 Mediante simulaciones de Monte Carlo, se quiere estudiar la eficiencia de Quenching para una nanopartícula (NP) determinada. Estas simulaciones van a ser contrastadas con las mediciones experimentales realizadas en el Laboratorio de Microscopia Optica Avanzada (LMOA) de la Universidad Nacional de Río Cuarto (UNRC).
+
+En principio, son tres los experimentos en los que queremos corroborar la eficiencia de Quenching:  
+1. En el caso de tener los aceptores distribuidos volumetricamente en la NP.
+2. Que los aceptores estén sobre la superficie de la NP.
+3. En los dos casos anteriores el fotón es generado mediante un laser. Se quiere estudiar que sucede en el caso de que sea generado mediante una electrólisis química.
+
+Para el experimento 1, estamos trabajando basados un en paper, desarrollando nuestra herramienta computacional. Para los experimentos 2 y 3, se quiere verificar una hipótesis de trabajo, no existiendo trabajos de referencia.
 
 ##Resumen de funcionamiento.
 
