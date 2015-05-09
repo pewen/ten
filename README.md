@@ -4,11 +4,11 @@
 ##Autores.
 
 *Directores:*  
-* Chemical: **Dr. Roberto Palacio**  
+* Chemical: **Dr. Rodrigo Palacio**  
 * Cloud computing: [**Dr. Jose Luis Vazquez-Poletti**](http://www.dsa-research.org/doku.php?id=people:poletti)
 
 *Students*:  
-* PhD student **Ponsio Rodrigo**
+* PhD student **Rodrigo Ponsio**
 * Master student **Daniel Bellomo**
 * Undergraduate **Franco Bellomo** @fnbellomo
 * Undergraduate **Lucas Bellomo** @ucaomo
@@ -20,8 +20,8 @@ Comprobar eficiencia de Quenching.
 Mediante simulaciones de Monte Carlo, se quiere estudiar la eficiencia de Quenching para una nanopartícula (NP) determinada. Estas simulaciones van a ser contrastadas con las mediciones experimentales realizadas en el Laboratorio de Microscopia Optica Avanzada (LMOA) de la Universidad Nacional de Río Cuarto (UNRC).
 
 En principio, son tres los experimentos en los que queremos corroborar la eficiencia de Quenching:  
-1. En el caso de tener los aceptores distribuidos volumetricamente en la NP.
-2. Que los aceptores estén sobre la superficie de la NP.
+1. En el caso de tener los aceptores distribuidos volumetricamente en la NP.  
+2. Que los aceptores estén sobre la superficie de la NP.  
 3. En los dos casos anteriores el fotón es generado mediante un laser. Se quiere estudiar que sucede en el caso de que sea generado mediante una electrólisis química.
 
 Para el experimento 1, estamos trabajando basados un en paper, desarrollando nuestra herramienta computacional. Para los experimentos 2 y 3, se quiere verificar una hipótesis de trabajo, no existiendo trabajos de referencia.
@@ -35,6 +35,34 @@ Basicamente, el código (escrito en python3) funciona de la siguiente forma:
 * **Movemos el fotón** y calculamos la probabilidad de que decaiga, se transfiera a un aceptors o realize un random walk donde se realiza este ultima paso nuevamente.
 
 Por la manera en la que esta modulizado el código, podemos bombardear a la misma NP con los mismo aceptores, la cantidad de veces que deseemos.
+
+##Primeros Output
+El código de esta salida esta en el notebook `ten/examples/test.ipynb`
+
+    TEN 2015-05-09 00:37:18.493444
+
+    Linux-3.16.0-4-amd64-x86_64-with-debian-stretch-sid
+    uname_result(system='Linux', node='antu', release='3.16.0-4-amd64', version='#1 SMP Debian 3.16.7-ckt9-3 (2015-04-23)', machine='x86_64', processor='')
+
+	Input parameters:
+	-----------------
+	NP radius: 50.000
+	Forster radius: 2.290
+	Length of excition diffusion: 8.000
+	Tau_D: 344.000
+	Number of acceptors: 60
+	Delta_t: 1.000
+	Epsilon: 0.023
+	Probability of decay: 0.003
+	Number of exitations: 500
+
+	Outputs:
+	--------
+	Amount of decays: 117
+	Amount of transfers: 383
+	Quenching efficiency: 0.766000
+
+	Total time in seg: 43.010
 
 ##Plan de trabajo.
 1. Entender el modelo teórico.
