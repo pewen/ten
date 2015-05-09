@@ -10,11 +10,11 @@ R_Forster : float
 L_D : float
     Length  of exciton diffusion. [L_D] = nm
 tau_D : float
-    Lifetime of donor. [tau_D] =
+    Lifetime of donor. [tau_D] = ns
 num_acceptors : float
     Number of acceptors in the nanoparticle.
 delta_t : float
-    Time interval
+    Time interval. [delta_t] ) ns
 num_exc :float
     Numbers of exitation of the same nanoparticle
 """
