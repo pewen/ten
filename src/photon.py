@@ -37,7 +37,7 @@ class Photon(object):
                 a = 0
         self.photon = np.array([x, y, z])
 
-    def electro_generated()
+    def electro_generated(self):
         """
         This method is not yet implemented.
         
