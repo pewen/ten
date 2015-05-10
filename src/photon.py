@@ -97,17 +97,19 @@ class Photon(object):
         self.total_time = time.time() - time_ini
         self.efficiency = self.cant_transf / self.num_exc
 
-    def save_out(self, file_path = '.'):
+    def save_out(self, file_path = '.', save_positions = True):
         """
         Save the output of the simulations to a file.
         Then, you can us 'Nombre del método' method to make the plot.
         Parameters
         ----------
-        file_path : str
+        file_path : str, optional
             Path to save the file
+        save_positions = boolean, optional
+            If true, save the positions of aceptors in the output file
         """
         
-        text = """TEN %s
+        text_input = """TEN %s
 
 %s
 %s
@@ -123,15 +125,34 @@ Delta_t: %.3f
 Epsilon: %.3f
 Probability of decay: %.3f
 Number of exitations: %.0f
+""" %(datetime.now(), platform.platform(), platform.uname(), self.NP.R, self.NP.R_Forster, self.NP.L_D, self.NP.tau_D, self.NP.n_acceptors, self.NP.delta_t, self.NP.epsilon, self.NP.P_decay, self.num_exc)
 
+        text_output ="""
 Outputs:
 --------
 Amount of decays: %.0f
 Amount of transfers: %.0f
 Quenching efficiency: %f
 
-Total time in seg: %.3f""" %(datetime.now(), platform.platform(), platform.uname(), self.NP.R, self.NP.R_Forster, self.NP.L_D, self.NP.tau_D, self.NP.n_acceptors, self.NP.delta_t, self.NP.epsilon, self.NP.P_decay, self.num_exc, self.cant_decay, self.cant_transf, self.efficiency, self.total_time)
+Total time in seg: %.3f""" %(self.cant_decay, self.cant_transf, self.efficiency, self.total_time)
+
+        if save_positions:
+
+            #save the positions array of the aceptors in a string
+            s = ''
+            dim_y, dim_x = self.NP.acceptors_positions.shape
+            for i in range(dim_y):
+                for k in range(dim_x):
+                    s += '%f\t' %(self.NP.acceptors_positions[i][k])
+                s += '\n'
+            
+            text_positions = """
+Aceptors positions(x, y, z):
+%s""" %(s)
         
         f = open(file_path+'/tets.txt', 'a')
-        f.write(text)
+        f.write(text_input)
+        if save_positions:
+            f.write(text_positions)
+        f.write(text_output)
         f.close()
