@@ -63,11 +63,4 @@ class NanoParticle(object):
         uniform_in_sphere = self.R * U**(1/3) / np.sqrt(X[0]**2 + X[1]**2 + X[2]**2)
 
         self.acceptors_positions[:,0], self.acceptors_positions[:,1], self.acceptors_positions[:,2] = uniform_in_sphere * X
-
         
-    def plot(self):
-        """
-        Plot, in a nice way and 3D, the nanoparticle and the acceptors.
-        Each acceptor have a different color, depending the distance to the center of the nanoparticle.
-        """
-        pass
