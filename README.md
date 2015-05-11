@@ -42,12 +42,12 @@ En la fig se muestran los procesos que intervienen en el experimento, con el obj
 
 ###Existen tres niveles de paralelismo:
 
-1. bombardeo de fotones, el punto 3) de la fig.  
-   - paralelizar en multicore/GPU/cluster.  
-2. cada una de las simulaciones (identificada por cada columna en la fig).  
-   - paralelizar en cluster/cloud.  
-3. cada experimento (identificado por la fig. completa).  
-   - paralelizar en la infraestructura cloud.
+1. Bombardeo de fotones, el punto 3) de la fig.  
+   - Paralelizar en multicore/GPU/cluster.  
+2. Cada una de las simulaciones (identificada por cada columna en la fig).  
+   - Paralelizar en cluster/cloud.  
+3. Cada experimento (identificado por la fig. completa).  
+   - Paralelizar en la infraestructura cloud.
 
 ![](pictures/experimento.png)
 
