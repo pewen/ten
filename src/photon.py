@@ -28,14 +28,8 @@ class Photon(object):
         """
         Generate the random position of the photon in any part of the nanoparticle, pretending that this is bombarded by a laser. Because the diameter of the nanoparticle is too small, it is assumed that all are bombarded with the same intensity.
         """
-        a = 1
-        while a == 1:
-            x = np.random.uniform(low = -self.NP.R, high = self.NP.R)
-            y = np.random.uniform(low = -self.NP.R, high = self.NP.R)
-            z = np.random.uniform(low = -self.NP.R, high = self.NP.R)
-            if x*x + y*y + z*z <= self.NP.R*self.NP.R:
-                a = 0
-        self.photon = np.array([x, y, z])
+        point = generate_random_points_in_sphere(1, self.NP.R)
+        self.photon = point
 
     def electro_generated(self):
         """

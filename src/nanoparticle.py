@@ -1,6 +1,7 @@
 from scipy.constants import pi
 import numpy as np
 from math import cos, sin, e
+from utils import generate_random_points_in_sphere
 
 class NanoParticle(object):
     def __init__(self, r, num_acceptors, tau_D, R_Forster, L_D, delta_t):
@@ -53,14 +54,8 @@ class NanoParticle(object):
     def deposit_volumetrically_acceptors(self):
         """
         Generate random position of n number acceptors (n_acceptors) uniformly distributed in the nanoparticle.
-        
-        Is not trivial generate random point in a sphere.
-        See the ipython notebook in: ten/doc/notebooks/Random_points_in_sphere.ipynb to understan why we generate for this form.
         """
-        U = np.random.random(self.n_acceptors)
-        X = np.random.randn(3, self.n_acceptors)
+        points = generate_random_points_in_sphere(self.n_acceptores, self.R)
 
-        uniform_in_sphere = self.R * U**(1/3) / np.sqrt(X[0]**2 + X[1]**2 + X[2]**2)
-
-        self.acceptors_positions[:,0], self.acceptors_positions[:,1], self.acceptors_positions[:,2] = uniform_in_sphere * X
-        
+        self.acceptors_positions[0,:], self.acceptors_positions[1,:], self.acceptors_positions[2,:] = points
+    
