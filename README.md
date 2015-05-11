@@ -72,7 +72,7 @@ En la fig se muestran los procesos que intervienen en el experimento, con el obj
 5. Join de los resultados de cada una de las simulaciones para su post-procesamiento (gráfico).
    - CalcularEficienciaTotalExperimento(Eficiencia1, Eficiencia2, Eficiencia3)
 
-**Se podran ejecutar un nro arbitrario de experimentos distintos, en simultáneo, haciendo uso de la infraestructura cloud.**
+**Se podran ejecutar un nro arbitrario de experimentos distintos, *en simultáneo*, haciendo uso de la infraestructura cloud.**
 
 ##Primeros Output
 El código de esta salida esta en el notebook `ten/examples/test.ipynb`
