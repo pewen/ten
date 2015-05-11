@@ -58,9 +58,9 @@ En la fig se muestran los procesos que intervienen en el experimento, con el obj
    - Simulación 2: 7 dopamientos
    - Simulación 3: 10 dopamientos
 3. Bombardear la NP: la cantidad de bombardeos es distinta en cada simulación (es definida en el archivo de configuración).
-   - Simunación 1: 2 bombardeos
-   - Simunación 2: 4 bombardeos
-   - Simunación 3: 6 bombardeos
+   - Simulación 1: 2 bombardeos
+   - Simulación 2: 4 bombardeos
+   - Simulación 3: 6 bombardeos
    - El bombardeo se debe hacer en paralelo (multicore/GPU/Cluster). Cada bombardeo (indicado por cada flecha en la Fig) tiene un ID único y obtiene un único resultado. Todos los bombardeos de una simulación escriben su resultado en una variable (array) compartida accediendo mediante su ID al subindice correspondiente.
    - Simulación1.Bombardeos[resultado-bombardeo1, resultado-bombardeo2]
    - Simulación2.Bombardeos[resultado-bombardeo1, resultado-bombardeo2, ...]
@@ -70,9 +70,9 @@ En la fig se muestran los procesos que intervienen en el experimento, con el obj
    - Eficiencia2 = CalcularEficiencia(Simulación2.Bombardeos)
    - Eficiencia3 = CalcularEficiencia(Simulación3.Bombardeos)
 5. Join de los resultados de cada una de las simulaciones para su post-procesamiento (gráfico).
-   - EficienciaTotal = Calcular(Eficiencia1, Eficiencia2, Eficiencia3)
+   - CalcularEficienciaTotalExperimento(Eficiencia1, Eficiencia2, Eficiencia3)
 
-**Se podran ejecutar un nro arbitrario de experimentos distintos en simultáneo haciendo uso de la infraestructura cloud.**
+**Se podran ejecutar un nro arbitrario de experimentos distintos, en simultáneo, haciendo uso de la infraestructura cloud.**
 
 ##Primeros Output
 El código de esta salida esta en el notebook `ten/examples/test.ipynb`
