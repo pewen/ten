@@ -41,11 +41,11 @@ Por la manera en la que esta modulizado el código, podemos bombardear a la mism
 En la fig se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/GPU/cluster/cloud). Existen tres niveles de paralelismo:
 
 a. bombardeo de fotones, el punto 3) de la fig.
-   - paralelizar en multicore/GPU/cluster.
+	- paralelizar en multicore/GPU/cluster.
 b. cada una de las simulaciones (identificada por cada columna en la fig).
-   - paralelizar en cluster/cloud.
+	- paralelizar en cluster/cloud.
 c. cada experimento (identificado por la fig. completa).
-   - paralelizar en la infraestructura cloud.
+	- paralelizar en la infraestructura cloud.
 
 ![](pictures/secuencia_nanoparticula_aceptores_fotones.png)
 
@@ -59,7 +59,7 @@ c. cada experimento (identificado por la fig. completa).
 4. Se calcula la eficiencia en función del nro de aceptores (cálculo serial).
 5. Join de los resultados de cada una de las simulaciones para su post-procesamiento (gráfico).
 
-Se podran ejecutar un nro arbitrario de experimentos distintos haciendo uso de la infraestructura cloud.
+Se podran ejecutar un nro arbitrario de experimentos distintos en simultáneo haciendo uso de la infraestructura cloud.
 
 ##Primeros Output
 El código de esta salida esta en el notebook `ten/examples/test.ipynb`
