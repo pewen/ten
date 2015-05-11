@@ -47,7 +47,7 @@ En la fig se muestran los procesos que intervienen en el experimento, con el obj
 3. cada experimento (identificado por la fig. completa).  
    - paralelizar en la infraestructura cloud.
 
-![](pictures/secuencia_nanoparticula_aceptores_fotones.png)
+![](pictures/experimento.png)
 
 1. Los parámetros que definen un determinado experimento están dados en el archivo de configuración 'conf.py'.
    - Definir la nanoparticula (NP). Es la misma NP en todo el experimento ('conf.py).
