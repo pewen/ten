@@ -50,16 +50,29 @@ En la fig se muestran los procesos que intervienen en el experimento, con el obj
 ![](pictures/experimento.png)
 
 1. Los parámetros que definen un determinado experimento están dados en el archivo de configuración 'conf.py'.
-   - Definir la nanoparticula (NP). Es la misma NP en todo el experimento ('conf.py).
-   - Definir cantidad de simulaciones para la NP dada. En el ej. de la fig, son tre simulaciones (las columnas).
+   - Definir la nanoparticula (NP). Es la misma NP en todo el experimento ('conf.py').
+   - Definir cantidad de simulaciones para la NP dada. En el ej. de la fig, son tres simulaciones (las columnas).
 2. Dopar la NP: generar aceptores, distribuirlos homogeneamente, etc. (serial).
-   - La cantidad de dopamientos es distinta de cada simulación.
-3. Bombardear la NP: la cantidad de bombardeos es distinta en cada simulación.
+   - La cantidad de dopamientos es distinta de cada simulación (es definida en el archivo de configuración.
+   - Simulación 1: 4 dopamientos
+   - Simulación 2: 7 dopamientos
+   - Simulación 3: 10 dopamientos
+3. Bombardear la NP: la cantidad de bombardeos es distinta en cada simulación (es definida en el archivo de configuración).
+   - Simunación 1: 2 bombardeos
+   - Simunación 2: 4 bombardeos
+   - Simunación 3: 6 bombardeos
    - El bombardeo se debe hacer en paralelo (multicore/GPU/Cluster). Cada bombardeo (indicado por cada flecha en la Fig) tiene un ID único y obtiene un único resultado. Todos los bombardeos de una simulación escriben su resultado en una variable (array) compartida accediendo mediante su ID al subindice correspondiente.
+   - Simulación1.Bombardeos[resultado-bombardeo1, resultado-bombardeo2]
+   - Simulación2.Bombardeos[resultado-bombardeo1, resultado-bombardeo2, ...]
+   - Simulación3.Bombardeos[resultado-bombardeo1, resultado-bombardeo2, ...]
 4. Se calcula la eficiencia en función del nro de aceptores (cálculo serial).
+   - Eficiencia1 = CalcularEficiencia(Simulación1.Bombardeos)
+   - Eficiencia2 = CalcularEficiencia(Simulación2.Bombardeos)
+   - Eficiencia3 = CalcularEficiencia(Simulación3.Bombardeos)
 5. Join de los resultados de cada una de las simulaciones para su post-procesamiento (gráfico).
+   - EficienciaTotal = Calcular(Eficiencia1, Eficiencia2, Eficiencia3)
 
-Se podran ejecutar un nro arbitrario de experimentos distintos en simultáneo haciendo uso de la infraestructura cloud.
+**Se podran ejecutar un nro arbitrario de experimentos distintos en simultáneo haciendo uso de la infraestructura cloud.**
 
 ##Primeros Output
 El código de esta salida esta en el notebook `ten/examples/test.ipynb`
