@@ -10,8 +10,8 @@
 *Students*:  
 * PhD student **Rodrigo Ponsio**  
 * Master student **Daniel Bellomo**  
-* Undergraduate **Franco Bellomo** @fnbellomo  
-* Undergraduate **Lucas Bellomo** @ucaomo
+* Undergraduate [**Franco Bellomo**](https://github.com/fnbellomo) [@fnbellomo]((https://twitter.com/fnbellomo)  
+* Undergraduate [**Lucas Bellomo**](https://github.com/lbellomo) [@ucaomo](https://twitter.com/ucaomo)
 
 ##Objetivo.
 
@@ -40,12 +40,12 @@ Por la manera en la que esta modulizado el código, podemos bombardear a la mism
 
 En la fig se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/GPU/cluster/cloud). Existen tres niveles de paralelismo:
 
-a. bombardeo de fotones, el punto 3) de la fig.  
-	- paralelizar en multicore/GPU/cluster.  
-b. cada una de las simulaciones (identificada por cada columna en la fig).  
-	- paralelizar en cluster/cloud.  
-c. cada experimento (identificado por la fig. completa).  
-	- paralelizar en la infraestructura cloud.
+1. bombardeo de fotones, el punto 3) de la fig.  
+   - paralelizar en multicore/GPU/cluster.  
+2. cada una de las simulaciones (identificada por cada columna en la fig).  
+   - paralelizar en cluster/cloud.  
+3. cada experimento (identificado por la fig. completa).  
+   - paralelizar en la infraestructura cloud.
 
 ![](pictures/secuencia_nanoparticula_aceptores_fotones.png)
 
