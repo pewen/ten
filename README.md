@@ -1,16 +1,16 @@
 # TEN
 **Transferencia de Energía en NanoParticulas**
 
-##Autores.
+##Equipo de trabajo.
 
 *Directores:*  
 * Chemical: **Dr. Rodrigo Palacio**  
 * Cloud computing: [**Dr. Jose Luis Vazquez-Poletti**](http://www.dsa-research.org/doku.php?id=people:poletti)
 
 *Students*:  
-* PhD student **Rodrigo Ponsio**
-* Master student **Daniel Bellomo**
-* Undergraduate **Franco Bellomo** @fnbellomo
+* PhD student **Rodrigo Ponsio**  
+* Master student **Daniel Bellomo**  
+* Undergraduate **Franco Bellomo** @fnbellomo  
 * Undergraduate **Lucas Bellomo** @ucaomo
 
 ##Objetivo.
@@ -35,6 +35,31 @@ Basicamente, el código (escrito en python3) funciona de la siguiente forma:
 * **Movemos el fotón** y calculamos la probabilidad de que decaiga, se transfiera a un aceptors o realize un random walk donde se realiza este ultima paso nuevamente.
 
 Por la manera en la que esta modulizado el código, podemos bombardear a la misma NP con los mismo aceptores, la cantidad de veces que deseemos.
+
+##Experimento.
+
+En la fig se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/GPU/cluster/cloud). Existen tres niveles de paralelismo:
+
+a. bombardeo de fotones, el punto 3) de la fig.
+   - paralelizar en multicore/GPU/cluster.
+b. cada una de las simulaciones (identificada por cada columna en la fig).
+   - paralelizar en cluster/cloud.
+c. cada experimento (identificado por la fig. completa).
+   - paralelizar en la infraestructura cloud.
+
+![](pictures/secuencia_nanoparticula_aceptores_fotones.png)
+
+1. Los parámetros que definen un determinado experimento están dados en el archivo de configuración 'conf.py'.
+   - Definir la nanoparticula (NP). Es la misma NP en todo el experimento ('conf.py).
+   - Definir cantidad de simulaciones para la NP dada. En el ej. de la fig, son tre simulaciones (las columnas).
+2. Dopar la NP: generar aceptores, distribuirlos homogeneamente, etc. (serial).
+   - La cantidad de dopamientos es distinta de cada simulación.
+3. Bombardear la NP: la cantidad de bombardeos es distinta en cada simulación.
+   - El bombardeo se debe hacer en paralelo (multicore/GPU/Cluster). Cada bombardeo (indicado por cada flecha en la Fig) tiene un ID único y obtiene un único resultado. Todos los bombardeos de una simulación escriben su resultado en una variable (array) compartida accediendo mediante su ID al subindice correspondiente.
+4. Se calcula la eficiencia en función del nro de aceptores (cálculo serial).
+5. Join de los resultados de cada una de las simulaciones para su post-procesamiento (gráfico).
+
+Se podran ejecutar un nro arbitrario de experimentos distintos haciendo uso de la infraestructura cloud.
 
 ##Primeros Output
 El código de esta salida esta en el notebook `ten/examples/test.ipynb`
