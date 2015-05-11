@@ -40,11 +40,11 @@ Por la manera en la que esta modulizado el código, podemos bombardear a la mism
 
 En la fig se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/GPU/cluster/cloud). Existen tres niveles de paralelismo:
 
-a. bombardeo de fotones, el punto 3) de la fig.
-	- paralelizar en multicore/GPU/cluster.
-b. cada una de las simulaciones (identificada por cada columna en la fig).
-	- paralelizar en cluster/cloud.
-c. cada experimento (identificado por la fig. completa).
+a. bombardeo de fotones, el punto 3) de la fig.  
+	- paralelizar en multicore/GPU/cluster.  
+b. cada una de las simulaciones (identificada por cada columna en la fig).  
+	- paralelizar en cluster/cloud.  
+c. cada experimento (identificado por la fig. completa).  
 	- paralelizar en la infraestructura cloud.
 
 ![](pictures/secuencia_nanoparticula_aceptores_fotones.png)
