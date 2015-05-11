@@ -10,7 +10,7 @@
 *Students*:  
 * PhD student **Rodrigo Ponsio**  
 * Master student **Daniel Bellomo**  
-* Undergraduate [**Franco Bellomo**](https://github.com/fnbellomo) [@fnbellomo]((https://twitter.com/fnbellomo)  
+* Undergraduate [**Franco Bellomo**](https://github.com/fnbellomo) [@fnbellomo](https://twitter.com/fnbellomo)  
 * Undergraduate [**Lucas Bellomo**](https://github.com/lbellomo) [@ucaomo](https://twitter.com/ucaomo)
 
 ##Objetivo.
