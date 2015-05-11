@@ -38,7 +38,9 @@ Por la manera en la que esta modulizado el código, podemos bombardear a la mism
 
 ##Experimento.
 
-En la fig se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/GPU/cluster/cloud). Existen tres niveles de paralelismo:
+En la fig se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/GPU/cluster/cloud).
+
+###Existen tres niveles de paralelismo:
 
 1. bombardeo de fotones, el punto 3) de la fig.  
    - paralelizar en multicore/GPU/cluster.  
