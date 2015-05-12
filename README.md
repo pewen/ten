@@ -50,7 +50,7 @@ En la Fig. 1 se muestran los procesos que intervienen en el experimento, con el 
    - Paralelizar en la infraestructura cloud.
 
 ######Fig. 1
-![](pictures/experimento.png)
+![](doc/pictures/experimento.png)
 
 1. Los parámetros que definen un determinado experimento están dados en el archivo de configuración 'conf.py'.
    - Definir la nanoparticula (NP). Es la misma NP en todo el experimento ('conf.py').
