@@ -111,7 +111,7 @@ El código de esta salida esta en el notebook `ten/examples/test.ipynb`
 3. Optimizar performance del código.
 4. Ampliar el dominio de estudio (números de NP y de los aceptores).
 5. Portar a Cloud Computing.
-6. Paralelizar el bombardeo de fotónes usando MPI.
+6. Paralelizar el bombardeo de fotónes usando MPI / OpenCL.
 
 ##TODO.
 - [x] hacer gráfico detallando procesos seriales y paralelos (detallando paralelismo en el cluster/multicore y procesos al cloud)
