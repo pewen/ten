@@ -38,7 +38,7 @@ Por la manera en la que esta modulizado el código, podemos bombardear a la mism
 
 ##Experimento.
 
-En la fig se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/GPU/cluster/cloud).
+En la Fig. 1 se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/GPU/cluster/cloud).
 
 ###Existen tres niveles de paralelismo:
 
@@ -49,6 +49,7 @@ En la fig se muestran los procesos que intervienen en el experimento, con el obj
 3. Cada experimento (identificado por la fig. completa).  
    - Paralelizar en la infraestructura cloud.
 
+######Fig. 1
 ![](pictures/experimento.png)
 
 1. Los parámetros que definen un determinado experimento están dados en el archivo de configuración 'conf.py'.
@@ -60,11 +61,11 @@ En la fig se muestran los procesos que intervienen en el experimento, con el obj
    - Simulación 2: 7 dopamientos
    - Simulación 3: 10 dopamientos
 3. Bombardear la NP: la cantidad de bombardeos es distinta en cada simulación (es definida en el archivo de configuración).
-   - Simulación 1: 2 bombardeos
-   - Simulación 2: 4 bombardeos
+   - Simulación 1: 4 bombardeos
+   - Simulación 2: 3 bombardeos
    - Simulación 3: 6 bombardeos
    - El bombardeo se debe hacer en paralelo (multicore/GPU/Cluster). Cada bombardeo (indicado por cada flecha en la Fig) tiene un ID único y obtiene un único resultado. Todos los bombardeos de una simulación escriben su resultado en una variable (array) compartida accediendo mediante su ID al subindice correspondiente.
-   - Simulación1.Bombardeos[resultado-bombardeo1, resultado-bombardeo2]
+   - Simulación1.Bombardeos[resultado-bombardeo1, resultado-bombardeo2, ...]
    - Simulación2.Bombardeos[resultado-bombardeo1, resultado-bombardeo2, ...]
    - Simulación3.Bombardeos[resultado-bombardeo1, resultado-bombardeo2, ...]
 4. Se calcula la eficiencia en función del nro de aceptores (cálculo serial).
