@@ -33,7 +33,7 @@ Para el experimento 1, estamos trabajando basados un en paper, desarrollando nue
 * Python (2.x o 3.x)
 * Numpy
 * Scipy (Solo es para importar pi. Si no esta instalado, se usa un valor con menor precisión).
-* MIP4py
+* MPI4py
 * OpenMPI o MPICH
 
 *Herramientas de post-procesamiento:*
@@ -81,7 +81,7 @@ En la *Fig. 1* se muestran los procesos que intervienen en el experimento, con e
 ![](doc/pictures/experimento.png)
 
 1. Los parámetros que definen un determinado experimento están dados en el archivo de configuración `experimento.conf`.
-   - Definir la NP. Es la misma NP en todo el experimento (`experimento.py`).
+   - Definir la NP. Es la misma NP en todo el experimento (`experimento.conf`).
    - Definir cantidad de simulaciones para la NP dada. En el ej. de la fig, son tres simulaciones (las columnas).
 2. Dopar la NP: generar aceptores, distribuirlos homogeneamente, etc. (serial).
    - La cantidad de dopamientos es distinta de cada simulación (es definida en el archivo de configuración).
@@ -152,7 +152,8 @@ El código de esta salida esta en el notebook `ten/examples/test.ipynb`
 - [ ] Herramientas de post-procesamiento:
    - [ ] Leer un output especifico y que grafique los aceptores.
    - [ ] De un directorio, lea todos los output y grafique la eficiencia de quenching
-- [ ] Usando MPI, paralelizar la cantidad de bombardeos dentro de un PC.
+- [ ] Usando MPI, paralelizar la cantidad de bombardeos p/ multicore/cluster.
+- [ ] Usando OpenCL, paralelizar la cantidad de bombardeos p/ multicore/GPU
 - [x] Hacer un interfaz simple de usar, que se le puedan pasar algunos parámetros por cli, o que levante un archivo de configuración y lo chequee.
 - [ ] Cuando este funcionando la implementación de MPI, que en el output indique cuantos cpu usa, y el porcentaje (igual que LAMPS).
 - [ ] Portar la aplicación a un entrono de Cloud Computing, con el objetivo de realizar simulaciones masivas.
