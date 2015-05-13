@@ -1,7 +1,7 @@
 from scipy.constants import pi
 import numpy as np
 from math import cos, sin, e
-from utils import generate_random_points_in_sphere
+from src.utils import generate_random_points_in_sphere
 
 class NanoParticle(object):
     def __init__(self, r, num_acceptors, tau_D, R_Forster, L_D, delta_t):
@@ -55,7 +55,13 @@ class NanoParticle(object):
         """
         Generate random position of n number acceptors (n_acceptors) uniformly distributed in the nanoparticle.
         """
-        points = generate_random_points_in_sphere(self.n_acceptores, self.R)
+        points = generate_random_points_in_sphere(self.n_acceptors, self.R)
 
-        self.acceptors_positions[0,:], self.acceptors_positions[1,:], self.acceptors_positions[2,:] = points
+        self.acceptors_positions = points
+        """
+        To-delete
+        self.acceptors_positions[:,0] = points
+        self.acceptors_positions[:,1] = points
+        self.acceptors_positions[:,2] = points
+        """
     

@@ -1,5 +1,6 @@
 import numpy as np
 from math import e
+from src.utils import generate_random_points_in_sphere
 
 #Used to print the day in the output file
 from datetime import datetime
@@ -29,7 +30,7 @@ class Photon(object):
         Generate the random position of the photon in any part of the nanoparticle, pretending that this is bombarded by a laser. Because the diameter of the nanoparticle is too small, it is assumed that all are bombarded with the same intensity.
         """
         point = generate_random_points_in_sphere(1, self.NP.R)
-        self.photon = point
+        self.photon = point[0]
 
     def electro_generated(self):
         """
