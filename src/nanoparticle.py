@@ -58,10 +58,4 @@ class NanoParticle(object):
         points = generate_random_points_in_sphere(self.n_acceptors, self.R)
 
         self.acceptors_positions = points
-        """
-        To-delete
-        self.acceptors_positions[:,0] = points
-        self.acceptors_positions[:,1] = points
-        self.acceptors_positions[:,2] = points
-        """
-    
+        
