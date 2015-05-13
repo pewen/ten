@@ -26,6 +26,9 @@ En principio, son tres los experimentos en los que queremos corroborar la eficie
 
 Para el experimento 1, estamos trabajando basados un en paper, desarrollando nuestra herramienta computacional. Para los experimentos 2 y 3, se quiere verificar una hipótesis de trabajo, no existiendo trabajos de referencia.
 
+##Funcionalidades
+1. funcion generate_random_points can generad between two radios
+
 ##Resumen de funcionamiento.
 
 Basicamente, el código (escrito en python3) funciona de la siguiente forma:
