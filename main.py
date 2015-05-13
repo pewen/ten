@@ -1,5 +1,5 @@
 from src.nanoparticle import NanoParticle
-from src.photon import Photon
+from src.exciton import Exciton
 from src.utils import read4file
 
 #To parse the argument from comand line
@@ -15,7 +15,7 @@ init_param = read4file(args.config)
 nano_particle = NanoParticle(init_param['r'], init_param['num_acceptors'], init_param['tau_D'], init_param['R_Forster'], init_param['L_D'], init_param['delta_t'])
 nano_particle.deposit_volumetrically_acceptors()
 
-simu = Photon(nano_particle, init_param['num_exc'])
+simu = Exciton(nano_particle, init_param['num_exc'])
 simu.laser_generated()
 simu.move()
 simu.save_out('.')

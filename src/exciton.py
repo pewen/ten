@@ -9,10 +9,10 @@ import platform
 #to measure time
 import time
 
-class Photon(object):
+class Exciton(object):
     def __init__(self, nanoparticle, num_exc):
         """
-        A photon, which will be inside the nanoparticle. It can be generated at any place of this, using the method laser_generated() or by using a chemical electrolysis electro_generated() method.
+        A exciton, which will be inside the nanoparticle. It can be generated at any place of this, using the method laser_generated() or by using a chemical electrolysis electro_generated() method.
 
         Parameters
         ----------
@@ -27,10 +27,10 @@ class Photon(object):
 
     def laser_generated(self):
         """
-        Generate the random position of the photon in any part of the nanoparticle, pretending that this is bombarded by a laser. Because the diameter of the nanoparticle is too small, it is assumed that all are bombarded with the same intensity.
+        Generate the random position of the exciton in any part of the nanoparticle, pretending that this is bombarded by a laser. Because the diameter of the nanoparticle is too small, it is assumed that all are bombarded with the same intensity.
         """
         point = generate_random_points_in_sphere(1, self.NP.R)
-        self.photon = point[0]
+        self.position = point[0]
 
     def electro_generated(self):
         """
@@ -42,10 +42,10 @@ class Photon(object):
             
     def walk(self):
         """
-        Photon make a random walk inside the nanoparticle. Like in this case the radius is fixed (epsilon), the point of the random walk can generate using spherical coordinates. Then we'll have to check that taking this step, the photon does not leave the nanoparticle 
+        Exciton make a random walk inside the nanoparticle. Like in this case the radius is fixed (epsilon), the point of the random walk can generate using spherical coordinates. Then we'll have to check that taking this step, the exciton does not leave the nanoparticle 
         """
         a = 1
-        new_R = np.zeros_like(self.photon)
+        new_R = np.zeros_like(self.position)
         while a == 1:
             theta = 2*np.pi*np.random.uniform()
             phi = np.arccos(2*np.random.uniform() - 1)
@@ -54,23 +54,23 @@ class Photon(object):
             new_R[1] = np.sin(phi)*np.sin(theta)*self.NP.epsilon
             new_R[2] = np.cos(phi)*self.NP.epsilon
 
-            if sum((new_R + self.photon)**2) <= self.NP.R*self.NP.R:
+            if sum((new_R + self.position)**2) <= self.NP.R*self.NP.R:
                 a = 0
 
-        self.photon += new_R
+        self.position += new_R
     
     def P_ET(self):
         """
-        Returns the sum of the probability that a photon is transferred to the acceptor. Each probability has the form: (1 / tau_D) (R_0 / r [i]) ** 6 where r [i] is the distance between the photon and each acceptor and R_0 Forster radius.
+        Returns the sum of the probability that a exciton is transferred to the acceptor. Each probability has the form: (1 / tau_D) (R_0 / r [i]) ** 6 where r [i] is the distance between the exciton and each acceptor and R_0 Forster radius.
 
         Returns
         -------
         prob : float
-             Probability that a photon is transferred to the acceptor.
+             Probability that a exciton is transferred to the acceptor.
         """
         dist = np.zeros(self.NP.n_acceptors)
         for i in range(self.NP.n_acceptors):
-            dist[i] = 1/sum((self.photon - self.NP.acceptors_positions[i])**3)
+            dist[i] = 1/sum((self.position - self.NP.acceptors_positions[i])**3)
 
         cte = self.NP.R_Forster**6/self.NP.tau_D
         prob = 1 - e**(self.NP.delta_t * cte*sum(dist))
@@ -78,7 +78,7 @@ class Photon(object):
 
     def move(self):
         """
-        We know what is the probability that the photon is transferred to an acceptor or decay. We generate a random number and compare it with the probability of decay. If it is less, compared the same number with probability that is transferred.If less so, it does a random step and generate another random number until the photon decay or transferred.
+        We know what is the probability that the exciton is transferred to an acceptor or decay. We generate a random number and compare it with the probability of decay. If it is less, compared the same number with probability that is transferred.If less so, it does a random step and generate another random number until the exciton decay or transferred.
         """
         self.cant_decay = 0
         self.cant_transf = 0
