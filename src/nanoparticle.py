@@ -1,8 +1,6 @@
 import numpy as np
-from math import cos, sin, e
+from math import cos, sin, e, pi
 from src.utils import generate_random_points_in_sphere
-
-pi = 3.141592653589793
 
 class NanoParticle(object):
     def __init__(self, r, num_acceptors, tau_D, R_Forster, L_D, delta_t):
