@@ -1,7 +1,7 @@
 # TEN
 **Transferencia de Energía en NanoParticulas**
 
-##Equipo de trabajo.
+##Equipo de trabajo
 
 *Directores:*  
 * Chemical: **Dr. Rodrigo Palacio**  
@@ -13,7 +13,7 @@
 * Undergraduate [**Franco Bellomo**](https://github.com/fnbellomo) [@fnbellomo](https://twitter.com/fnbellomo)  
 * Undergraduate [**Lucas Bellomo**](https://github.com/lbellomo) [@ucaomo](https://twitter.com/ucaomo)
 
-##Objetivo.
+##Objetivo
 
 Comprobar eficiencia de Quenching.
 
@@ -26,26 +26,51 @@ En principio, son tres los experimentos en los que queremos corroborar la eficie
 
 Para el experimento 1, estamos trabajando basados un en paper, desarrollando nuestra herramienta computacional. Para los experimentos 2 y 3, se quiere verificar una hipótesis de trabajo, no existiendo trabajos de referencia.
 
+##Instalación
+###Requerimientos
+
+*Core*:
+* Python (2.x o 3.x)
+* Numpy
+* Scipy (Solo es para importar pi. Si no esta instalado, se usa un valor con menor precisión).
+* MPI4py
+* OpenMPI o MPICH
+
+*Herramientas de post-procesamiento:*
+* Matplotlib
+
+###Instalación
+TODO setup.py
+
 ##Funcionalidades
-1. funcion generate_random_points can generad between two radios
+
+* Podemos generar aceptores:
+    1. En toda la NP con el método: Nanoparticle.deposit_volumetrically_acceptors().
+    2. En la superficie (Nanoparticle.deposit_superficial_acceptors()).
+
+* Podemos generar exitones:
+    1. En cualquier lugar de la NP (Exiton.laser_generated()), simulando que a la NP la bombardeamos con un laser.
+    2. Entre dos radios (Exiton.electro_generate()), simulando que este es generado mediante una electrolisis.
+
+En todos los casos, las generaciones son con distribución uniforme.
 
 ##Resumen de funcionamiento.
 
 Basicamente, el código (escrito en python3) funciona de la siguiente forma:
-* **Creamos un objeto NP** con sus propiedades como el radio, cantidad de aceptores, etc. Dichas propiedades se especifican en el archivo config.py.
-* **Generamos los aceptores** distribuidos uniformemente sobre la NP. Estos aceptores pueden estar distribuidos sobre la superficie o dentro de la NP.
-* **Creamos el obtejo Photon** generandolo aleatoriamente sobre la NP.
-* **Movemos el fotón** y calculamos la probabilidad de que decaiga, se transfiera a un aceptors o realize un random walk donde se realiza este ultima paso nuevamente.
+* **Creamos un objeto NP** con sus propiedades como el radio, cantidad de aceptores, etc. Dichas propiedades se especifican en el archivo `experimento.conf`.
+* **Generamos los aceptores** distribuidos uniformemente sobre la NP, usando alguno de los dos métodos explicados anteriormente.
+* **Creamos el exiton** generandolo aleatoriamente sobre la NP, usando alguno de los dos métodos explicados anteriormente.
+* **Movemos el exiton** calculando las probabilidades de decae, transferencia o de realizar un random walk. En caso de que el exiton se mueva, se realiza este ultima paso nuevamente.
 
 Por la manera en la que esta modulizado el código, podemos bombardear a la misma NP con los mismo aceptores, la cantidad de veces que deseemos.
 
 ##Experimento.
 
-En la Fig. 1 se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/GPU/cluster/cloud).
+En la *Fig. 1* se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/GPU/cluster/cloud).
 
 ###Existen tres niveles de paralelismo:
 
-1. Bombardeo de fotones, el punto 3) de la fig.  
+1. Bombardeo de fotones, el punto *3)* de la fig.  
    - Paralelizar en multicore/GPU/cluster.  
 2. Cada una de las simulaciones (identificada por cada columna en la fig).  
    - Paralelizar en cluster/cloud.  
@@ -55,11 +80,11 @@ En la Fig. 1 se muestran los procesos que intervienen en el experimento, con el 
 ######Fig. 1
 ![](doc/pictures/experimento.png)
 
-1. Los parámetros que definen un determinado experimento están dados en el archivo de configuración 'conf.py'.
-   - Definir la nanoparticula (NP). Es la misma NP en todo el experimento ('conf.py').
+1. Los parámetros que definen un determinado experimento están dados en el archivo de configuración `experimento.conf`.
+   - Definir la NP. Es la misma NP en todo el experimento (`experimento.conf`).
    - Definir cantidad de simulaciones para la NP dada. En el ej. de la fig, son tres simulaciones (las columnas).
 2. Dopar la NP: generar aceptores, distribuirlos homogeneamente, etc. (serial).
-   - La cantidad de dopamientos es distinta de cada simulación (es definida en el archivo de configuración.
+   - La cantidad de dopamientos es distinta de cada simulación (es definida en el archivo de configuración).
    - Simulación 1: 4 dopamientos
    - Simulación 2: 7 dopamientos
    - Simulación 3: 10 dopamientos
@@ -122,13 +147,14 @@ El código de esta salida esta en el notebook `ten/examples/test.ipynb`
 - [ ] Medir la performance del código serial.
 - [ ] Gráficos de las eficiencias de cantidad de aceptores vs Quenching.
 - [ ] Para una NP, queremos paralelizar el bombardeo de fotónes.
-- [ ] Generar el photon mediante una electrolisis química.
+- [x] Generar el photon mediante una electrolisis química.
 - [ ] El archivo de salida, hay que ponerle un nombre representativo. Por ej, dd-mm-aa-id que el id puede ser algo que ingrese el usuario o un random.
 - [ ] Herramientas de post-procesamiento:
    - [ ] Leer un output especifico y que grafique los aceptores.
    - [ ] De un directorio, lea todos los output y grafique la eficiencia de quenching
-- [ ] Usando MPI, paralelizar la cantidad de bombardeos dentro de un PC.
-- [ ] Hacer un interfaz simple de usar, que se le puedan pasar algunos parámetros por cli, o que levante un archivo de configuración y lo chequee.
+- [ ] Usando MPI, paralelizar la cantidad de bombardeos p/ multicore/cluster.
+- [ ] Usando OpenCL, paralelizar la cantidad de bombardeos p/ multicore/GPU
+- [x] Hacer un interfaz simple de usar, que se le puedan pasar algunos parámetros por cli, o que levante un archivo de configuración y lo chequee.
 - [ ] Cuando este funcionando la implementación de MPI, que en el output indique cuantos cpu usa, y el porcentaje (igual que LAMPS).
 - [ ] Portar la aplicación a un entrono de Cloud Computing, con el objetivo de realizar simulaciones masivas.
 - [ ] Dotar de volumen a los aceptores.
