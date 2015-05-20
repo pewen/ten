@@ -79,7 +79,7 @@ def read4file(file_path):
     
         #Split the text and the value
         text, val = a.split(sep='=')
-        #print(text)
+        #variables
         if text == 'r':
             init_param['r'] = float(val)
         elif text == 'R_Forster':
@@ -94,6 +94,10 @@ def read4file(file_path):
             init_param['delta_t'] = float(val)
         elif text == 'num_exc':
             init_param['num_exc'] = int(val)
+        elif text == 'acceptors':
+            init_param['acceptors'] = val
+        elif text == 'exiton':
+            init_param['exiton'] = val
         else:
             print('No es nada de esto')
         
