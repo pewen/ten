@@ -10,7 +10,7 @@ import platform
 import time
 
 class Exciton(object):
-    def __init__(self, nanoparticle, num_exc):
+    def __init__(self, nanoparticle, num_exc, gen_exition):
         """
         A exciton, which will be inside the nanoparticle. It can be generated at any place of this, using the method laser_generated() or by using a chemical electrolysis electro_generated() method.
 
@@ -20,10 +20,12 @@ class Exciton(object):
             Nanoparticle objects.
         num_exc : float
             Numbers of exitation of the same nanoparticle.
+        gen_exition : str
+            Way to generate the exiton
         """
         self.NP = nanoparticle
-
         self.num_exc = num_exc
+        self.generation_exition = gen_exition
 
     def laser_generated(self):
         """
@@ -88,6 +90,17 @@ class Exciton(object):
         for i in range(self.num_exc):
             a = 0
             num_walk = 0
+
+            if self.NP.generation_acceptors == 'sep':
+                self.NP.deposit_superficial_acceptors()
+            else:
+                self.NP.deposit_volumetrically_acceptors()
+
+            if self.generation_exition == 'elec':
+                self.electro_generated()
+            else:
+                self.laser_generated()
+            
             while a == 0:
                 rand_num = np.random.random()
                 if self.NP.P_decay > rand_num:
@@ -128,20 +141,20 @@ Forster radius: %.3f
 Length of excition diffusion: %.3f
 Tau_D: %.3f
 Number of acceptors: %.0f
-Delta_t: %.3f
 Epsilon: %.3f
-Probability of decay: %.3f
 Number of exitations: %.0f
-""" %(datetime.now(), platform.platform(), platform.uname(), self.NP.R, self.NP.R_Forster, self.NP.L_D, self.NP.tau_D, self.NP.n_acceptors, self.NP.delta_t, self.NP.epsilon, self.NP.P_decay, self.num_exc)
+""" %(datetime.now(), platform.platform(), platform.uname(), self.NP.R, self.NP.R_Forster, self.NP.L_D, self.NP.tau_D, self.NP.n_acceptors, self.NP.epsilon, self.num_exc)
 
         text_output ="""
 Outputs:
 --------
+Delta_t: %.3f
+Probability of decay: %.3f
 Amount of decays: %.0f
 Amount of transfers: %.0f
 Quenching efficiency: %f
 
-Total time in seg: %.3f""" %(self.cant_decay, self.cant_transf, self.efficiency, self.total_time)
+Total time in seg: %.3f""" %(self.NP.delta_t, self.NP.P_decay, self.cant_decay, self.cant_transf, self.efficiency, self.total_time)
 
         if save_positions:
 
