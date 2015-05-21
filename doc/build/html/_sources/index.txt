@@ -14,8 +14,8 @@ Welcome to TEN's documentation!
  - Franco N. Bellomo
  - Lucas Bellomo
 :Contact:
- - fnbellomo@protonmail.com
- - lbellomo@protonmail.com
+ - https://twitter.com/fnbellomo    
+ - https://twitter.com/ucaomo 
 :Web Site: https://github.com/pewen/ten 
 
 Mediante simulaciones de Monte Carlo, se quiere estudiar la eficiencia de Quenching para una nanopartícula (NP) determinada. Estas simulaciones van a ser contrastadas con las mediciones experimentales realizadas en el Laboratorio de Microscopia Optica Avanzada (LMOA) de la Universidad Nacional de Río Cuarto (UNRC).
