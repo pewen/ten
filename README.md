@@ -26,6 +26,10 @@ En principio, son tres los experimentos en los que queremos corroborar la eficie
 
 Para el experimento 1, estamos trabajando basados un en paper, desarrollando nuestra herramienta computacional. Para los experimentos 2 y 3, se quiere verificar una hipótesis de trabajo, no existiendo trabajos de referencia.
 
+##Documentación
+
+ReadTheDocs: https://ten.readthedocs.org
+
 ##Instalación
 ###Requerimientos
 
