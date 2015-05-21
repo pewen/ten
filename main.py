@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from src.nanoparticle import NanoParticle
 from src.exciton import Exciton
 from src.utils import read4file
