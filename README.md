@@ -143,7 +143,7 @@ El código de esta salida esta en el notebook `ten/examples/test.ipynb`
 
 ##TODO.
 - [x] hacer gráfico detallando procesos seriales y paralelos (detallando paralelismo en el cluster/multicore y procesos al cloud)
-- [ ] Usar [Sphinx](http://sphinx-doc.org/) para subir la documentación.
+- [x] Usar [Sphinx](http://sphinx-doc.org/) para subir la documentación.
 - [ ] Medir la performance del código serial.
 - [ ] Gráficos de las eficiencias de cantidad de aceptores vs Quenching.
 - [ ] Para una NP, queremos paralelizar el bombardeo de fotónes.
