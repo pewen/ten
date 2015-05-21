@@ -73,7 +73,8 @@ def read4file(file_path):
         
         #Remove all spaces
         a = ''.join(a.split())
-    
+
+        #Remove all comment with "#" 
         if '#' in a:
             a, rest = a.split('#')
     
@@ -98,6 +99,8 @@ def read4file(file_path):
             init_param['acceptors'] = val
         elif text == 'exiton':
             init_param['exiton'] = val
+        elif text == 'r_electro':
+            init_param['r_electro'] = float(val)
         else:
             print('No es nada de esto')
         
