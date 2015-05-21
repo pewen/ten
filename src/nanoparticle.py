@@ -3,7 +3,7 @@ from math import cos, sin, e, pi
 from src.utils import generate_random_points_in_sphere
 
 class NanoParticle(object):
-    def __init__(self, r, num_acceptors, tau_D, R_Forster, L_D, delta_t):
+    def __init__(self, r, num_acceptors, tau_D, R_Forster, L_D, delta_t, acceptors):
         """
         Create a nanoparticle object
         
@@ -21,6 +21,8 @@ class NanoParticle(object):
             Length of exciton diffusion
         delta_t : float
             Time interval
+        acceptors : str
+            Way to generate the acceptors
         """
         #Nanoparticle parameters
         self.R = r
@@ -30,6 +32,7 @@ class NanoParticle(object):
         self.L_D = L_D
         self.delta_t = delta_t
         self.epsilon = L_D*delta_t/tau_D
+        self.generation_acceptors = acceptors
 
         #decay probability
         self.P_decay = 1 - e**(-self.delta_t/self.tau_D)
