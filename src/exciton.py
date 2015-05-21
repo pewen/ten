@@ -50,15 +50,9 @@ class Exciton(object):
         Exciton make a random walk inside the nanoparticle. Like in this case the radius is fixed (epsilon), the point of the random walk can generate using spherical coordinates. Then we'll have to check that taking this step, the exciton does not leave the nanoparticle 
         """
         a = 1
-        new_R = np.zeros_like(self.position)
-        while a == 1:
-            theta = 2*np.pi*np.random.uniform()
-            phi = np.arccos(2*np.random.uniform() - 1)
-        
-            new_R[0] = np.sin(phi)*np.cos(theta)*self.NP.epsilon
-            new_R[1] = np.sin(phi)*np.sin(theta)*self.NP.epsilon
-            new_R[2] = np.cos(phi)*self.NP.epsilon
 
+        while a == 1:
+            new_R = generate_random_points_in_sphere(1, self.NP.epsilon, self.NP.epsilon)[0]
             if sum((new_R + self.position)**2) <= self.NP.R*self.NP.R:
                 a = 0
 

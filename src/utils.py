@@ -6,6 +6,7 @@ import numpy as np
 def generate_random_points_in_sphere(n_points, R, r=0):
     """
     Return a array with the cordenades in cartesian for a point between two sphere of radio_out and radio_in.
+    If R == r points are in the surface
 
     Parameters
     ----------
