@@ -27,7 +27,7 @@ else:
 #Initialece the exiton,
 #depending the way to generate it's.
 if init_param['exiton'] == 'elec':
-    simu = Exciton(nano_particle, init_param['num_exc'], 'elec')
+    simu = Exciton(nano_particle, init_param['num_exc'], 'elec', init_param['r_elec'])
     #simu.electro_generated()
 else:
     simu = Exciton(nano_particle, init_param['num_exc'], 'laser')
