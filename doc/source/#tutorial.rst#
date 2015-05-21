@@ -1,0 +1,43 @@
+Tutorial
+========
+
+The configuration file
+----------------------
+
+Configuration of the problem.
+
+Parameters
+----------
+r : float
+    Nanoparticle radius. [r] = nm
+R_Forster : float
+    Forster radius. [R_Forster] = nm
+L_D : float
+    Length  of exciton diffusion. [L_D] = nm
+tau_D : float
+    Lifetime of donor. [tau_D] = ns
+num_acceptors : float
+    Number of acceptors in the nanoparticle.
+delta_t : float
+    Time interval. [delta_t] ) ns
+num_exc : float
+    Numbers of exitation of the same nanoparticle
+acceptors : str, optional
+    Way to create the acceptors. Can be 'vol' (volumetrically) for uniform distribution inside of nanoparticle or 'sup' (superficialy)  for uniform distributions on the surface of the nanoparticle.
+    The default options is 'vol'.
+exiton : str, optional
+    Way to create the exetion. Can be 'laser' to generate uniformily in the nanoparticle or 'elec' (electrolysis) to generate between the radius R of the nanoparticle and a r (R > r).
+    The default options is 'laser'.
+
+
+Surface doping
+--------------
+
+Volume doping
+-------------
+
+Laser exitacion
+---------------
+
+Electrochemical exitacion
+-------------------------
