@@ -1,3 +1,6 @@
+"""
+Probando
+"""
 import numpy as np
 from math import e
 from src.utils import generate_random_points_in_sphere
@@ -91,7 +94,7 @@ class Exciton(object):
             a = 0
             num_walk = 0
 
-            if self.NP.generation_acceptors == 'sep':
+            if self.NP.generation_acceptors == 'sup':
                 self.NP.deposit_superficial_acceptors()
             else:
                 self.NP.deposit_volumetrically_acceptors()
