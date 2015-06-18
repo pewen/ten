@@ -90,8 +90,10 @@ def read4file(file_path):
             init_param['L_D'] = float(val)
         elif text == 'tau_D':
             init_param['tau_D'] = float(val)
-        elif text == 'num_acceptors':
-            init_param['num_acceptors'] = int(val)
+        elif text == 'num_acceptors_max':
+            init_param['num_acceptors_max'] = int(val)
+        elif text == 'num_simu':
+            init_param['num_simu'] = int(val)
         elif text == 'delta_t':
             init_param['delta_t'] = float(val)
         elif text == 'num_exc':

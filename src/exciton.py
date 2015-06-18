@@ -167,7 +167,7 @@ Total time in seg: %.3f""" %(self.NP.delta_t, self.NP.P_decay, self.cant_decay, 
 Aceptors positions(x, y, z):
 %s""" %(s)
         
-        f = open(file_path+'/tets.txt', 'a')
+        f = open(file_path+'/tets.txt', 'a+')
         f.write(text_input)
         if save_positions:
             f.write(text_positions)
