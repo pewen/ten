@@ -3,6 +3,11 @@ Functions that appears frequently in code
 """
 import numpy as np
 
+#Used to print the day in the output file
+from datetime import datetime
+#To save machine info
+import platform
+
 def generate_random_points_in_sphere(n_points, R, r=0):
     """
     Return a array with the cordenades in cartesian for a point between two sphere of radio_out and radio_in.
@@ -110,3 +115,48 @@ def read4file(file_path):
     f.close()
 
     return init_param
+
+def save_out(input_parameters, output_parameters, file_path = '.'):
+    """Save the output in a file.
+    In the list of TODO, we have to develop post-processing tools to plot the positions of the acceptor or the quenching eficiencicia. Moreover, with this information, we will be able to do a little profiling."""
+    acceptors = extrac_from_list(input_parameters, 4)
+    text_input = """ten %s
+
+    %s
+    %s
+
+    Input parameters:
+    -----------------
+    NP radius: %.3f
+    Foster radius: %.3f
+    Length of excition diffusion: %.3f
+    Tau_D: %.3f
+    Number of acceptors: %s
+    Epsilon: %.3f
+    Number of exitations: %.0f
+    """ %(datetime.now(), platform.platform(), platform.uname(), input_parameters[0][0], input_parameters[1][0], input_parameters[2][0], input_parameters[3][0],acceptors, input_parameters[5][0], input_parameters[6][0])
+
+    delta_t = extrac_from_list(output_parameters, 0)
+    p_decay = extrac_from_list(output_parameters, 1)
+    cant_decay = extrac_from_list(output_parameters, 2)
+    cant_transf = extrac_from_list(output_parameters, 3)
+    efficiency = extrac_from_list(output_parameters, 4)
+    total_time = extrac_from_list(output_parameters, 5)
+    
+    text_output ="""
+Outputs:
+--------
+Delta_t: %s
+Probability of decay: %s
+Amount of decays: %s
+Amount of transfers: %s
+Quenching efficiency: %s
+Total time in seg: %s""" %(delta_t, p_decay, cant_decay, cant_transf, efficiency, total_time)
+
+    f = open(file_path+'/tets.txt', 'a+')
+    f.write(text_input)
+    f.write(text_output)
+    f.close()
+    
+def extrac_from_list(a_list, column):
+    return [x[column] for x in a_list]

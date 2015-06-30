@@ -5,10 +5,6 @@ import numpy as np
 from math import e
 from src.utils import generate_random_points_in_sphere
 
-#Used to print the day in the output file
-from datetime import datetime
-#To save machine info
-import platform
 #to measure time
 import time
 
@@ -113,63 +109,10 @@ class Exciton(object):
         self.total_time = time.time() - time_ini
         self.efficiency = self.cant_transf / self.num_exc
 
-    def save_out(self, file_path = '.', save_positions = True):
-        """
-        Save the initial conditions, the output of the simulations, the aceptors positions and some information about the machine where you run the simulations to a file.
-        In the list of TODO, we have to develop post-processing tools to plot the positions of the acceptor or the quenching eficiencicia. Moreover, with this information, we will be able to do a little profiling.
+    def get_input_parameters(self):
+        """Return a list with the imputs parametes"""
+        return [self.NP.R, self.NP.R_Forster, self.NP.L_D, self.NP.tau_D, self.NP.n_acceptors, self.NP.epsilon, self.num_exc]
         
-        Parameters
-        ----------
-        file_path : str, optional
-            Path to save the file
-        save_positions = boolean, optional
-            If true, save the positions of aceptors in the output file
-        """
-        
-        text_input = """TEN %s
-
-%s
-%s
-
-Input parameters:
------------------
-NP radius: %.3f
-Forster radius: %.3f
-Length of excition diffusion: %.3f
-Tau_D: %.3f
-Number of acceptors: %.0f
-Epsilon: %.3f
-Number of exitations: %.0f
-""" %(datetime.now(), platform.platform(), platform.uname(), self.NP.R, self.NP.R_Forster, self.NP.L_D, self.NP.tau_D, self.NP.n_acceptors, self.NP.epsilon, self.num_exc)
-
-        text_output ="""
-Outputs:
---------
-Delta_t: %.3f
-Probability of decay: %.3f
-Amount of decays: %.0f
-Amount of transfers: %.0f
-Quenching efficiency: %f
-
-Total time in seg: %.3f""" %(self.NP.delta_t, self.NP.P_decay, self.cant_decay, self.cant_transf, self.efficiency, self.total_time)
-
-        if save_positions:
-
-            #save the positions array of the aceptors in a string
-            s = ''
-            dim_y, dim_x = self.NP.acceptors_positions.shape
-            for i in range(dim_y):
-                for k in range(dim_x):
-                    s += '%f\t' %(self.NP.acceptors_positions[i][k])
-                s += '\n'
-            
-            text_positions = """
-Aceptors positions(x, y, z):
-%s""" %(s)
-        
-        f = open(file_path+'/tets.txt', 'a+')
-        f.write(text_input)
-        if save_positions:
-            f.write(text_positions)
-        f.write(text_output)
-        f.close()
+    def get_output(self):
+        """Return a list with the output parameters"""
+        return [self.NP.delta_t, self.NP.P_decay, self.cant_decay, self.cant_transf, self.efficiency, self.total_time]

@@ -4,7 +4,7 @@ from numpy import linspace
 
 from src.nanoparticle import NanoParticle
 from src.exciton import Exciton
-from src.utils import read4file
+from src.utils import read4file, save_out
 
 #To parse the argument from comand line
 import argparse
@@ -16,6 +16,10 @@ args = parser.parse_args()
 
 #Read the configuration from file.
 init_param = read4file(args.config)
+
+#Inicialice some variables
+input_parameters = []
+output_parameters = []
 
 #For a range of num_acceptors, we run simu
 for num_acceptors in linspace(1, init_param['num_acceptors_max'], init_param['num_simu']):
@@ -40,4 +44,18 @@ for num_acceptors in linspace(1, init_param['num_acceptors_max'], init_param['nu
 
         #Calculate
         simu.move()
-        simu.save_out('.')
+        input_parameters += [simu.get_input_parameters()]
+        output_parameters += [simu.get_output()]
+
+save_out(input_parameters, output_parameters, '.')
+    
+        
+
+
+
+
+
+
+
+
+
