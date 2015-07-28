@@ -1,7 +1,8 @@
 # Borrador del plot
 import matplotlib.pyplot as plt
+from sys import argv
 
-file_path = '../tets.txt'
+script, file_path = argv
 
 f = open(file_path, 'r')
 
@@ -10,23 +11,24 @@ quenching_eff = []
 
 while True:
     a = f.readline()
-    if 'Number of acceptors' in a:
-        list_a = [int(number) for number in a[26:-2].split(sep=',')]
-        num_acceptors.append(list_a)
-        
-    if 'Quenching efficiency' in a:
-        list_a = [float(number) for number in a[24:-2].split(sep=',')]
-        quenching_eff.append(list_a)
-        
+    if '| Number of acceptors' in a:
+        f.readline()
+        while True:
+            a = f.readline()
+            b = ''.join(a.split()).split('|')[1: -1]
+            num_acceptors.append(int(b[0]))
+            print(num_acceptors)
+            quenching_eff.append(float(b[4]))
+
+            if '-' in a:
+                break
     if a == '':
         break
 
-        
+print('foo')        
 f.close()
 
-print(num_acceptors, quenching_eff)
-for plot in range(len(num_acceptors)):
-    plt.plot(num_acceptors[plot], quenching_eff[plot])
+plt.plot(num_acceptors, quenching_eff)
     
 plt.show()
     

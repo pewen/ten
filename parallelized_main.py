@@ -79,4 +79,5 @@ for num_acceptors in np.linspace(init_param['num_acceptors_min'], init_param['nu
         input_parameters += [simu.get_input_parameters()]
         output_parameters += [simu.get_output()]
 
-save_out(input_parameters, output_parameters, '.')
+if rank == 0:
+    save_out(input_parameters, output_parameters)

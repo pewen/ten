@@ -8,6 +8,8 @@ from datetime import datetime
 #To save machine info
 import platform
 
+from prettytable import PrettyTable
+
 def generate_random_points_in_sphere(n_points, R, r=0):
     """
     Return a array with the cordenades in cartesian for a point between two sphere of radio_out and radio_in.
@@ -95,6 +97,8 @@ def read4file(file_path):
             init_param['L_D'] = float(val)
         elif text == 'tau_D':
             init_param['tau_D'] = float(val)
+        elif text == 'num_acceptors_min':
+            init_param['num_acceptors_min'] = int(val)
         elif text == 'num_acceptors_max':
             init_param['num_acceptors_max'] = int(val)
         elif text == 'num_simu':
@@ -116,10 +120,17 @@ def read4file(file_path):
 
     return init_param
 
-def save_out(input_parameters, output_parameters, file_path = '.'):
+def save_out(input_parameters, output_parameters, file_path = 'output/'):
     """Save the output in a file.
     In the list of TODO, we have to develop post-processing tools to plot the positions of the acceptor or the quenching eficiencicia. Moreover, with this information, we will be able to do a little profiling."""
-    acceptors = extrac_from_list(input_parameters, 4)
+    acceptors = extrac_from_list(input_parameters, 4)    
+    delta_t = extrac_from_list(output_parameters, 0)
+    p_decay = extrac_from_list(output_parameters, 1)
+    cant_decay = extrac_from_list(output_parameters, 2)
+    cant_transf = extrac_from_list(output_parameters, 3)
+    efficiency = extrac_from_list(output_parameters, 4)
+    total_time = extrac_from_list(output_parameters, 5)
+
     text_input = """ten %s
 
     %s
@@ -134,28 +145,17 @@ def save_out(input_parameters, output_parameters, file_path = '.'):
     Number of acceptors: %s
     Epsilon: %.3f
     Number of exitations: %.0f
-    """ %(datetime.now(), platform.platform(), platform.uname(), input_parameters[0][0], input_parameters[1][0], input_parameters[2][0], input_parameters[3][0],acceptors, input_parameters[5][0], input_parameters[6][0])
+    Delta_t: %.3f
 
-    delta_t = extrac_from_list(output_parameters, 0)
-    p_decay = extrac_from_list(output_parameters, 1)
-    cant_decay = extrac_from_list(output_parameters, 2)
-    cant_transf = extrac_from_list(output_parameters, 3)
-    efficiency = extrac_from_list(output_parameters, 4)
-    total_time = extrac_from_list(output_parameters, 5)
+""" %(datetime.now(), platform.platform(), platform.uname(), input_parameters[0][0], input_parameters[1][0], input_parameters[2][0], input_parameters[3][0],acceptors, input_parameters[5][0], input_parameters[6][0], delta_t[0])
+
+    x = PrettyTable(['Number of acceptors', 'Probability of decay', 'Amount of decays', 'Amount of transfers', 'Quenching efficiency', 'Total time in seg'])
+    for i in range(len(acceptors)):
+        x.add_row([acceptors[i], p_decay[i], cant_decay[i], cant_transf[i], efficiency[i], total_time[i]])
     
-    text_output ="""
-Outputs:
---------
-Delta_t: %s
-Probability of decay: %s
-Amount of decays: %s
-Amount of transfers: %s
-Quenching efficiency: %s
-Total time in seg: %s""" %(delta_t, p_decay, cant_decay, cant_transf, efficiency, total_time)
-
-    f = open(file_path+'/tets.txt', 'a+')
+    f = open(file_path+'%s.txt' % (str(datetime.now())), 'a+')
     f.write(text_input)
-    f.write(text_output)
+    f.write(str(x))
     f.close()
     
 def extrac_from_list(a_list, column):
