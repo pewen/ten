@@ -22,7 +22,7 @@ input_parameters = []
 output_parameters = []
 
 #For a range of num_acceptors, we run simu
-for num_acceptors in linspace(1, init_param['num_acceptors_max'], init_param['num_simu']):
+for num_acceptors in linspace(init_param['num_acceptors_min'], init_param['num_acceptors_max'], init_param['num_simu']):
     num_acceptors = int(num_acceptors)
     #Initialice the nanopartile object,
     #depending the way to generate acceptors.
