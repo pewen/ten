@@ -153,7 +153,7 @@ def save_out(input_parameters, output_parameters, file_path = 'output/'):
     for i in range(len(acceptors)):
         x.add_row([acceptors[i], p_decay[i], cant_decay[i], cant_transf[i], efficiency[i], total_time[i]])
     
-    f = open(file_path+'%s.txt' % (str(datetime.now())), 'a+')
+    f = open(file_path+'%s.txt' % (str(datetime.now())[:-7]), 'a+')
     f.write(text_input)
     f.write(str(x))
     f.close()
