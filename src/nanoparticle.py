@@ -38,26 +38,27 @@ class NanoParticle(object):
         self.P_decay = 1 - e**(-self.delta_t/self.tau_D)
 
         #Generate the acceptors positions array
-        self.acceptors_positions = np.zeros((self.n_acceptors,3))
+        self.acceptors_positions = np.zeros((self.n_acceptors, 3))
 
-        
+
     def deposit_superficial_acceptors(self):
         """
-        Generate random number of acceptors (n_acceptors) on the surface of the nanoparticle.
+        Generate random number of acceptors (n_acceptors)
+        on the surface of the nanoparticle.
         """
         theta = 2*np.pi*np.random.uniform(size=self.n_acceptors)
         phi = np.arccos(2*np.random.uniform(size=self.n_acceptors) - 1)
 
-        self.acceptors_positions[:,0] = np.sin(phi)*np.cos(theta)*self.R
-        self.acceptors_positions[:,1] = np.sin(phi)*np.sin(theta)*self.R
-        self.acceptors_positions[:,2] = np.cos(phi)*self.R
-        
-    
+        self.acceptors_positions[:, 0] = np.sin(phi)*np.cos(theta)*self.R
+        self.acceptors_positions[:, 1] = np.sin(phi)*np.sin(theta)*self.R
+        self.acceptors_positions[:, 2] = np.cos(phi)*self.R
+
+
     def deposit_volumetrically_acceptors(self):
         """
-        Generate random position of n number acceptors (n_acceptors) uniformly distributed in the nanoparticle.
+        Generate random position of n number acceptors (n_acceptors)
+        uniformly distributed in the nanoparticle.
         """
         points = generate_random_points_in_sphere(self.n_acceptors, self.R)
 
         self.acceptors_positions = points
-        
