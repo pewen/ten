@@ -23,7 +23,7 @@ def lab(r, R_Forster, L_DS, tau_D, epsilon, num_exc, aceptores):
             nano_particle = NanoParticle(r, num_acceptors, tau_D, R_Forster, L_D, delta_t, 'vol')
 
             simu = Exciton(nano_particle, num_exc, 'laser')
-            simu.move()
+            simu.calculate()
             input_parameters += [simu.get_input_parameters()]
             output_parameters += [simu.get_output()]
 

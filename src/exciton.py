@@ -26,7 +26,7 @@ class Exciton(object):
         gen_exition : str
             Way to generate the exiton
         """
-        self.np = nanoparticle
+        self.nano_particle = nanoparticle
         self.num_exc = num_exc
         self.generation_exition = gen_exition
         self.r_electro = r_elec
@@ -40,7 +40,7 @@ class Exciton(object):
         nanoparticle is too small, it is assumed that all
         are bombarded with the same intensity.
         """
-        point = generate_random_points_in_sphere(1, self.np.radius)
+        point = generate_random_points_in_sphere(1, self.nano_particle.radius)
         self.position = point[0]
 
 
@@ -50,7 +50,7 @@ class Exciton(object):
         This position is generated between the radius R of the
         nanoparticle and a radius r, where r depends electrolysis.
         """
-        point = generate_random_points_in_sphere(1, self.np.radius,
+        point = generate_random_points_in_sphere(1, self.nano_particle.radius,
                                                  self.r_electro)
         self.position = point[0]
 
@@ -66,9 +66,9 @@ class Exciton(object):
         check = 1
 
         while check == 1:
-            new_r = generate_random_points_in_sphere(1, self.np.epsilon,
-                                                     self.np.epsilon)[0]
-            if sum((new_r + self.position)**2) <= self.np.radius*self.np.radius:
+            new_r = generate_random_points_in_sphere(1, self.nano_particle.epsilon,
+                                                     self.nano_particle.epsilon)[0]
+            if sum((new_r + self.position)**2) <= self.nano_particle.radius*self.nano_particle.radius:
                 check = 0
 
         self.position += new_r
@@ -87,16 +87,17 @@ class Exciton(object):
         prob : float
              Probability that a exciton is transferred to the acceptor.
         """
-        dist = np.zeros(self.np.n_acceptors)
-        for i in range(self.np.n_acceptors):
-            dist[i] = 1/sum((self.position - self.np.acceptors_positions[i])**3)
+        dist = np.zeros(self.nano_particle.n_acceptors)
+        for i in range(self.nano_particle.n_acceptors):
+            dist[i] = 1/sum((self.position -
+                             self.nano_particle.acceptors_positions[i])**3)
 
-        cte = self.np.r_forster**6/self.np.tau_d
-        prob = 1 - e**(self.np.delta_t * cte*sum(dist))
+        cte = self.nano_particle.r_forster**6/self.nano_particle.tau_d
+        prob = 1 - e**(self.nano_particle.delta_t * cte*sum(dist))
         return prob
 
 
-    def move(self):
+    def calculate(self):
         """
         We know what is the probability that the exciton is transferred
         to an acceptor or decay. We generate a random number
@@ -115,10 +116,10 @@ class Exciton(object):
             check = 0
             num_walk = 0
 
-            if self.np.generation_acceptors == 'sup':
-                self.np.deposit_superficial_acceptors()
+            if self.nano_particle.generation_acceptors == 'sup':
+                self.nano_particle.deposit_superficial_acceptors()
             else:
-                self.np.deposit_volumetrically_acceptors()
+                self.nano_particle.deposit_volumetrically_acceptors()
 
             if self.generation_exition == 'elec':
                 self.electro_generated()
@@ -127,7 +128,7 @@ class Exciton(object):
 
             while check == 0:
                 rand_num = np.random.random()
-                if self.np.p_decay > rand_num:
+                if self.nano_particle.p_decay > rand_num:
                     self.cant_decay += 1
                     check = 1
                 elif self.p_transfer() > rand_num:
@@ -143,12 +144,14 @@ class Exciton(object):
 
     def get_input_parameters(self):
         """Return a list with the imputs parametes"""
-        return [self.np.radius, self.np.r_forster, self.np.l_d,
-                self.np.tau_d, self.np.n_acceptors,
-                self.np.epsilon, self.num_exc]
+        return [self.nano_particle.radius, self.nano_particle.r_forster,
+                self.nano_particle.l_d, self.nano_particle.tau_d,
+                self.nano_particle.n_acceptors, self.nano_particle.epsilon,
+                self.num_exc]
 
 
     def get_output(self):
         """Return a list with the output parameters"""
-        return [self.np.delta_t, self.np.p_decay, self.cant_decay,
-                self.cant_transf, self.efficiency, self.total_time]
+        return [self.nano_particle.delta_t, self.nano_particle.p_decay,
+                self.cant_decay, self.cant_transf,
+                self.efficiency, self.total_time]

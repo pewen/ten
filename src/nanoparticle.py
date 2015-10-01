@@ -10,7 +10,7 @@ from src.utils import generate_random_points_in_sphere
 
 class NanoParticle(object):
     def __init__(self, r, num_acceptors, tau_D, R_Forster, L_D,
-                 delta_t, acceptors):
+                 epsilon, acceptors):
         """
         Create a nanoparticle object
 
@@ -26,8 +26,8 @@ class NanoParticle(object):
             Radio de Forster
         L_D : float
             Length of exciton diffusion
-        delta_t : float
-            Time interval
+        epsilon : float
+            Epsilon
         acceptors : str
             Way to generate the acceptors
         """
@@ -37,8 +37,8 @@ class NanoParticle(object):
         self.tau_d = tau_D
         self.r_forster = R_Forster
         self.l_d = L_D
-        self.delta_t = delta_t
-        self.epsilon = L_D*delta_t/tau_D
+        self.delta_t = (epsilon*tau_D)/L_D
+        self.epsilon = epsilon
         self.generation_acceptors = acceptors
 
         #decay probability

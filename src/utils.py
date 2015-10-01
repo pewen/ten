@@ -1,13 +1,14 @@
 """
 Functions that appears frequently in code
 """
-import numpy as np
-
+from __future__ import print_function
 #Used to print the day in the output file
 from datetime import datetime
 #To save machine info
 import platform
+import sys
 
+import numpy as np
 from prettytable import PrettyTable
 
 def generate_random_points_in_sphere(n_points, R, r=0):
@@ -53,33 +54,33 @@ def read4file(file_path):
     file_path : str
         Path to the file
     """
-    f = open(file_path, 'r')
+    experiment_file = open(file_path, 'r')
 
     init_param = {}
 
     while True:
-        a = f.readline()
+        a = experiment_file.readline()
 
         #salteo todo los comentarios que usan """
         if '"""' in a:
             while True:
                 #print(a)
-                a = f.readline()
+                a = experiment_file.readline()
                 if '"""' in a:
-                    a = f.readline()
+                    a = experiment_file.readline()
                     break
 
         #salteo todo los comentarios que usan '''
         elif "'''" in a:
             while True:
                 #print(a)
-                a = f.readline()
+                a = experiment_file.readline()
                 if "'''" in a:
-                    a = f.readline()
+                    a = experiment_file.readline()
                     break
 
         if a == '\n':
-            a = f.readline()
+            a = experiment_file.readline()
 
         if a == '':
             break
@@ -102,16 +103,18 @@ def read4file(file_path):
             init_param['L_D'] = float(val)
         elif text == 'tau_D':
             init_param['tau_D'] = float(val)
+        elif text == 'epsilon':
+            init_param['epsilon'] = float(val)
+
         elif text == 'num_acceptors_min':
             init_param['num_acceptors_min'] = int(val)
         elif text == 'num_acceptors_max':
             init_param['num_acceptors_max'] = int(val)
-        elif text == 'num_simu':
-            init_param['num_simu'] = int(val)
-        elif text == 'delta_t':
-            init_param['delta_t'] = float(val)
+        elif text == 'acceptors_step':
+            init_param['acceptors_step'] = int(val)
         elif text == 'num_exc':
             init_param['num_exc'] = int(val)
+
         elif text == 'acceptors':
             init_param['acceptors'] = val
         elif text == 'exiton':
@@ -119,9 +122,18 @@ def read4file(file_path):
         elif text == 'r_electro':
             init_param['r_electro'] = float(val)
         else:
-            print('No es nada de esto')
+            print('Warning, the parameter %s is not defined' %text)
 
-    f.close()
+    experiment_file.close()
+
+    if init_param['exiton'] == 'elec':
+        if not 'r_electro' in init_param:
+            print('Error: If you generate the exiton by electrolysis,\
+                  you have to give a value of r_electro')
+            sys.exit(-1)
+
+    if not 'num_acceptors_min' in init_param:
+        init_param['num_acceptors_min'] = 1
 
     return init_param
 
