@@ -1,3 +1,6 @@
+#! /usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 """
 Functions that appears frequently in code
 """
@@ -146,13 +149,15 @@ def save_out(input_parameters, output_parameters, file_path = 'output/'):
     to plot the positions of the acceptor or the quenching eficiencicia.
     Moreover, with this information, we will be able to do a little profiling.
     """
-    acceptors = extrac_from_list(input_parameters, 4)
+    acceptors = input_parameters[-1]
     delta_t = extrac_from_list(output_parameters, 0)
     p_decay = extrac_from_list(output_parameters, 1)
     cant_decay = extrac_from_list(output_parameters, 2)
     cant_transf = extrac_from_list(output_parameters, 3)
     efficiency = extrac_from_list(output_parameters, 4)
     total_time = extrac_from_list(output_parameters, 5)
+    ld_calculate = extrac_from_list(output_parameters, 6)
+    walk_mean = extrac_from_list(output_parameters, 7)
 
     text_input = """ten %s
 
@@ -161,28 +166,39 @@ def save_out(input_parameters, output_parameters, file_path = 'output/'):
 
     Input parameters:
     -----------------
-    NP radius: %.3f
-    Foster radius: %.3f
-    Length of excition diffusion: %.3f
-    Tau_D: %.3f
+    NP radius: %.3f nm
+    Foster radius: %.3f nm
+    Length of excition diffusion: %.3f nm
+    Tau_D: %.3f ns
     Number of acceptors: %s
-    Epsilon: %.3f
+    Epsilon: %.3f nm
     Number of exitations: %.0f
-    Delta_t: %.3f
+    Delta_t: %.3f ns
 
-""" %(datetime.now(), platform.platform(), platform.uname(), input_parameters[0][0],
-      input_parameters[1][0], input_parameters[2][0], input_parameters[3][0],
-      acceptors, input_parameters[5][0], input_parameters[6][0], delta_t[0])
+    Output parameters:
+    ------------------
+    Probability of decay: %f
 
-    x = PrettyTable(['Number of acceptors', 'Probability of decay', 'Amount of decays',
-                     'Amount of transfers', 'Quenching efficiency', 'Total time in seg'])
+""" %(datetime.now(), platform.platform(), platform.uname(), input_parameters[0],
+      input_parameters[1], input_parameters[2], input_parameters[3],
+      acceptors, input_parameters[5], input_parameters[6], delta_t[0], p_decay[0])
+
+    x = PrettyTable(['Nº acceptors', 'Amount of decays',
+                     'Amount of transfers', 'Quenching efficiency',
+                     'Walk mean*', 'LD calculate [nm]', 'Total time [seg]'])
     for i in range(len(acceptors)):
-        x.add_row([acceptors[i], p_decay[i], cant_decay[i], cant_transf[i],
-                   efficiency[i], total_time[i]])
+        x.add_row([acceptors[i], cant_decay[i],
+                   cant_transf[i], efficiency[i],
+                   walk_mean[i], ld_calculate[i],
+                   total_time[i]])
+
+    note = "\n\n*Means walk are the number, not the distance."\
+           "For the distance must be multiplied by epsilon"
 
     f = open(file_path+'%s.txt' % (str(datetime.now())[:-7]), 'a+')
     f.write(text_input)
     f.write(str(x))
+    f.write(note)
     f.close()
 
 
