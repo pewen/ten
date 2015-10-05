@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from __future__ import print_function, division
 import argparse
 import sys
@@ -18,7 +20,6 @@ args = parser.parse_args()
 init_param = read4file(args.config)
 
 # Inicialice some variables
-input_parameters = []
 output_parameters = []
 
 for num_acceptors in range(init_param['num_acceptors_min'],
@@ -67,12 +68,14 @@ for num_acceptors in range(init_param['num_acceptors_min'],
 
     #Calculate
     simu.calculate()
-    input_parameters += [simu.get_input_parameters()]
     output_parameters += [simu.get_output()]
 
-print(output_parameters)
+input_parameters = simu.get_input()
+input_parameters.append([x for x in range(init_param['num_acceptors_min'],
+                                          init_param['num_acceptors_max'],
+                                          init_param['acceptors_step'])])
 
-save_out(input_parameters, output_parameters, '.')
+save_out(input_parameters, output_parameters)
 
 
 
