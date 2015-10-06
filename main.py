@@ -67,7 +67,7 @@ for num_acceptors in range(init_param['num_acceptors_min'],
         sys.exit(-1)
 
     #Calculate
-    simu.calculate()
+    simu.quenching(each=init_param['each'])
     output_parameters += [simu.get_output()]
 
 input_parameters = simu.get_input()

@@ -10,6 +10,7 @@ from datetime import datetime
 #To save machine info
 import platform
 import sys
+import json
 
 import numpy as np
 from prettytable import PrettyTable
@@ -117,6 +118,8 @@ def read4file(file_path):
             init_param['acceptors_step'] = int(val)
         elif text == 'num_exc':
             init_param['num_exc'] = int(val)
+        elif text == 'each':
+            init_param['each'] = json.loads(val.lower())
 
         elif text == 'acceptors':
             init_param['acceptors'] = val
@@ -137,6 +140,9 @@ def read4file(file_path):
 
     if not 'num_acceptors_min' in init_param:
         init_param['num_acceptors_min'] = 1
+
+    if not 'each' in init_param:
+        init_param['each'] = True
 
     return init_param
 
@@ -159,25 +165,25 @@ def save_out(input_parameters, output_parameters, file_path = 'output/'):
     ld_calculate = extrac_from_list(output_parameters, 6)
     walk_mean = extrac_from_list(output_parameters, 7)
 
-    text_input = """ten %s
+    text_input = """TEN %s
 
-    %s
-    %s
+%s
+%s
 
-    Input parameters:
-    -----------------
-    NP radius: %.3f nm
-    Foster radius: %.3f nm
-    Length of excition diffusion: %.3f nm
-    Tau_D: %.3f ns
-    Number of acceptors: %s
-    Epsilon: %.3f nm
-    Number of exitations: %.0f
-    Delta_t: %.3f ns
+Input parameters:
+-----------------
+NP radius: %.3f nm
+Foster radius: %.3f nm
+Length of excition diffusion: %.3f nm
+Tau_D: %.3f ns
+Number of acceptors: %s
+Epsilon: %.3f nm
+Number of exitations: %.0f
+Delta_t: %.3f ns
 
-    Output parameters:
-    ------------------
-    Probability of decay: %f
+Output parameters:
+------------------
+Probability of decay: %f
 
 """ %(datetime.now(), platform.platform(), platform.uname(), input_parameters[0],
       input_parameters[1], input_parameters[2], input_parameters[3],

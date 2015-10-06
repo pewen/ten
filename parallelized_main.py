@@ -100,7 +100,7 @@ for num_acceptors in range(init_param['num_acceptors_min'],
     simu = comm.bcast(simu, root=0)
     comm.Scatter(sendbuf, sendbuf_local, root=0)
 
-    simu.calculate()
+    simu.quenching(each=init_param['each'])
 
     sendbuf_local[0] = simu.cant_transf
 

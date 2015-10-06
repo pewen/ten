@@ -31,6 +31,10 @@ class Exciton(object):
         self.generation_exition = gen_exition
         self.r_electro = r_elec
 
+        # Constante usada en el calculo de la probabilidad
+        # la calculo una sola vez.
+        self.cte_p_et = self.nano_particle.delta_t * self.nano_particle.r_forster**6/self.nano_particle.tau_d
+
 
     def laser_generated(self):
         """
@@ -68,7 +72,13 @@ class Exciton(object):
         while check == 1:
             new_r = generate_random_points_in_sphere(1, self.nano_particle.epsilon,
                                                      self.nano_particle.epsilon)[0]
+            """
             if sum((new_r + self.position)**2) <= self.nano_particle.radius*self.nano_particle.radius:
+                check = 0
+            """
+
+            new_dist = np.sqrt(sum((new_r + self.position)**2))
+            if new_dist <= self.nano_particle.radius:
                 check = 0
 
         self.position += new_r
@@ -87,6 +97,8 @@ class Exciton(object):
         prob : float
              Probability that a exciton is transferred to the acceptor.
         """
+
+        """
         dist = np.zeros(self.nano_particle.n_acceptors)
 
         for i in range(self.nano_particle.n_acceptors):
@@ -97,27 +109,30 @@ class Exciton(object):
 
         prob = 1 - e**(self.nano_particle.delta_t * cte*sum(dist))
         """
-        for i in range(self.nano_particle.n_acceptors):
-            dist[i] = 1/np.linalg.norm(self.position -
-                                       self.nano_particle.acceptors_positions[i])
 
-        sum_dist = sum(dist*dist*dist*dist*dist*dist)
-        cte = self.nano_particle.r_forster**6/self.nano_particle.tau_d
+        diff = self.position - self.nano_particle.acceptors_positions
+        component_square = diff*diff
+        one_over_distance = 1/(component_square[:, 0] + component_square[:, 1] +
+                               component_square[:, 2])
+        distance_6 = one_over_distance*one_over_distance*one_over_distance
 
-        prob = 1 - e**(self.nano_particle.delta_t * cte*sum_dist)
-        """
+        prob = 1 - np.e**(-self.cte_p_et*sum(distance_6))
 
         return prob
 
 
-    def calculate(self):
+    def quenching(self, each=True):
         """
-        We know what is the probability that the exciton is transferred
-        to an acceptor or decay. We generate a random number
-        and compare it with the probability of decay.
-        If it is less, compared the same number with probability
-        that is transferred.If less so, it does a random step and
-        generate another random number until the exciton decay or transferred.
+        A random variable (VA) with the probability of decay is compared.
+        If the VA is less, compared with the probability of transferirce.
+        If less, the exiton makes a random wall.
+        This is repeated n-times where n is the number of exitation (num_exc).
+
+        Parameters:
+        -----------
+        each : bool, optinal
+          If True, in each repetition, new positions of dopants is generated.
+          Else, only generate one time the dopants
         """
 
         self.cant_decay = 0
@@ -128,14 +143,22 @@ class Exciton(object):
         self.positions_init = np.zeros((self.num_exc, 3))
         self.positions_end = np.zeros((self.num_exc, 3))
 
-        for cont in range(self.num_exc):
-            check = 0
-
+        if not each:
             # Dopamiento
             if self.nano_particle.generation_acceptors == 'sup':
                 self.nano_particle.deposit_superficial_acceptors()
             else:
                 self.nano_particle.deposit_volumetrically_acceptors()
+
+        for cont in range(self.num_exc):
+            check = 0
+
+            if each:
+                # Dopamiento
+                if self.nano_particle.generation_acceptors == 'sup':
+                    self.nano_particle.deposit_superficial_acceptors()
+                else:
+                    self.nano_particle.deposit_volumetrically_acceptors()
 
             # Excition
             if self.generation_exition == 'elec':
@@ -143,7 +166,7 @@ class Exciton(object):
             else:
                 self.laser_generated()
 
-            self.positions_init[cont] = self.position
+            self.positions_init[cont] = self.position.copy()
 
             while check == 0:
                 rand_num = np.random.random()
@@ -157,10 +180,11 @@ class Exciton(object):
                     self.walk()
                     num_walk += 1
 
-            self.positions_end[cont] = self.position
+            self.positions_end[cont] = self.position.copy()
 
         dist = np.zeros(self.num_exc)
-        resta = (self.positions_init - self.positions_end)**2
+        resta = (self.positions_init - self.positions_end)*(self.positions_init -
+                                                            self.positions_end)
 
         dist[:] = np.sqrt(resta[:, 0] + resta[:, 1] + resta[:, 2])
 
