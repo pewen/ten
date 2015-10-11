@@ -82,7 +82,7 @@ for num_acceptors in range(init_param['num_acceptors_min'],
         # a unique position in the array.
         # That is, if we have N processes, the array will have
         # N elements.
-        sendbuf = np.zeros([size], dtype=np.int64)
+        sendbuf = np.zeros(2, dtype=np.int64)
 
     else:
         # All processes must have a value for sendbuf and
@@ -92,9 +92,9 @@ for num_acceptors in range(init_param['num_acceptors_min'],
         sendbuf = None
 
     # Buffer to make the reduce (MPI.SUM) operations.
-    reducebuf = np.zeros([1], dtype=np.int64)
+    reducebuf = np.zeros(7)
     # Local array elemet to save the simulations results.
-    sendbuf_local = np.zeros(1, dtype=np.int64)
+    sendbuf_local = np.zeros(7)
 
     # BroadCast of the `simu` object
     simu = comm.bcast(simu, root=0)
@@ -102,12 +102,13 @@ for num_acceptors in range(init_param['num_acceptors_min'],
 
     simu.quenching(each=init_param['each'])
 
-    sendbuf_local[0] = simu.cant_transf
+    sendbuf_local = simu.get_output()
 
     comm.Reduce(sendbuf_local, reducebuf, op=MPI.SUM, root=0)
 
     if rank == 0:
-        output_parameters += [simu.get_output()]
+        reducebuf[2:] = reducebuf[2:]/size
+        output_parameters += [list(reducebuf)]
 
 if rank == 0:
     input_parameters = simu.get_input()

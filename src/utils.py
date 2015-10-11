@@ -156,14 +156,12 @@ def save_out(input_parameters, output_parameters, file_path = 'output/'):
     Moreover, with this information, we will be able to do a little profiling.
     """
     acceptors = input_parameters[-1]
-    delta_t = extrac_from_list(output_parameters, 0)
-    p_decay = extrac_from_list(output_parameters, 1)
-    cant_decay = extrac_from_list(output_parameters, 2)
-    cant_transf = extrac_from_list(output_parameters, 3)
-    efficiency = extrac_from_list(output_parameters, 4)
-    total_time = extrac_from_list(output_parameters, 5)
-    ld_calculate = extrac_from_list(output_parameters, 6)
-    walk_mean = extrac_from_list(output_parameters, 7)
+    cant_decay = extrac_from_list(output_parameters, 0)
+    cant_transf = extrac_from_list(output_parameters, 1)
+    efficiency = extrac_from_list(output_parameters, 2)
+    total_time = extrac_from_list(output_parameters, 3)
+    ld_calculate = extrac_from_list(output_parameters, 4)
+    walk_mean = extrac_from_list(output_parameters, 5)
 
     text_input = """TEN %s
 
@@ -174,7 +172,7 @@ Input parameters:
 -----------------
 NP radius: %.3f nm
 Foster radius: %.3f nm
-Length of excition diffusion: %.3f nm
+Mean free path: %.3f nm
 Tau_D: %.3f ns
 Number of acceptors: %s
 Epsilon: %.3f nm
@@ -187,7 +185,7 @@ Probability of decay: %f
 
 """ %(datetime.now(), platform.platform(), platform.uname(), input_parameters[0],
       input_parameters[1], input_parameters[2], input_parameters[3],
-      acceptors, input_parameters[5], input_parameters[6], delta_t[0], p_decay[0])
+      acceptors, input_parameters[5], input_parameters[6], input_parameters[7], input_parameters[8])
 
     x = PrettyTable(['Nº acceptors', 'Amount of decays',
                      'Amount of transfers', 'Quenching efficiency',

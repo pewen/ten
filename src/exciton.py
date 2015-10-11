@@ -72,10 +72,6 @@ class Exciton(object):
         while check == 1:
             new_r = generate_random_points_in_sphere(1, self.nano_particle.epsilon,
                                                      self.nano_particle.epsilon)[0]
-            """
-            if sum((new_r + self.position)**2) <= self.nano_particle.radius*self.nano_particle.radius:
-                check = 0
-            """
 
             new_dist = np.sqrt(sum((new_r + self.position)**2))
             if new_dist <= self.nano_particle.radius:
@@ -96,18 +92,6 @@ class Exciton(object):
         -------
         prob : float
              Probability that a exciton is transferred to the acceptor.
-        """
-
-        """
-        dist = np.zeros(self.nano_particle.n_acceptors)
-
-        for i in range(self.nano_particle.n_acceptors):
-            dist[i] = 1/sum((self.position -
-                             self.nano_particle.acceptors_positions[i])**3)
-
-        cte = self.nano_particle.r_forster**6/self.nano_particle.tau_d
-
-        prob = 1 - e**(self.nano_particle.delta_t * cte*sum(dist))
         """
 
         diff = self.position - self.nano_particle.acceptors_positions
@@ -187,8 +171,8 @@ class Exciton(object):
                                                             self.positions_end)
 
         dist[:] = np.sqrt(resta[:, 0] + resta[:, 1] + resta[:, 2])
-
-        self.l_d_rms = np.sqrt(sum(dist**2)/len(dist))
+        self.l_d_rms = np.sqrt(sum(dist**2)/(len(dist)*6))
+        #self.l_d_rms = sum(dist)/len(dist)
 
         self.walk_mean = num_walk/self.num_exc
         self.total_time = time.time() - time_ini
@@ -200,13 +184,13 @@ class Exciton(object):
         return [self.nano_particle.radius, self.nano_particle.r_forster,
                 self.nano_particle.l_d, self.nano_particle.tau_d,
                 self.nano_particle.n_acceptors, self.nano_particle.epsilon,
-                self.num_exc]
+                self.num_exc, self.nano_particle.delta_t,
+                self.nano_particle.p_decay]
 
 
     def get_output(self):
         """Return a list with the output parameters"""
-        return [self.nano_particle.delta_t, self.nano_particle.p_decay,
-                self.cant_decay, self.cant_transf,
-                self.efficiency, self.total_time,
-                self.l_d_rms, self.walk_mean]
+        return np.array([self.cant_decay, self.cant_transf,
+                         self.efficiency, self.total_time,
+                         self.l_d_rms, self.walk_mean])
 
