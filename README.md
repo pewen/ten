@@ -18,9 +18,9 @@ Calcular la eficiencia de Quenching.
 
 Mediante simulaciones de Monte Carlo, se quiere estudiar la eficiencia de Quenching para una nanopartícula (NP) determinada. Estas simulaciones van a ser contrastadas con las mediciones experimentales realizadas en el Laboratorio de Microscopia Optica Avanzada (LMOA) de la Universidad Nacional de Río Cuarto (UNRC).
 
-En principio, son tres los experimentos en los que queremos corroborar la eficiencia de Quenching:  
-1. En el caso de tener los aceptores distribuidos volumetricamente en la NP.  
-2. Que los aceptores estén sobre la superficie de la NP.  
+En principio, son tres los experimentos en los que queremos corroborar la eficiencia de Quenching:
+1. En el caso de tener los aceptores distribuidos volumetricamente en la NP.
+2. Que los aceptores estén sobre la superficie de la NP.
 3. En los dos casos anteriores el fotón es generado mediante un laser. Se quiere estudiar que sucede en el caso de que sea generado mediante una electrólisis química.
 
 Para el experimento 1, estamos trabajando basados en este [paper](http://pubs.acs.org/doi/abs/10.1021/jp074149%2B) desarrollando nuestra herramienta computacional. Para los experimentos 2 y 3 se quiere verificar una hipótesis de trabajo, no existiendo trabajos de referencia.
@@ -71,7 +71,7 @@ Por la manera en la que esta modulizado el código, podemos bombardear a la mism
 
 En la *Fig. 1* se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/cluster/GPU).
 
-###Existen tres niveles de paralelismo:
+###Existen dos niveles de paralelismo:
 
 1. Bombardeo de fotones, el punto *3)* de la fig.  
    - Paralelizar en multicore/cluster/GPU.  
