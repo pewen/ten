@@ -195,6 +195,7 @@ En la *Fig. 1* se muestran los procesos que intervienen en el experimento, con e
 ###Optimización y paralelismo:
 - [x] hacer gráfico detallando procesos seriales y paralelos (detallando paralelismo en el cluster/multicore)
 - [x] Medir la performance del código serial.
+- [ ] Medir speed-up.
 - [x] Para una NP, queremos paralelizar el bombardeo de fotónes.
 - [ ] Usando OpenCL, paralelizar la cantidad de bombardeos para multicore/GPU
 - [ ] Cuando este funcionando la implementación de MPI, que en el output indique cuantos cpu usa, el porcentaje de cada uno y la memoria por proceso (igual que LAMPS).
