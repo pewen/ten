@@ -48,12 +48,12 @@ TODO setup.py
 ##Funcionalidades
 
 * Podemos generar aceptores:
-    1. En toda la NP con el método: Nanoparticle.deposit_volumetrically_acceptors().
-    2. En la superficie (Nanoparticle.deposit_superficial_acceptors()).
+    1. En toda la NP con el método: **Nanoparticle.deposit_volumetrically_acceptors()**
+    2. En la superficie: **Nanoparticle.deposit_superficial_acceptors()**
 
 * Podemos generar exitones:
-    1. En cualquier lugar de la NP (Exiton.laser_generated()), simulando que a la NP la bombardeamos con un laser.
-    2. Entre dos radios (Exiton.electro_generate()), simulando que este es generado mediante una electrolisis.
+    1. En cualquier lugar de la NP, simulando que a esta se la bombardeamos con un laser **Exiton.laser_generated()**
+    2. Entre dos radios, simulando que este es generado mediante una electrolisis química **Exiton.electro_generate()**
 
 En todos los casos, las generaciones son con distribución uniforme.
 
@@ -69,16 +69,16 @@ Por la manera en la que esta modulizado el código, podemos bombardear a la mism
 
 ##Experimento.
 
-En la *Fig. 1* se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/GPU/cluster/cloud).
+En la *Fig. 1* se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/cluster/GPU).
 
 ###Existen tres niveles de paralelismo:
 
 1. Bombardeo de fotones, el punto *3)* de la fig.  
-   - Paralelizar en multicore/GPU/cluster.  
+   - Paralelizar en multicore/cluster/GPU.  
 2. Cada una de las simulaciones (identificada por cada columna en la fig).  
-   - Paralelizar en cluster/cloud.  
+   - Paralelizar en cluster.  
 3. Cada experimento (identificado por la fig. completa).  
-   - Paralelizar en la infraestructura cloud.
+   - Paralelizar en cluster.
 
 ######Fig. 1
 ![](doc/pictures/experimento.png)
@@ -185,23 +185,40 @@ En la *Fig. 1* se muestran los procesos que intervienen en el experimento, con e
 5. Paralelizar el bombardeo de fotónes usando MPI / OpenCL.
 
 ##TODO.
-- [x] hacer gráfico detallando procesos seriales y paralelos (detallando paralelismo en el cluster/multicore y procesos al cloud)
-- [x] Usar [Sphinx](http://sphinx-doc.org/) para subir la documentación.
-- [ ] Medir la performance del código serial.
-- [ ] Gráficos de las eficiencias de cantidad de aceptores vs Quenching.
-- [ ] Para una NP, queremos paralelizar el bombardeo de fotónes.
+
+###Física del problema:
 - [x] Generar el photon mediante una electrolisis química.
-- [ ] El archivo de salida, hay que ponerle un nombre representativo. Por ej, dd-mm-aa-id que el id puede ser algo que ingrese el usuario o un random.
-- [ ] Herramientas de post-procesamiento:
-   - [ ] Leer un output especifico y que grafique los aceptores.
-   - [ ] De un directorio, lea todos los output y grafique la eficiencia de quenching
-- [ ] Usando MPI, paralelizar la cantidad de bombardeos p/ multicore/cluster.
-- [ ] Usando OpenCL, paralelizar la cantidad de bombardeos p/ multicore/GPU
-- [x] Hacer un interfaz simple de usar, que se le puedan pasar algunos parámetros por cli, o que levante un archivo de configuración y lo chequee.
-- [ ] Cuando este funcionando la implementación de MPI, que en el output indique cuantos cpu usa, y el porcentaje (igual que LAMPS).
-- [ ] Portar la aplicación a un entrono de Cloud Computing, con el objetivo de realizar simulaciones masivas.
+- [ ] Calcular L_D **(trabajando en esto)**
+- [ ] R variable usando una distribución normal. Se pasa en el config los dos parámetros de la normal. Si solo se pasa un parámtro, se toma R como constante.
 - [ ] Dotar de volumen a los aceptores.
+
+###Optimización y paralelismo:
+- [x] hacer gráfico detallando procesos seriales y paralelos (detallando paralelismo en el cluster/multicore)
+- [x] Medir la performance del código serial.
+- [x] Para una NP, queremos paralelizar el bombardeo de fotónes.
+- [ ] Usando OpenCL, paralelizar la cantidad de bombardeos para multicore/GPU
+- [ ] Cuando este funcionando la implementación de MPI, que en el output indique cuantos cpu usa, el porcentaje de cada uno y la memoria por proceso (igual que LAMPS).
+
+###Herramientas de post procesamiento:
+- [ ] De un directorio, lea todos los output y grafique la eficiencia de Quenching.
+- [ ] Histográmas de la distribución de los aceptores.
+
+###Input, output, log y código:
+- [x] Usar [Sphinx](http://sphinx-doc.org/) para la documentación.
+- [x] Agregar al config:
+  * Elección del método de depositado de dopantes.
+  * Elección del método de genaración del exiton.
+- [x] Cambiar en el input que se ingrese el \epsilon en lugar del \Delata t.
+- [x] Respetar PEP8
+- [ ] Agregar al output:
+  * la forma en que se genero los acceptores
+  * la forma en la que se genero el exiton
+- [ ] Nombre representativo del output. Puede ser similar a los archivos del Landsat.
 - [ ] Agregar función de log.
+- [ ] En el main.py, ir informando del avance.
+- [ ] Actualizar la documentación.
+- [ ] Calculo automático de la convergencia.
+
 
 ##Licencia.
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">TEN</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.  
