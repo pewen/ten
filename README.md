@@ -189,7 +189,7 @@ En la *Fig. 1* se muestran los procesos que intervienen en el experimento, con e
 ###Física del problema:
 - [x] Generar el photon mediante una electrolisis química.
 - [ ] Calcular L_D **(trabajando en esto)**
-- [ ] R variable usando una distribución normal. Se pasa en el config los dos parámetros de la normal. Si solo se pasa un parámtro, se toma R como constante.
+- [x] R variable usando una distribución normal. Se pasa en el config los dos parámetros de la normal. Si solo se pasa un parámtro, se toma R como constante.
 - [ ] Dotar de volumen a los aceptores.
 
 ###Optimización y paralelismo:
