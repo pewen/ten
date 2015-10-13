@@ -9,15 +9,18 @@ import numpy as np
 from src.utils import generate_random_points_in_sphere
 
 class NanoParticle(object):
-    def __init__(self, r, num_acceptors, tau_D, R_Forster, mean_path,
-                 epsilon, acceptors):
+    def __init__(self, r_mean, r_deviation,  num_acceptors, tau_D,
+                 R_Forster, mean_path, epsilon, acceptors):
         """
         Create a nanoparticle object
 
         Parameters
         ----------
-        R : float
-            Radio of nanoparticule
+        r_mean : float
+            Mean of the normal distribution nanoparticle radius. [r] = nm
+        r_deviation : float, optional
+            Standard deviation of the normal distribution nanoparticle radius.
+            if not, the radius is considered constant. [r] = nm
         n_acceptors : float
             Number of acceptors in the nanoparticle
         tau_D : float
@@ -31,8 +34,14 @@ class NanoParticle(object):
         acceptors : str
             Way to generate the acceptors
         """
-        #Nanoparticle parameters
-        self.radius = r
+        # Nanoparticle parameters
+        self.r_mean = r_mean
+        self.r_deviation = r_deviation
+        if r_deviation == 0:
+            self.radius = r_mean
+        else:
+            self.radius = np.random.normal(r_mean, r_deviation)
+
         self.n_acceptors = num_acceptors
         self.tau_d = tau_D
         self.r_forster = R_Forster

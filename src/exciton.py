@@ -181,11 +181,11 @@ class Exciton(object):
 
     def get_input(self):
         """Return a list with the imputs parametes"""
-        return [self.nano_particle.radius, self.nano_particle.r_forster,
-                self.nano_particle.mean_path, self.nano_particle.tau_d,
-                self.nano_particle.n_acceptors, self.nano_particle.epsilon,
-                self.num_exc, self.nano_particle.delta_t,
-                self.nano_particle.p_decay]
+        return [self.nano_particle.r_mean, self.nano_particle.r_deviation,
+                self.nano_particle.r_forster, self.nano_particle.mean_path,
+                self.nano_particle.tau_d, self.nano_particle.n_acceptors,
+                self.nano_particle.epsilon, self.num_exc,
+                self.nano_particle.delta_t, self.nano_particle.p_decay]
 
 
     def get_output(self):

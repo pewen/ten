@@ -99,8 +99,10 @@ def read4file(file_path):
         #Split the text and the value
         text, val = a.split(sep='=')
         #variables
-        if text == 'r':
-            init_param['r'] = float(val)
+        if text == 'r_mean':
+            init_param['r_mean'] = float(val)
+        elif text == 'r_deviation':
+            init_param['r_deviation'] = float(val)
         elif text == 'R_Forster':
             init_param['R_Forster'] = float(val)
         elif text == 'mean_path':
@@ -138,6 +140,9 @@ def read4file(file_path):
                   you have to give a value of r_electro')
             sys.exit(-1)
 
+    if not 'r_deviation' in init_param:
+        init_param['r_deviation'] = 0
+
     if not 'num_acceptors_min' in init_param:
         init_param['num_acceptors_min'] = 1
 
@@ -170,7 +175,8 @@ def save_out(input_parameters, output_parameters, file_path = 'output/'):
 
 Input parameters:
 -----------------
-NP radius: %.3f nm
+NP radius mean: %.3f nm
+NP radius deviation: %.3f nm
 Foster radius: %.3f nm
 Mean free path: %.3f nm
 Tau_D: %.3f ns
@@ -183,9 +189,11 @@ Output parameters:
 ------------------
 Probability of decay: %f
 
-""" %(datetime.now(), platform.platform(), platform.uname(), input_parameters[0],
-      input_parameters[1], input_parameters[2], input_parameters[3],
-      acceptors, input_parameters[5], input_parameters[6], input_parameters[7], input_parameters[8])
+""" %(datetime.now(), platform.platform(), platform.uname(),
+      input_parameters[0], input_parameters[1], input_parameters[2],
+      input_parameters[3], input_parameters[4], acceptors,
+      input_parameters[6], input_parameters[7], input_parameters[8],
+      input_parameters[9])
 
     x = PrettyTable(['Nº acceptors', 'Amount of decays',
                      'Amount of transfers', 'Quenching efficiency',

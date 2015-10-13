@@ -30,19 +30,21 @@ for num_acceptors in range(init_param['num_acceptors_min'],
     # Initialice the nanopartile object,
     # depending the way to generate acceptors.
     if init_param['acceptors'] == 'sup':
-        nano_particle = NanoParticle(init_param['r'],
+        nano_particle = NanoParticle(init_param['r_mean'],
+                                     init_param['r_deviation'],
                                      num_acceptors,
                                      init_param['tau_D'],
                                      init_param['R_Forster'],
-                                     init_param['L_D'],
+                                     init_param['mean_path'],
                                      init_param['epsilon'],
                                      'sup')
     elif init_param['acceptors'] == 'vol':
-        nano_particle = NanoParticle(init_param['r'],
+        nano_particle = NanoParticle(init_param['r_mean'],
+                                     init_param['r_deviation'],
                                      num_acceptors,
                                      init_param['tau_D'],
                                      init_param['R_Forster'],
-                                     init_param['L_D'],
+                                     init_param['mean_path'],
                                      init_param['epsilon'],
                                      'vol')
     else:
