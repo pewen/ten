@@ -103,8 +103,8 @@ def read4file(file_path):
             init_param['r'] = float(val)
         elif text == 'R_Forster':
             init_param['R_Forster'] = float(val)
-        elif text == 'L_D':
-            init_param['L_D'] = float(val)
+        elif text == 'mean_path':
+            init_param['mean_path'] = float(val)
         elif text == 'tau_D':
             init_param['tau_D'] = float(val)
         elif text == 'epsilon':
