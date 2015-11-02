@@ -155,13 +155,11 @@ class Exciton(object):
             # Cambiado el orden, se ve si decae y luego en que forma
             while check == 0:
                 rand_num = np.random.random()
-                p_transfer = self.p_transfer()
-                if self.nano_particle.p_decay + p_transfer > rand_num:
-                    psi_et = p_transfer / (p_transfer + 1 / self.nano_particle.tau_d)
-                    if psi_et < rand_num:
-                        self.cant_transf += 1
-                    else:
-                        self.cant_decay += 1
+                if self.nano_particle.p_decay > rand_num:
+                    self.cant_decay += 1
+                    check = 1
+                elif self.p_transfer() > rand_num:
+                    self.cant_transf += 1
                     check = 1
                 else:
                     self.walk()
