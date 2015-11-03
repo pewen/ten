@@ -24,7 +24,7 @@ def lab(r, R_Forster, L_DS, tau_D, epsilon, num_exc, aceptores):
 
             simu = Exciton(nano_particle, num_exc, 'laser')
             simu.calculate()
-            input_parameters += [simu.get_input_parameters()]
+            input_parameters += [simu.get_input()]
             output_parameters += [simu.get_output()]
 
         eff_simu = [[element[4] for element in output_parameters], L_D]
