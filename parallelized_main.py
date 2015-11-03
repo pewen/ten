@@ -17,6 +17,9 @@ parser.add_argument('-c', '--config', dest='config',
                     default='experiment.conf',
                     help='path to configuration (initial parameters)\
                     file')
+parser.add_argument('-o', dest='out_path',
+                    default='output/',
+                    help='output path')
 args = parser.parse_args()
 
 # Read the configuration from file.
@@ -117,4 +120,4 @@ if rank == 0:
     input_parameters.append([x for x in range(init_param['num_acceptors_min'],
                                               init_param['num_acceptors_max'],
                                               init_param['acceptors_step'])])
-    save_out(input_parameters, output_parameters)
+    save_out(input_parameters, output_parameters, args.out_path)
