@@ -197,20 +197,16 @@ Probability of decay: %f
 
     x = PrettyTable(['Nº acceptors', 'Amount of decays',
                      'Amount of transfers', 'Quenching efficiency',
-                     'Walk mean*', 'LD calculate [nm]', 'Total time [seg]'])
+                     "Step's Walk mean", 'LD calculate [nm]', 'Total time [seg]'])
     for i in range(len(acceptors)):
         x.add_row([acceptors[i], cant_decay[i],
                    cant_transf[i], efficiency[i],
                    walk_mean[i], ld_calculate[i],
                    total_time[i]])
 
-    note = "\n\n*Means walk are the number, not the distance."\
-           "For the distance must be multiplied by epsilon"
-
     f = open(file_path+'%s.txt' % (str(datetime.now())[:-7]), 'a+')
     f.write(text_input)
     f.write(str(x))
-    f.write(note)
     f.close()
 
 
