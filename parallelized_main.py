@@ -87,7 +87,7 @@ for num_acceptors in range(init_param['num_acceptors_min'],
         # a unique position in the array.
         # That is, if we have N processes, the array will have
         # N elements.
-        sendbuf = np.zeros(2, dtype=np.int64)
+        sendbuf = np.zeros(size, dtype=np.int64)
 
     else:
         # All processes must have a value for sendbuf and
@@ -117,6 +117,7 @@ for num_acceptors in range(init_param['num_acceptors_min'],
 
 if rank == 0:
     input_parameters = simu.get_input()
+    input_parameters[7] = int(input_parameters[7]*size)
     input_parameters.append([x for x in range(init_param['num_acceptors_min'],
                                               init_param['num_acceptors_max'],
                                               init_param['acceptors_step'])])
