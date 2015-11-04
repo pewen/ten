@@ -179,6 +179,32 @@ class Exciton(object):
         self.efficiency = self.cant_transf / self.num_exc
 
 
+    def single_count(self):
+        """
+        Para calcular el valor de tau
+        """
+        walk_array = np.zeros(self.num_exc)
+
+        for cont in range(self.num_exc):
+            check = 0
+            num_walk = 0
+
+            # Excition
+            self.laser_generated()
+
+            while check == 0:
+                rand_num = np.random.random()
+                if self.nano_particle.p_decay > rand_num:
+                    check = 1
+                else:
+                    self.walk()
+                    num_walk += 1
+
+            walk_array[cont] = num_walk
+
+        return walk_array
+
+
     def get_input(self):
         """Return a list with the imputs parametes"""
         return [self.nano_particle.r_mean, self.nano_particle.r_deviation,
