@@ -152,6 +152,7 @@ class Exciton(object):
 
             self.positions_init[cont] = self.position.copy()
 
+            # Cambiado el orden, se ve si decae y luego en que forma
             while check == 0:
                 rand_num = np.random.random()
                 if self.nano_particle.p_decay > rand_num:
