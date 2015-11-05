@@ -33,7 +33,7 @@ class Exciton(object):
 
         # Constante usada en el calculo de la probabilidad
         # la calculo una sola vez.
-        self.cte_p_et = self.nano_particle.delta_t * self.nano_particle.r_forster**6/self.nano_particle.tau_d
+        self.cte_p_et =  self.nano_particle.r_forster**6/self.nano_particle.tau_d
 
 
     def laser_generated(self):
@@ -79,28 +79,34 @@ class Exciton(object):
 
         self.position += new_r
 
-
-    def p_transfer(self):
+    def k_et(self):
         """
-        Returns the sum of the probability that a exciton is
+        Doc:        Returns the sum of the probability that a exciton is
         transferred to the acceptor. Each probability has the form:
-        (1 / tau_D) (R_0 / r [i]) ** 6
+        (1 / tau_d) (R_0 / r [i]) ** 6
         where r [i] is the distance between the exciton and
         each acceptor and R_0 Forster radius.
 
         Returns
-        -------
-        prob : float
-             Probability that a exciton is transferred to the acceptor.
-        """
-
+        -------"""
         diff = self.position - self.nano_particle.acceptors_positions
         component_square = diff*diff
         one_over_distance = 1/(component_square[:, 0] + component_square[:, 1] +
                                component_square[:, 2])
         distance_6 = one_over_distance*one_over_distance*one_over_distance
+        k = self.cte_p_et*sum(distance_6)
+        
+        return k
 
-        prob = 1 - np.e**(-self.cte_p_et*sum(distance_6))
+        
+    def p_die(self):
+        """
+        prob : float
+             Probability that a exciton is transferred to the acceptor.
+        """
+
+        prob = 1 - np.e**-(self.nano_particle.delta_t*
+                           (self.k_et() + 1/self.nano_particle.tau_d))
 
         return prob
 
@@ -154,12 +160,12 @@ class Exciton(object):
 
             # Cambiado el orden, se ve si decae y luego en que forma
             while check == 0:
-                rand_num = np.random.random()
-                if self.nano_particle.p_decay > rand_num:
-                    self.cant_decay += 1
-                    check = 1
-                elif self.p_transfer() > rand_num:
-                    self.cant_transf += 1
+                if self.p_die() > np.random.random():
+                    psi_et = self.k_et()/(self.k_et() + 1/self.nano_particle.tau_d)
+                    if psi_et < np.random.random():
+                        self.cant_decay += 1
+                    else:
+                        self.cant_transf += 1
                     check = 1
                 else:
                     self.walk()
@@ -220,4 +226,3 @@ class Exciton(object):
         return np.array([self.cant_decay, self.cant_transf,
                          self.efficiency, self.total_time,
                          self.l_d_rms, self.walk_mean])
-
