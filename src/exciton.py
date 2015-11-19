@@ -33,7 +33,7 @@ class Exciton(object):
 
         # Constante usada en el calculo de la probabilidad
         # la calculo una sola vez.
-        self.cte_p_et =  self.nano_particle.r_forster**6/self.nano_particle.tau_d
+        self.cte_p_et = self.nano_particle.r_forster**6/self.nano_particle.tau_d
 
 
     def laser_generated(self):
@@ -95,10 +95,10 @@ class Exciton(object):
                                component_square[:, 2])
         distance_6 = one_over_distance*one_over_distance*one_over_distance
         k = self.cte_p_et*sum(distance_6)
-        
+
         return k
 
-        
+
     def p_die(self):
         """
         prob : float
@@ -184,6 +184,52 @@ class Exciton(object):
         self.walk_mean = num_walk/self.num_exc
         self.total_time = time.time() - time_ini
         self.efficiency = self.cant_transf / self.num_exc
+
+
+    def l_d(self):
+        """
+
+        """
+
+        self.cant_decay = 0
+        self.cant_transf = 0
+
+        self.positions_init = np.zeros((self.num_exc, 3))
+        self.positions_end = np.zeros((self.num_exc, 3))
+
+        for cont in range(self.num_exc):
+            check = 0
+
+            # This simulation is without aceptors
+            self.electro_generated()
+            self.position = generate_random_points_in_sphere(1, 1)[0]
+
+            self.positions_init[cont] = self.position.copy()
+
+            while check == 0:
+                if self.p_die() > np.random.random():
+                    psi_et = self.k_et()/(self.k_et() + 1/self.nano_particle.tau_d)
+                    if psi_et < np.random.random():
+                        self.cant_decay += 1
+                    else:
+                        self.cant_transf += 1
+                    check = 1
+                else:
+                    self.walk()
+
+            self.positions_end[cont] = self.position.copy()
+
+        self.dist = np.zeros(self.num_exc)
+        dif_square = (self.positions_init - self.positions_end)*(self.positions_init -
+                                                                 self.positions_end)
+
+        self.dist[:] = np.sqrt(dif_square[:, 0] + dif_square[:, 1] + dif_square[:, 2])
+
+        self.rms = np.sqrt(sum(self.dist*self.dist)/self.num_exc)
+
+        prom = sum(self.dist)/len(self.dist)
+
+        return prom
 
 
     def single_count(self):
