@@ -6,7 +6,8 @@ from math import cos, sin, e, pi
 
 import numpy as np
 
-from src.utils import generate_random_points_in_sphere
+#from src.utils import generate_random_points_in_sphere
+from .utils import generate_random_points_in_sphere
 
 class NanoParticle(object):
     def __init__(self, r_mean, r_deviation,  num_acceptors, tau_D,

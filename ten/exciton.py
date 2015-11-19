@@ -7,7 +7,8 @@ from math import e
 
 import numpy as np
 
-from src.utils import generate_random_points_in_sphere
+#from src.utils import generate_random_points_in_sphere
+from .utils import generate_random_points_in_sphere
 
 class Exciton(object):
     def __init__(self, nanoparticle, num_exc, gen_exition, r_elec=0):
