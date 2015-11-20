@@ -4,9 +4,7 @@ from __future__ import print_function, division
 import argparse
 import sys
 
-from src.nanoparticle import NanoParticle
-from src.exciton import Exciton
-from src.utils import read4file, save_out
+import ten
 
 # Creation of argument parser
 parser = argparse.ArgumentParser(description='TEN')
@@ -19,12 +17,34 @@ parser.add_argument('-o', dest='out_path',
                     help='output path')
 args = parser.parse_args()
 
-# Read the configuration from file.
-init_param = read4file(args.config)
+# Read the configuration from file
+init_param = ten.read4file(args.config)
 
 # Inicialice some variables
 output_parameters = []
 
+
+###########################################################
+# Calculating L_D
+# using a radius which tends to infinity
+nano_particle = ten.NanoParticle(50000,
+                                 0,
+                                 0,
+                                 init_param['tau_D'],
+                                 init_param['R_Forster'],
+                                 init_param['mean_path'],
+                                 init_param['epsilon'],
+                                 'vol')
+
+simu = ten.Exciton(nano_particle,
+                   10000,
+                   'laser')
+
+l_d = simu.l_d()
+
+
+###########################################################
+# Caculating Quenching eff
 for num_acceptors in range(init_param['num_acceptors_min'],
                            init_param['num_acceptors_max'],
                            init_param['acceptors_step']):
@@ -33,23 +53,23 @@ for num_acceptors in range(init_param['num_acceptors_min'],
     # Initialice the nanopartile object,
     # depending the way to generate acceptors.
     if init_param['acceptors'] == 'sup':
-        nano_particle = NanoParticle(init_param['r_mean'],
-                                     init_param['r_deviation'],
-                                     num_acceptors,
-                                     init_param['tau_D'],
-                                     init_param['R_Forster'],
-                                     init_param['mean_path'],
-                                     init_param['epsilon'],
-                                     'sup')
+        nano_particle = ten.NanoParticle(init_param['r_mean'],
+                                         init_param['r_deviation'],
+                                         num_acceptors,
+                                         init_param['tau_D'],
+                                         init_param['R_Forster'],
+                                         init_param['mean_path'],
+                                         init_param['epsilon'],
+                                         'sup')
     elif init_param['acceptors'] == 'vol':
-        nano_particle = NanoParticle(init_param['r_mean'],
-                                     init_param['r_deviation'],
-                                     num_acceptors,
-                                     init_param['tau_D'],
-                                     init_param['R_Forster'],
-                                     init_param['mean_path'],
-                                     init_param['epsilon'],
-                                     'vol')
+        nano_particle = ten.NanoParticle(init_param['r_mean'],
+                                         init_param['r_deviation'],
+                                         num_acceptors,
+                                         init_param['tau_D'],
+                                         init_param['R_Forster'],
+                                         init_param['mean_path'],
+                                         init_param['epsilon'],
+                                         'vol')
     else:
         print('Error: acceptors must be vol o sup (have %s)'
               %init_param['acceptors'])
@@ -58,14 +78,14 @@ for num_acceptors in range(init_param['num_acceptors_min'],
     # Initialece the exiton,
     # depending the way to generate it's.
     if init_param['exiton'] == 'elec':
-        simu = Exciton(nano_particle,
-                       init_param['num_exc'],
-                       init_param['r_elec'],
-                       'elec')
+        simu = ten.Exciton(nano_particle,
+                           init_param['num_exc'],
+                           init_param['r_elec'],
+                           'elec')
     elif init_param['exiton'] == 'laser':
-        simu = Exciton(nano_particle,
-                       init_param['num_exc'],
-                       'laser')
+        simu = ten.Exciton(nano_particle,
+                           init_param['num_exc'],
+                           'laser')
     else:
         print('Error: exiton must be laser or elec (have %s)'
               %init_param['exiton'])
@@ -75,12 +95,17 @@ for num_acceptors in range(init_param['num_acceptors_min'],
     simu.quenching(each=init_param['each'])
     output_parameters += [list(simu.get_output())]
 
+
+###########################################################
+# Save to file the output
+
 input_parameters = simu.get_input()
+input_parameters.append(l_d)    
 input_parameters.append([x for x in range(init_param['num_acceptors_min'],
                                           init_param['num_acceptors_max'],
                                           init_param['acceptors_step'])])
 
-save_out(input_parameters, output_parameters, args.out_path)
+ten.save_out(input_parameters, output_parameters, args.out_path)
 
 
 

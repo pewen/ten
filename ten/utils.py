@@ -160,13 +160,13 @@ def save_out(input_parameters, output_parameters, file_path = 'output/'):
     to plot the positions of the acceptor or the quenching eficiencicia.
     Moreover, with this information, we will be able to do a little profiling.
     """
-    acceptors = input_parameters[-1]
     cant_decay = extrac_from_list(output_parameters, 0)
     cant_transf = extrac_from_list(output_parameters, 1)
     efficiency = extrac_from_list(output_parameters, 2)
     total_time = extrac_from_list(output_parameters, 3)
-    ld_calculate = extrac_from_list(output_parameters, 4)
-    walk_mean = extrac_from_list(output_parameters, 5)
+    walk_mean = extrac_from_list(output_parameters, 4)
+    acceptors = input_parameters[-1]
+    ld_calculate = input_parameters[10]
 
     text_input = """TEN %s
 
@@ -187,22 +187,22 @@ Delta_t: %.3f ns
 
 Output parameters:
 ------------------
+L_D = %f
 Probability of decay: %f
 
 """ %(datetime.now(), platform.platform(), platform.uname(),
       input_parameters[0], input_parameters[1], input_parameters[2],
       input_parameters[3], input_parameters[4], acceptors,
       input_parameters[6], input_parameters[7], input_parameters[8],
-      input_parameters[9])
+      ld_calculate, input_parameters[9])
 
     x = PrettyTable(['Nº acceptors', 'Amount of decays',
                      'Amount of transfers', 'Quenching efficiency',
-                     "Step's Walk mean", 'LD calculate [nm]', 'Total time [seg]'])
+                     "Step's Walk mean", 'Total time [seg]'])
     for i in range(len(acceptors)):
         x.add_row([acceptors[i], cant_decay[i],
                    cant_transf[i], efficiency[i],
-                   walk_mean[i], ld_calculate[i],
-                   total_time[i]])
+                   walk_mean[i], total_time[i]])
 
     f = open(file_path+'%s.txt' % (str(datetime.now())[:-7]), 'a+')
     f.write(text_input)

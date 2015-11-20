@@ -80,6 +80,7 @@ class Exciton(object):
 
         self.position += new_r
 
+
     def k_et(self):
         """
         Doc:        Returns the sum of the probability that a exciton is
@@ -131,8 +132,6 @@ class Exciton(object):
         num_walk = 0
 
         time_ini = time.time()
-        self.positions_init = np.zeros((self.num_exc, 3))
-        self.positions_end = np.zeros((self.num_exc, 3))
 
         if not each:
             # Dopamiento
@@ -157,8 +156,6 @@ class Exciton(object):
             else:
                 self.laser_generated()
 
-            self.positions_init[cont] = self.position.copy()
-
             # Cambiado el orden, se ve si decae y luego en que forma
             while check == 0:
                 if self.p_die() > np.random.random():
@@ -171,16 +168,6 @@ class Exciton(object):
                 else:
                     self.walk()
                     num_walk += 1
-
-            self.positions_end[cont] = self.position.copy()
-
-        dist = np.zeros(self.num_exc)
-        resta = (self.positions_init - self.positions_end)*(self.positions_init -
-                                                            self.positions_end)
-
-        dist[:] = np.sqrt(resta[:, 0] + resta[:, 1] + resta[:, 2])
-        self.l_d_rms = np.sqrt(sum(dist**2)/(len(dist)*6))
-        #self.l_d_rms = sum(dist)/len(dist)
 
         self.walk_mean = num_walk/self.num_exc
         self.total_time = time.time() - time_ini
@@ -272,4 +259,4 @@ class Exciton(object):
         """Return a list with the output parameters"""
         return np.array([self.cant_decay, self.cant_transf,
                          self.efficiency, self.total_time,
-                         self.l_d_rms, self.walk_mean])
+                         self.walk_mean])
