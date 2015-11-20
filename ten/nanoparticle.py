@@ -6,10 +6,19 @@ from math import cos, sin, e, pi
 
 import numpy as np
 
-#from src.utils import generate_random_points_in_sphere
 from .utils import generate_random_points_in_sphere
 
 class NanoParticle(object):
+    """Create a Nanoaprticle Object
+
+    Methods:
+    --------
+    deposit_superficial_acceptors: no-arguments
+      Acceptors are generated in the surface of the np
+    deposit_volumetrically_acceptors: no-arguments
+      Acceptors are generated volumetrically in the np
+
+    """
     def __init__(self, r_mean, r_deviation,  num_acceptors, tau_D,
                  R_Forster, mean_path, epsilon, acceptors):
         """
@@ -18,22 +27,23 @@ class NanoParticle(object):
         Parameters
         ----------
         r_mean : float
-            Mean of the normal distribution nanoparticle radius. [r] = nm
+            Mean of the normal distribution nanoparticle radius. [r_mean] = nm.
         r_deviation : float, optional
             Standard deviation of the normal distribution nanoparticle radius.
-            if not, the radius is considered constant. [r] = nm
+            if not, the radius is considered constant. [r_deviation] = nm.
         n_acceptors : float
             Number of acceptors in the nanoparticle
         tau_D : float
-            Lifetime of the donor
+            Lifetime of the donor. [tau_D] = ns.
         R_Forster : float
-            Radio de Forster
+            Radio de Forster. [R_Forster] = nm.
         mean_path : float
-            Length of exciton diffusion
+            Length of mean free path. [mean_path] = nm.
         epsilon : float
-            Epsilon
+            Step length on the random walk. [epsilon] = nm.
         acceptors : str
-            Way to generate the acceptors
+            Way to generate the acceptors. Can be 'sup' to generate
+            on the surface or 'vol' to generate in all the nanoparticle.
         """
         # Nanoparticle parameters
         self.r_mean = r_mean
@@ -63,13 +73,8 @@ class NanoParticle(object):
         Generate random number of acceptors (n_acceptors)
         on the surface of the nanoparticle.
         """
-        theta = 2*np.pi*np.random.uniform(size=self.n_acceptors)
-        phi = np.arccos(2*np.random.uniform(size=self.n_acceptors) - 1)
-
-        self.acceptors_positions[:, 0] = np.sin(phi)*np.cos(theta)*self.radius
-        self.acceptors_positions[:, 1] = np.sin(phi)*np.sin(theta)*self.radius
-        self.acceptors_positions[:, 2] = np.cos(phi)*self.radius
-
+        points = generate_random_points_in_sphere(self.n_acceptors, self.radius, self.radius)
+        self.acceptors_positions = points
 
     def deposit_volumetrically_acceptors(self):
         """
@@ -77,5 +82,4 @@ class NanoParticle(object):
         uniformly distributed in the nanoparticle.
         """
         points = generate_random_points_in_sphere(self.n_acceptors, self.radius)
-
         self.acceptors_positions = points
