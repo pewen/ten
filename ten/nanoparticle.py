@@ -76,6 +76,7 @@ class NanoParticle(object):
         points = generate_random_points_in_sphere(self.n_acceptors, self.radius, self.radius)
         self.acceptors_positions = points
 
+
     def deposit_volumetrically_acceptors(self):
         """
         Generate random position of n number acceptors (n_acceptors)
