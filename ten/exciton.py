@@ -130,12 +130,6 @@ class Exciton(object):
         A random variable (VA) is compared with the probability of die (p_die).
         If the p_die > VA, the exciton decays. Else, the exciton make a
         random walk, and a VA is generated.
-
-        Parameters:
-        -----------
-        each : bool, optinal
-          If True, in each repetition, new positions of dopants is generated.
-          Else, only generate one time the dopants
         """
 
         self.cant_decay = 0
@@ -144,22 +138,14 @@ class Exciton(object):
 
         time_ini = time.time()
 
-        if not each:
+        for cont in range(self.num_exc):
+            check = 0
+
             # Dopamiento
             if self.nano_particle.generation_acceptors == 'sup':
                 self.nano_particle.deposit_superficial_acceptors()
             else:
                 self.nano_particle.deposit_volumetrically_acceptors()
-
-        for cont in range(self.num_exc):
-            check = 0
-
-            if each:
-                # Dopamiento
-                if self.nano_particle.generation_acceptors == 'sup':
-                    self.nano_particle.deposit_superficial_acceptors()
-                else:
-                    self.nano_particle.deposit_volumetrically_acceptors()
 
             # Excition
             if self.generation_exition == 'elec':
@@ -167,7 +153,7 @@ class Exciton(object):
             else:
                 self.laser_generated()
 
-            # Cambiado el orden, se ve si decae y luego en que forma
+            # Se ve si decae y luego en que forma
             while check == 0:
                 if self.p_die() > np.random.random():
                     psi_et = self.k_et()/(self.k_et() + 1/self.nano_particle.tau_d)
