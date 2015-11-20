@@ -64,7 +64,6 @@ def read4file(file_path):
 
     while True:
         a = experiment_file.readline()
-
         #salteo todo los comentarios que usan """
         if '"""' in a:
             while True:
@@ -122,6 +121,10 @@ def read4file(file_path):
             init_param['num_exc'] = int(val)
         elif text == 'each':
             init_param['each'] = json.loads(val.lower())
+        elif text == 'arbitrary_list':
+            init_param['arbitrary_list'] = bool(int(val))
+        elif text == 'list_num_acceptors':
+            init_param['list_num_acceptors'] = list(val)
 
         elif text == 'acceptors':
             init_param['acceptors'] = val
@@ -149,6 +152,13 @@ def read4file(file_path):
     if not 'each' in init_param:
         init_param['each'] = True
 
+    if not init_param['arbitrary_list']:
+        list_num_acceptors = range(init_param['num_acceptors_min'],
+                                   init_param['num_acceptors_max'],
+                                   init_param['acceptors_step'])
+        init_param['list_num_acceptors'] = list_num_acceptors
+
+        
     return init_param
 
 

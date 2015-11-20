@@ -45,9 +45,7 @@ l_d = simu.l_d()
 
 ###########################################################
 # Caculating Quenching eff
-for num_acceptors in range(init_param['num_acceptors_min'],
-                           init_param['num_acceptors_max'],
-                           init_param['acceptors_step']):
+for num_acceptors in init_param['list_num_acceptors']:
     num_acceptors = int(num_acceptors)
 
     # Initialice the nanopartile object,
@@ -101,9 +99,7 @@ for num_acceptors in range(init_param['num_acceptors_min'],
 
 input_parameters = simu.get_input()
 input_parameters.append(l_d)    
-input_parameters.append([x for x in range(init_param['num_acceptors_min'],
-                                          init_param['num_acceptors_max'],
-                                          init_param['acceptors_step'])])
+input_parameters.append([x for x in init_param['list_num_acceptors']])
 
 ten.save_out(input_parameters, output_parameters, args.out_path)
 

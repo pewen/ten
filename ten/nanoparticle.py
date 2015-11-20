@@ -63,12 +63,10 @@ class NanoParticle(object):
         Generate random number of acceptors (n_acceptors)
         on the surface of the nanoparticle.
         """
-        theta = 2*np.pi*np.random.uniform(size=self.n_acceptors)
-        phi = np.arccos(2*np.random.uniform(size=self.n_acceptors) - 1)
+        
+        points = generate_random_points_in_sphere(self.n_acceptors, self.radius, self.radius)
 
-        self.acceptors_positions[:, 0] = np.sin(phi)*np.cos(theta)*self.radius
-        self.acceptors_positions[:, 1] = np.sin(phi)*np.sin(theta)*self.radius
-        self.acceptors_positions[:, 2] = np.cos(phi)*self.radius
+        self.acceptors_positions = points
 
 
     def deposit_volumetrically_acceptors(self):
