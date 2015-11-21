@@ -1,4 +1,4 @@
-#Indice de los Ipython notebook
+#Indice de los IPython notebook
 
 [01 Puntos aleatorios en la esfera](http://nbviewer.ipython.org/github/pewen/ten/blob/master/IPython_notebook/01_Puntos_aleatorios_en_esfera.ipynb)
 
@@ -10,4 +10,6 @@
 
 [05 Cálculo de tau](http://nbviewer.ipython.org/github/pewen/ten/blob/master/IPython_notebook/05_Calculo_Tau.ipynb)
 
-[06 Profile serial](http://nbviewer.ipython.org/github/pewen/ten/blob/master/IPython_notebook/06_Profile_serial.ipynb)
+[06 Cálculo de L_D](http://nbviewer.ipython.org/github/pewen/ten/blob/master/IPython_notebook/06_Calculo_L_D.ipynb)
+
+[07 Profile serial](http://nbviewer.ipython.org/github/pewen/ten/blob/master/IPython_notebook/07_Profile_serial.ipynb)

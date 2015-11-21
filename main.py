@@ -90,7 +90,7 @@ for num_acceptors in init_param['list_num_acceptors']:
         sys.exit(-1)
 
     #Calculate
-    simu.quenching(each=init_param['each'])
+    simu.quenching()
     output_parameters += [list(simu.get_output())]
 
 

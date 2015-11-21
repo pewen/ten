@@ -103,17 +103,23 @@ for num_acceptors in range(init_param['num_acceptors_min'],
 
     # BroadCast of the `simu` object
     simu = comm.bcast(simu, root=0)
+    #comm.Scatter(sendbuf, sendbuf_local, root=0)
     comm.Scatter(sendbuf, sendbuf_local, root=0)
 
-    simu.quenching(each=init_param['each'])
+    simu.quenching()
 
     sendbuf_local = simu.get_output()
+
+    #print('Rank', rank, 'local bufer', sendbuf_local, '\n')
 
     comm.Reduce(sendbuf_local, reducebuf, op=MPI.SUM, root=0)
 
     if rank == 0:
+        #print('reduce bufer', reducebuf, '\n')
         reducebuf[2:] = reducebuf[2:]/size
         output_parameters += [list(reducebuf)]
+        #print('reduce bufer /2', reducebuf, '\n')
+        #print('*'*100)
 
 if rank == 0:
     input_parameters = simu.get_input()

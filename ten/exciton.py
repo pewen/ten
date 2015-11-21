@@ -7,16 +7,20 @@ from math import e
 
 import numpy as np
 
-#from src.utils import generate_random_points_in_sphere
 from .utils import generate_random_points_in_sphere
 
 class Exciton(object):
+    """
+    Create a exciton inside of nanoparticle object.
+
+    """
     def __init__(self, nanoparticle, num_exc, gen_exition, r_elec=0):
         """
-        A exciton, which will be inside the nanoparticle.
-        It can be generated at any place of this, with uniformal distribution,
+        Create a exciton inside of nanoparticle object.
+
+        Can be created at any place of the np with uniformal distribution
         using the method laser_generated() or by using a chemical electrolysis
-        electro_generated() method.
+        using electro_generated() method.
 
         Parameters
         ----------
@@ -83,14 +87,17 @@ class Exciton(object):
 
     def k_et(self):
         """
-        Doc:        Returns the sum of the probability that a exciton is
-        transferred to the acceptor. Each probability has the form:
-        (1 / tau_d) (R_0 / r [i]) ** 6
-        where r [i] is the distance between the exciton and
-        each acceptor and R_0 Forster radius.
+        Energy transfer rate constant. Have the form:
+        sum ((1 / tau_d)*(R_0 / r [i]) ** 6)
+        where r[i] is the distance between the exciton
+        and each acceptor and R_0 Forster radius.
+        The sum go from 1 to M where M is the number of acceptors.
 
-        Returns
-        -------"""
+        Return
+        ------
+        k : float
+          Probability to transfer the exciton to any acceptor
+        """
         diff = self.position - self.nano_particle.acceptors_positions
         component_square = diff*diff
         one_over_distance = 1/(component_square[:, 0] + component_square[:, 1] +
@@ -103,6 +110,11 @@ class Exciton(object):
 
     def p_die(self):
         """
+        Calculated the probability that a exciton is
+        transferred to any acceptor.
+
+        Return
+        ------
         prob : float
              Probability that a exciton is transferred to the acceptor.
         """
@@ -115,16 +127,9 @@ class Exciton(object):
 
     def quenching(self, each=True):
         """
-        A random variable (VA) with the probability of decay is compared.
-        If the VA is less, compared with the probability of transferirce.
-        If less, the exiton makes a random wall.
-        This is repeated n-times where n is the number of exitation (num_exc).
-
-        Parameters:
-        -----------
-        each : bool, optinal
-          If True, in each repetition, new positions of dopants is generated.
-          Else, only generate one time the dopants
+        A random variable (VA) is compared with the probability of die (p_die).
+        If the p_die > VA, the exciton decays. Else, the exciton make a
+        random walk, and a VA is generated.
         """
 
         self.cant_decay = 0
@@ -133,22 +138,14 @@ class Exciton(object):
 
         time_ini = time.time()
 
-        if not each:
+        for cont in range(self.num_exc):
+            check = 0
+
             # Dopamiento
             if self.nano_particle.generation_acceptors == 'sup':
                 self.nano_particle.deposit_superficial_acceptors()
             else:
                 self.nano_particle.deposit_volumetrically_acceptors()
-
-        for cont in range(self.num_exc):
-            check = 0
-
-            if each:
-                # Dopamiento
-                if self.nano_particle.generation_acceptors == 'sup':
-                    self.nano_particle.deposit_superficial_acceptors()
-                else:
-                    self.nano_particle.deposit_volumetrically_acceptors()
 
             # Excition
             if self.generation_exition == 'elec':
@@ -156,7 +153,7 @@ class Exciton(object):
             else:
                 self.laser_generated()
 
-            # Cambiado el orden, se ve si decae y luego en que forma
+            # Se ve si decae y luego en que forma
             while check == 0:
                 if self.p_die() > np.random.random():
                     psi_et = self.k_et()/(self.k_et() + 1/self.nano_particle.tau_d)
@@ -176,53 +173,58 @@ class Exciton(object):
 
     def l_d(self):
         """
+        Calculated the exciton difusion length without any dopant.
 
+        Many excitons are generated and the distance is calculated
+        as the final position minus the initial. With these
+        distances, an RMS average is made.
+
+        Return
+        ------
+        l_d_rms : float
+          RMS value of the L_D
         """
 
-        self.cant_decay = 0
-        self.cant_transf = 0
-
-        self.positions_init = np.zeros((self.num_exc, 3))
-        self.positions_end = np.zeros((self.num_exc, 3))
+        positions_init = np.zeros((self.num_exc, 3))
+        positions_end = np.zeros((self.num_exc, 3))
 
         for cont in range(self.num_exc):
             check = 0
 
             # This simulation is without aceptors
-            self.electro_generated()
             self.position = generate_random_points_in_sphere(1, 1)[0]
 
-            self.positions_init[cont] = self.position.copy()
+            positions_init[cont] = self.position.copy()
 
             while check == 0:
                 if self.p_die() > np.random.random():
-                    psi_et = self.k_et()/(self.k_et() + 1/self.nano_particle.tau_d)
-                    if psi_et < np.random.random():
-                        self.cant_decay += 1
-                    else:
-                        self.cant_transf += 1
                     check = 1
                 else:
                     self.walk()
 
-            self.positions_end[cont] = self.position.copy()
+            positions_end[cont] = self.position.copy()
 
-        self.dist = np.zeros(self.num_exc)
-        dif_square = (self.positions_init - self.positions_end)*(self.positions_init -
-                                                                 self.positions_end)
+        dist = np.zeros(self.num_exc)
+        dif_square = (positions_init - positions_end)*(positions_init -
+                                                       positions_end)
 
-        self.dist[:] = np.sqrt(dif_square[:, 0] + dif_square[:, 1] + dif_square[:, 2])
+        dist[:] = np.sqrt(dif_square[:, 0] + dif_square[:, 1] + dif_square[:, 2])
+        l_d_rms = np.sqrt(sum(dist*dist)/self.num_exc)
 
-        self.rms = np.sqrt(sum(self.dist*self.dist)/self.num_exc)
-
-        prom = sum(self.dist)/len(self.dist)
-
-        return prom
+        return l_d_rms
 
 
     def single_count(self):
         """
-        Para calcular el valor de tau
+        Count the number of walk of each exciton.
+        This is use to estimate tau.
+
+        Return
+        ------
+        walk_array : array
+          Each element is the number of walk
+          for each excitation.
+          len(walk_array) = number of excitations
         """
         walk_array = np.zeros(self.num_exc)
 
@@ -247,7 +249,7 @@ class Exciton(object):
 
 
     def get_input(self):
-        """Return a list with the imputs parametes"""
+        """Return a list with the inputs parametes"""
         return [self.nano_particle.r_mean, self.nano_particle.r_deviation,
                 self.nano_particle.r_forster, self.nano_particle.mean_path,
                 self.nano_particle.tau_d, self.nano_particle.n_acceptors,
@@ -256,7 +258,7 @@ class Exciton(object):
 
 
     def get_output(self):
-        """Return a list with the output parameters"""
+        """Return a array with the output parameters"""
         return np.array([self.cant_decay, self.cant_transf,
                          self.efficiency, self.total_time,
                          self.walk_mean])

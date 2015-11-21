@@ -10,7 +10,6 @@ from datetime import datetime
 #To save machine info
 import platform
 import sys
-import json
 
 import numpy as np
 from prettytable import PrettyTable
@@ -119,8 +118,6 @@ def read4file(file_path):
             init_param['acceptors_step'] = int(val)
         elif text == 'num_exc':
             init_param['num_exc'] = int(val)
-        elif text == 'each':
-            init_param['each'] = json.loads(val.lower())
         elif text == 'arbitrary_list':
             init_param['arbitrary_list'] = bool(int(val))
         elif text == 'list_num_acceptors':
