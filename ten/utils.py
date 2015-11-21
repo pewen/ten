@@ -206,6 +206,8 @@ Probability of decay: %f
       input_parameters[6], input_parameters[7], input_parameters[8],
       ld_calculate, input_parameters[9])
 
+    total_time = format_float_in_list(total_time)
+    
     x = PrettyTable(['Nº acceptors', 'Amount of decays',
                      'Amount of transfers', 'Quenching efficiency',
                      "Step's Walk mean", 'Total time [seg]'])
@@ -222,3 +224,6 @@ Probability of decay: %f
 
 def extrac_from_list(a_list, column):
     return [x[column] for x in a_list]
+
+def format_float_in_list(a_list):
+    return ["%0.4f" % i for i in a_list]
