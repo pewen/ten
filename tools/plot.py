@@ -43,6 +43,8 @@ while True:
 f.close()
 plt.plot(num_acceptors, quenching_eff, 'o--')
 plt.xlabel('Number of acceptors')
+plt.xlim(xmin=-10)
+plt.ylim(-0.1, 1.1)
 plt.ylabel('Quenching Efficiency')
 plt.text(200, 0.5, r'$NP\;radius = %.1f \;nm$' %(float(np_radius)), fontsize=14)
 plt.text(200, 0.45, r'$Foster\;radius = %.4f \;nm$' %(float(foster_radius)), fontsize=14)

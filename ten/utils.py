@@ -124,7 +124,7 @@ def read4file(file_path):
         elif text == 'arbitrary_list':
             init_param['arbitrary_list'] = bool(int(val))
         elif text == 'list_num_acceptors':
-            init_param['list_num_acceptors'] = list(val)
+            init_param['list_num_acceptors'] = [int(x) for x in val.split(',')]
 
         elif text == 'acceptors':
             init_param['acceptors'] = val
