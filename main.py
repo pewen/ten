@@ -3,18 +3,22 @@
 from __future__ import print_function, division
 import argparse
 import sys
+import time
 
 import ten
 
-# Creation of argument parser
+#######################################################################
+# Read the init parameters
 parser = argparse.ArgumentParser(description='TEN')
 parser.add_argument('-c', '--config', dest='config',
                     default='experiment.conf',
-                    help='path to configuration (initial parameters)\
-                    file')
+                    help='path to configuration \
+                    (initial parameters) file')
 parser.add_argument('-o', dest='out_path',
                     default='output/',
                     help='output path')
+parser.add_argument('-v', dest='verbose', action="store_true",
+                    help='verbose')
 args = parser.parse_args()
 
 # Read the configuration from file
@@ -23,9 +27,10 @@ init_param = ten.read4file(args.config)
 # Inicialice some variables
 output_parameters = []
 
+t_start = time.time()
 
-###########################################################
-# Calculating L_D
+#######################################################################
+# Calculation of L_D
 # using a radius which tends to infinity
 nano_particle = ten.NanoParticle(50000,
                                  0,
@@ -43,8 +48,8 @@ simu = ten.Exciton(nano_particle,
 l_d = simu.l_d()
 
 
-###########################################################
-# Caculating Quenching eff
+#######################################################################
+# Calculation of Quenching efficiency
 for num_acceptors in init_param['list_num_acceptors']:
     num_acceptors = int(num_acceptors)
 
@@ -94,9 +99,8 @@ for num_acceptors in init_param['list_num_acceptors']:
     output_parameters += [list(simu.get_output())]
 
 
-###########################################################
+#######################################################################
 # Save to file the output
-
 input_parameters = simu.get_input()
 input_parameters.append(l_d)    
 input_parameters.append([x for x in init_param['list_num_acceptors']])
@@ -104,9 +108,6 @@ input_parameters.append([x for x in init_param['list_num_acceptors']])
 ten.save_out(input_parameters, output_parameters, args.out_path)
 
 
-
-
-
-
-
-
+t_diff = time.time() - t_start
+if args.verbose:
+    print('Total time: %.3f seg' %t_diff)

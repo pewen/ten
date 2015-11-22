@@ -19,6 +19,8 @@ parser.add_argument('-c', '--config', dest='config',
 parser.add_argument('-o', dest='out_path',
                     default='output/',
                     help='output path')
+parser.add_argument('-v', dest='verbose', action="store_true",
+                    help='verbose')
 args = parser.parse_args()
 
 # Read the configuration from file.
@@ -33,6 +35,10 @@ output_parameters = []
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
+
+
+comm.Barrier()
+t_start = MPI.Wtime()
 
 
 #######################################################################
@@ -60,13 +66,11 @@ else:
 
 simu = comm.bcast(simu, root=0)
 l_d_local = simu.l_d()
-print('From rank %i the result is %f' %(rank, l_d_local))
 
 comm.Reduce(l_d_local, l_d, op=MPI.SUM, root=0)
 
 if rank == 0:
     l_d = l_d/size
-    print(l_d)
 
 comm.Barrier()
 
@@ -149,3 +153,10 @@ if rank == 0:
     input_parameters[7] = int(input_parameters[7]*size)
     input_parameters.append(init_param['list_num_acceptors'])
     ten.save_out(input_parameters, output_parameters, args.out_path)
+
+
+comm.Barrier()
+t_diff = MPI.Wtime() - t_start
+if args.verbose:
+    if rank == 0:
+        print('Total time: %.3f seg' %t_diff)
