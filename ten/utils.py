@@ -194,7 +194,7 @@ Delta_t: %.3f ns
 
 Output parameters:
 ------------------
-L_D = %f
+L_D = %f nm
 Probability of decay: %f
 
 """ %(datetime.now(), platform.platform(), platform.uname(),
