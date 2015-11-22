@@ -19,6 +19,8 @@ parser.add_argument('-o', dest='out_path',
                     help='output path')
 parser.add_argument('-v', dest='verbose', action="store_true",
                     help='verbose')
+parser.add_argument('-q', dest='quiet', action="store_true",
+                    help='quiet')
 args = parser.parse_args()
 
 # Read the configuration from file
@@ -29,9 +31,13 @@ output_parameters = []
 
 t_start = time.time()
 
+
 #######################################################################
 # Calculation of L_D
 # using a radius which tends to infinity
+if not args.quiet:
+    sys.stdout.write('\rCalculating the Exiton Diffusion Length (L_D): ...')
+
 nano_particle = ten.NanoParticle(50000,
                                  0,
                                  0,
@@ -46,12 +52,15 @@ simu = ten.Exciton(nano_particle,
                    'laser')
 
 l_d = simu.l_d()
-
+if not args.quiet:
+    sys.stdout.write('\rCalculating the Exiton Diffusion Length (L_D): Done\n')
 
 #######################################################################
 # Calculation of Quenching efficiency
 for num_acceptors in init_param['list_num_acceptors']:
     num_acceptors = int(num_acceptors)
+    if not args.quiet:
+        sys.stdout.write('\rCalculating with %.0f acceptors' %num_acceptors)
 
     # Initialice the nanopartile object,
     # depending the way to generate acceptors.
@@ -110,4 +119,4 @@ ten.save_out(input_parameters, output_parameters, args.out_path)
 
 t_diff = time.time() - t_start
 if args.verbose:
-    print('Total time: %.3f seg' %t_diff)
+    print('\nTotal time: %.3f seg' %t_diff)

@@ -21,6 +21,8 @@ parser.add_argument('-o', dest='out_path',
                     help='output path')
 parser.add_argument('-v', dest='verbose', action="store_true",
                     help='verbose')
+parser.add_argument('-q', dest='quiet', action="store_true",
+                    help='quiet')
 args = parser.parse_args()
 
 # Read the configuration from file.
@@ -45,6 +47,9 @@ t_start = MPI.Wtime()
 # Calculation of L_D
 # using a radius which tends to infinity
 if rank == 0:
+    if not args.quiet:
+        sys.stdout.write('\rCalculating the Exiton Diffusion Length (L_D): ...')
+
     nano_particle = ten.NanoParticle(50000,
                                      0,
                                      0,
@@ -71,6 +76,8 @@ comm.Reduce(l_d_local, l_d, op=MPI.SUM, root=0)
 
 if rank == 0:
     l_d = l_d/size
+    if not args.quiet:
+        sys.stdout.write('\rCalculating the Exiton Diffusion Length (L_D): Done\n')
 
 comm.Barrier()
 
@@ -81,6 +88,8 @@ for num_acceptors in init_param['list_num_acceptors']:
     num_acceptors = int(num_acceptors)
 
     if rank == 0:
+        if not args.quiet:
+            sys.stdout.write('\rCalculating with %.0f acceptors' %num_acceptors)
         # Initialice the nanopartile object,
         # depending the way to generate acceptors.
         if init_param['acceptors'] == 'sup':
