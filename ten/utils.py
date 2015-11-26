@@ -155,11 +155,12 @@ def read4file(file_path):
                                    init_param['acceptors_step'])
         init_param['list_num_acceptors'] = list_num_acceptors
 
-        
+
     return init_param
 
 
-def save_out(input_parameters, output_parameters, file_path = 'output/'):
+def save_out(input_parameters, output_parameters,
+             time, file_path='output/'):
     """
     Save the output in a file.
 
@@ -172,8 +173,14 @@ def save_out(input_parameters, output_parameters, file_path = 'output/'):
     efficiency = extrac_from_list(output_parameters, 2)
     total_time = extrac_from_list(output_parameters, 3)
     walk_mean = extrac_from_list(output_parameters, 4)
-    acceptors = input_parameters[-1]
+    acceptors = input_parameters[11]
+    num_process = input_parameters[12]
     ld_calculate = input_parameters[10]
+
+    if num_process == 'serial':
+        process_text = "with serial code"
+    else:
+        process_text = " with %.0f process"%num_process
 
     text_input = """TEN %s
 
@@ -196,15 +203,16 @@ Output parameters:
 ------------------
 L_D = %f nm
 Probability of decay: %f
+Total time = %.3f seg %s
 
 """ %(datetime.now(), platform.platform(), platform.uname(),
       input_parameters[0], input_parameters[1], input_parameters[2],
       input_parameters[3], input_parameters[4], acceptors,
       input_parameters[6], input_parameters[7], input_parameters[8],
-      ld_calculate, input_parameters[9])
+      ld_calculate, input_parameters[9], time, process_text)
 
     total_time = format_float_in_list(total_time)
-    
+
     x = PrettyTable(['Nº acceptors', 'Amount of decays',
                      'Amount of transfers', 'Quenching efficiency',
                      "Step's Walk mean", 'Total time [seg]'])
