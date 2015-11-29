@@ -110,13 +110,13 @@ for num_acceptors in init_param['list_num_acceptors']:
 
 #######################################################################
 # Save to file the output
-input_parameters = simu.get_input()
-input_parameters.append(l_d)    
-input_parameters.append([x for x in init_param['list_num_acceptors']])
-
-ten.save_out(input_parameters, output_parameters, args.out_path)
-
-
 t_diff = time.time() - t_start
 if args.verbose:
     print('\nTotal time: %.3f seg' %t_diff)
+
+input_parameters = simu.get_input()
+input_parameters.append(l_d)    
+input_parameters.append(init_param['list_num_acceptors'])
+input_parameters.append('serial')
+
+ten.save_out(input_parameters, output_parameters, t_diff, args.out_path)

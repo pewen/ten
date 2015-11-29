@@ -59,7 +59,7 @@ if rank == 0:
                                      init_param['epsilon'],
                                      'vol')
 
-    factor = int(10000/size)
+    factor = int(4000/size)
     simu = ten.Exciton(nano_particle,
                        factor,
                        'laser')
@@ -155,17 +155,19 @@ for num_acceptors in init_param['list_num_acceptors']:
 
 
 #######################################################################
-# Save the output        
+# Save the output
+comm.Barrier()
+t_diff = MPI.Wtime() - t_start
+if args.verbose:
+    if rank == 0:
+        print('\nTotal time: %.3f seg' %t_diff)
+
 if rank == 0:
     input_parameters = simu.get_input()
     input_parameters.append(l_d)
     input_parameters[7] = int(input_parameters[7]*size)
     input_parameters.append(init_param['list_num_acceptors'])
-    ten.save_out(input_parameters, output_parameters, args.out_path)
+    input_parameters.append(size)
+    ten.save_out(input_parameters, output_parameters,
+                 t_diff, args.out_path)
 
-
-comm.Barrier()
-t_diff = MPI.Wtime() - t_start
-if args.verbose:
-    if rank == 0:
-        print('Total time: %.3f seg' %t_diff)
