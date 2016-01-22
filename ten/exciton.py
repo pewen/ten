@@ -248,6 +248,35 @@ class Exciton(object):
         return walk_array
 
 
+    def new_tau(self):
+        """
+
+        """
+        walk_array = np.zeros(self.num_exc)
+
+        for cont in range(self.num_exc):
+            check = 0
+            num_walk = 0
+
+            # Dopamiento
+            self.nano_particle.deposit_volumetrically_acceptors()
+
+            # Excition
+            self.laser_generated()
+
+            while check == 0:
+                rand_num = np.random.random()
+                if self.p_die() > rand_num:
+                    check = 1
+                else:
+                    self.walk()
+                    num_walk += 1
+
+            walk_array[cont] = num_walk
+
+        return walk_array
+
+
     def get_input(self):
         """Return a list with the inputs parametes"""
         return [self.nano_particle.r_mean, self.nano_particle.r_deviation,
