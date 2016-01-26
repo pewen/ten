@@ -12,7 +12,6 @@ import platform
 import sys
 
 import numpy as np
-from prettytable import PrettyTable
 
 def generate_random_points_in_sphere(n_points, R, r=0):
     """
@@ -182,48 +181,55 @@ def save_out(input_parameters, output_parameters,
     else:
         process_text = " with %.0f process"%num_process
 
-    text_input = """TEN %s
 
-%s
-%s
+    text_input = """TEN {0}
+
+{1}
+{2}
 
 Input parameters:
 -----------------
-NP radius mean: %.3f nm
-NP radius deviation: %.3f nm
-Foster radius: %.3f nm
-Mean free path: %.3f nm
-Tau_D: %.3f ns
-Number of acceptors: %s
-Epsilon: %.3f nm
-Number of exitations: %.0f
-Delta_t: %.3f ns
+NP radius mean: {3:.3f} nm
+NP radius deviation: {4:.3f} nm
+Foster radius: {5:.3f} nm
+Mean free path: {6:.3f} nm
+Tau_D: {7:.3f} ns
+Number of acceptors: {8}
+Epsilon: {9:.3f} nm
+Number of exitations: {10:.0f}
+Delta_t: {11:.3f} ns
 
 Output parameters:
 ------------------
-L_D = %f nm
-Probability of decay: %f
-Total time = %.3f seg %s
+L_D = {12} nm
+Probability of decay: {13}
+Total time = {14:4.3f} seg {15}
 
-""" %(datetime.now(), platform.platform(), platform.uname(),
-      input_parameters[0], input_parameters[1], input_parameters[2],
-      input_parameters[3], input_parameters[4], acceptors,
-      input_parameters[6], input_parameters[7], input_parameters[8],
-      ld_calculate, input_parameters[9], time, process_text)
+""".format(datetime.now(), platform.platform(), platform.uname(),
+           input_parameters[0], input_parameters[1], input_parameters[2],
+           input_parameters[3], input_parameters[4], acceptors,
+           input_parameters[6], input_parameters[7], input_parameters[8],
+           ld_calculate, input_parameters[9], time, process_text)
 
-    total_time = format_float_in_list(total_time)
 
-    x = PrettyTable(['Nº acceptors', 'Amount of decays',
-                     'Amount of transfers', 'Quenching efficiency',
-                     "Step's Walk mean", 'Total time [seg]'])
-    for i in range(len(acceptors)):
-        x.add_row([acceptors[i], cant_decay[i],
-                   cant_transf[i], efficiency[i],
-                   walk_mean[i], total_time[i]])
+    table_head = "| Nº acceptors | Amount of decays | Amount of transfers | Quenching efficiency | Step's Walk mean | Total time [seg] |\n"
+    table_div = "+{0:-^14}+{0:-^18}+{0:-^21}+{0:-^22}+{0:-^18}+{0:-^18}+\n".format(*'-')
 
     f = open(file_path+'%s.txt' % (str(datetime.now())[:-7]), 'a+')
     f.write(text_input)
-    f.write(str(x))
+
+    # Table
+    f.write(table_div)
+    f.write(table_head)
+    f.write(table_div)
+
+    for i in range(len(acceptors)):
+        table_line = "|{0: ^14}|{1: ^18}|{2: ^21}|{3: ^22.5f}|{4: ^18.3f}|{5: ^18.3f}|\n".format(acceptors[i], cant_decay[i],
+                                                                                        cant_transf[i], efficiency[i],
+                                                                                        walk_mean[i], total_time[i])
+        f.write(table_line)
+
+    f.write(table_div)
     f.close()
 
 
