@@ -13,3 +13,5 @@ __all__ = ['Exciton',
            'save_out',
            'post']
 
+# Alpha Release
+__version__ = '0.1.0a1'
