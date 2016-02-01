@@ -6,9 +6,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Objetivo &mdash; TEN 0.1 documentation</title>
+    <title>Introduction &mdash; TEN 0.1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -23,100 +23,108 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="TEN 0.1 documentation" href="index.html" />
-    <link rel="next" title="&lt;no title&gt;" href="overview.html" />
-    <link rel="prev" title="Welcome to TEN’s documentation!" href="index.html" /> 
+    <link rel="next" title="Install" href="install.html" />
+    <link rel="prev" title="TEN’s documentation!" href="index.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="overview.html" title="&lt;no title&gt;"
+          <a href="install.html" title="Install"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Welcome to TEN’s documentation!"
+          <a href="index.html" title="TEN’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">TEN 0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">TEN 0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
-  <div class="section" id="objetivo">
-<h1>Objetivo<a class="headerlink" href="#objetivo" title="Permalink to this headline">¶</a></h1>
-<p>Comprobar eficiencia de Quenching.</p>
-<p>Mediante simulaciones de Monte Carlo, se quiere estudiar la eficiencia de Quenching para una nanopartícula (NP) determinada. Estas simulaciones van a ser contrastadas con las mediciones experimentales realizadas en el Laboratorio de Microscopia Optica Avanzada (LMOA) de la Universidad Nacional de Río Cuarto (UNRC).</p>
-<p>En principio, son tres los experimentos en los que queremos corroborar la eficiencia de Quenching:
-1. En el caso de tener los aceptores distribuidos volumetricamente en la NP.
-2. Que los aceptores estén sobre la superficie de la NP.
-3. En los dos casos anteriores el fotón es generado mediante un laser. Se quiere estudiar que sucede en el caso de que sea generado mediante una electrólisis química.</p>
-<p>Para el experimento 1, estamos trabajando basados un en paper, desarrollando nuestra herramienta computacional. Para los experimentos 2 y 3, se quiere verificar una hipótesis de trabajo, no existiendo trabajos de referencia.</p>
-<div class="section" id="que-queremos-simular">
-<h2>¿Que queremos Simular?<a class="headerlink" href="#que-queremos-simular" title="Permalink to this headline">¶</a></h2>
-<p>En la Fig. 1 se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/GPU/cluster/cloud).
-Existen tres niveles de paralelismo:</p>
-<ol class="arabic simple">
-<li>Bombardeo de fotones, el punto 3) de la fig.<ul>
-<li>Paralelizar en multicore/GPU/cluster.</li>
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>This section provides an overview of what TEN can do.</p>
+<div class="contents local topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#what-is-ten" id="id1">What is TEN?</a></li>
+<li><a class="reference internal" href="#ten-features" id="id2">TEN features</a><ul>
+<li><a class="reference internal" href="#general-features" id="id3">General features</a></li>
+<li><a class="reference internal" href="#nanoparticle-model" id="id4">Nanoparticle model</a></li>
+<li><a class="reference internal" href="#exiton-model" id="id5">Exiton model</a></li>
+<li><a class="reference internal" href="#simulation" id="id6">Simulation</a></li>
+<li><a class="reference internal" href="#output" id="id7">Output</a></li>
 </ul>
 </li>
-<li>Cada una de las simulaciones (identificada por cada columna en la fig).<ul>
-<li>Paralelizar en cluster/cloud.</li>
+<li><a class="reference internal" href="#acknowledgments" id="id8">Acknowledgments</a></li>
 </ul>
-</li>
-<li>Cada experimento (identificado por la fig. completa).<ul>
-<li>Paralelizar en la infraestructura cloud.</li>
-</ul>
-</li>
-</ol>
-<a class="reference internal image-reference" href="_images/experimento.png"><img alt="Fig. 1" class="align-center" src="_images/experimento.png" style="width: 700.1999999999999px; height: 582.6px;" /></a>
-<ol class="arabic simple">
-<li>Los parámetros que definen un determinado experimento están dados en el archivo de configuración experimento.conf.<ul>
-<li>Definir la NP. Es la misma NP en todo el experimento (experimento.conf).</li>
-<li>Definir cantidad de simulaciones para la NP dada. En el ej. de la fig, son tres simulaciones (las columnas).</li>
-</ul>
-</li>
-<li>Dopar la NP: generar aceptores, distribuirlos homogeneamente, etc. (serial).<ul>
-<li>La cantidad de dopamientos es distinta de cada simulación (es definida en el archivo de configuración).</li>
-<li>Simulación 1: 4 dopamientos</li>
-<li>Simulación 2: 7 dopamientos</li>
-<li>Simulación 3: 10 dopamientos</li>
-</ul>
-</li>
-<li>Bombardear la NP: la cantidad de bombardeos es distinta en cada simulación (es definida en el archivo de configuración).<ul>
-<li>Simulación 1: 4 bombardeos</li>
-<li>Simulación 2: 3 bombardeos</li>
-<li>Simulación 3: 6 bombardeos</li>
-<li>El bombardeo se debe hacer en paralelo (multicore/GPU/Cluster). Cada bombardeo (indicado por cada flecha en la Fig) tiene un ID único y obtiene un único resultado. Todos los bombardeos de una simulación escriben su resultado en una variable (array) compartida accediendo mediante su ID al subindice correspondiente.</li>
-<li>Simulación1.Bombardeos[resultado-bombardeo1, resultado-bombardeo2, ...]</li>
-<li>Simulación2.Bombardeos[resultado-bombardeo1, resultado-bombardeo2, ...]</li>
-<li>Simulación3.Bombardeos[resultado-bombardeo1, resultado-bombardeo2, ...]</li>
-</ul>
-</li>
-<li>Se calcula la eficiencia en función del nro de aceptores (cálculo serial).<ul>
-<li>Eficiencia1 = CalcularEficiencia(Simulación1.Bombardeos)</li>
-<li>Eficiencia2 = CalcularEficiencia(Simulación2.Bombardeos)</li>
-<li>Eficiencia3 = CalcularEficiencia(Simulación3.Bombardeos)</li>
-</ul>
-</li>
-<li>Join de los resultados de cada una de las simulaciones para su post-procesamiento (gráfico).<ul>
-<li>CalcularEficienciaTotalExperimento(Eficiencia1, Eficiencia2, Eficiencia3)</li>
-</ul>
-</li>
-</ol>
-<p>Se podran ejecutar un nro arbitrario de experimentos distintos, en simultáneo, haciendo uso de la infraestructura cloud.</p>
 </div>
-<div class="section" id="proyectos-similares">
-<h2>Proyectos similares<a class="headerlink" href="#proyectos-similares" title="Permalink to this headline">¶</a></h2>
-<p>No encontramos ningún proyecto similar a este.</p>
+<div class="section" id="what-is-ten">
+<h2><a class="toc-backref" href="#id1">What is TEN?</a><a class="headerlink" href="#what-is-ten" title="Permalink to this headline">¶</a></h2>
+<p>Collection of algorithms to simulate, using Monte Carlo method, the quantum process of Energy Transfer in Nanoparticles (TEN for its acronym in Spanish) in conjugated polymers written in Python. With TEN we can calcule values like Quenching efficiency, plot the efficiency vs number of acceptors and much more.</p>
+<p>TEN runs efficiently on single-processor machines, but is designed for parallel computers. It will run on any parallel machine that have Python and supports the MPI message-passing library.</p>
+<p>TEN is a freely-available open-source code, distributed under the terms of the <a class="reference external" href="http://opensource.org/licenses/MIT">MIT Licence</a>.</p>
+<p>It was developed at Laboratory of Advanced Optical Microscopy, Universidad Nacional de Río Cuarto, Argentina. It is an open-source code, distributed freely under the terms of the MIT License.</p>
+</div>
+<div class="section" id="ten-features">
+<h2><a class="toc-backref" href="#id2">TEN features</a><a class="headerlink" href="#ten-features" title="Permalink to this headline">¶</a></h2>
+<p>Basic features</p>
+<div class="section" id="general-features">
+<h3><a class="toc-backref" href="#id3">General features</a><a class="headerlink" href="#general-features" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Runs on a single processor or in parallel</li>
+<li>Distributed-memory message-passing parallelism (MPI)</li>
+<li>open-source distribution</li>
+<li>All the code is written in Python</li>
+<li>Easy to extend with new features and functionality</li>
+<li>Runs on the cli from an input script</li>
+<li>Build as library, you can <code class="code docutils literal"><span class="pre">import</span> <span class="pre">TEN</span></code></li>
+</ul>
+</div>
+<div class="section" id="nanoparticle-model">
+<h3><a class="toc-backref" href="#id4">Nanoparticle model</a><a class="headerlink" href="#nanoparticle-model" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Nanoparticle object easy to import <code class="code docutils literal"><span class="pre">from</span> <span class="pre">TEN</span> <span class="pre">import</span> <span class="pre">NanoParticle</span></code></li>
+<li>Can deposit acceptors superficial</li>
+<li>Or can deposit acceptors volumetrically</li>
+</ul>
+</div>
+<div class="section" id="exiton-model">
+<h3><a class="toc-backref" href="#id5">Exiton model</a><a class="headerlink" href="#exiton-model" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Easy to import</li>
+<li>Can be generate from a laser</li>
+<li>Or can be generate from a chemical electrolysis</li>
+<li>The ranmdom walk does not have a preferred direction, it moves on the surface of a sphere of radius equal to the step</li>
+</ul>
+</div>
+<div class="section" id="simulation">
+<h3><a class="toc-backref" href="#id6">Simulation</a><a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Calculation of quenching</li>
+<li>Calculation of the exciton difusion length (with or without exciton)</li>
+<li>Calculation of <span class="math">\(\tau_{D}\)</span></li>
+</ul>
+</div>
+<div class="section" id="output">
+<h3><a class="toc-backref" href="#id7">Output</a><a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Input parameters</li>
+<li>By number of acceptors, the amount of naturally fallen and transferred</li>
+</ul>
+</div>
+</div>
+<div class="section" id="acknowledgments">
+<h2><a class="toc-backref" href="#id8">Acknowledgments</a><a class="headerlink" href="#acknowledgments" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -124,29 +132,39 @@ Existen tres niveles de paralelismo:</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Objetivo</a><ul>
-<li><a class="reference internal" href="#que-queremos-simular">¿Que queremos Simular?</a></li>
-<li><a class="reference internal" href="#proyectos-similares">Proyectos similares</a></li>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#what-is-ten">What is TEN?</a></li>
+<li><a class="reference internal" href="#ten-features">TEN features</a><ul>
+<li><a class="reference internal" href="#general-features">General features</a></li>
+<li><a class="reference internal" href="#nanoparticle-model">Nanoparticle model</a></li>
+<li><a class="reference internal" href="#exiton-model">Exiton model</a></li>
+<li><a class="reference internal" href="#simulation">Simulation</a></li>
+<li><a class="reference internal" href="#output">Output</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#acknowledgments">Acknowledgments</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
-                        title="previous chapter">Welcome to TEN&#8217;s documentation!</a></p>
+                        title="previous chapter">TEN&#8217;s documentation!</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="overview.html"
-                        title="next chapter">&lt;no title&gt;</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/intro.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <p class="topless"><a href="install.html"
+                        title="next chapter">Install</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/intro.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -163,24 +181,24 @@ Existen tres niveles de paralelismo:</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="overview.html" title="&lt;no title&gt;"
+          <a href="install.html" title="Install"
              >next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="Welcome to TEN’s documentation!"
+          <a href="index.html" title="TEN’s documentation!"
              >previous</a> |</li>
-        <li><a href="index.html">TEN 0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">TEN 0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2015, the TEN development team.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>

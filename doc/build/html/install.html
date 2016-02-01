@@ -6,9 +6,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installation &mdash; TEN 0.1 documentation</title>
+    <title>Install &mdash; TEN 0.1 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -23,56 +23,67 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="TEN 0.1 documentation" href="index.html" />
-    <link rel="next" title="&lt;no title&gt;" href="tutorial.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="overview.html" /> 
+    <link rel="next" title="Getting Started" href="started.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="tutorial.html" title="&lt;no title&gt;"
+          <a href="started.html" title="Getting Started"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="overview.html" title="&lt;no title&gt;"
+          <a href="intro.html" title="Introduction"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">TEN 0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">TEN 0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
-  <div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="install">
+<h1>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h1>
+<p>Instructions for install TEN</p>
+<div class="contents local topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#requirements" id="id1">Requirements</a></li>
+<li><a class="reference internal" href="#install-ten" id="id2">Install TEN</a></li>
+</ul>
+</div>
 <div class="section" id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id1">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <p>You need to have the following software properly installed in order to
 run <strong>TEN</strong>:</p>
 <ul class="simple">
-<li>A working MPI implementation, preferably supporting MPI-3 and built
-with shared/dynamic libraries.</li>
-<li>Python 2.6, 2.7, 3.2 or above.</li>
-<li><a class="reference external" href="http://www.numpy.org/">Numpy</a></li>
+<li>Python 2.7, 3.2 or above.</li>
+<li><a class="reference external" href="https://pypi.python.org/pypi/pip/">Pip</a></li>
+<li>A working MPI implementation, preferably supporting MPI-3 and built with shared/dynamic libraries (ex. <a class="reference external" href="https://www.open-mpi.org/">OpenMPI</a>)</li>
 </ul>
-<ul class="simple">
-<li><a class="reference external" href="https://mpi4py.readthedocs.org/en/latest/">MPI4py</a></li>
-</ul>
-<p>And for the tools of post processing:</p>
-<ul class="simple">
-<li><a class="reference external" href="http://matplotlib.org/">Matplotlib</a></li>
-</ul>
+<p>The other depence (Numpy, MPI4Py and Matplotlib) are going to install via pip.</p>
 </div>
-<div class="section" id="using-pip">
-<h2>Using <strong>pip</strong><a class="headerlink" href="#using-pip" title="Permalink to this headline">¶</a></h2>
-<p>We are working in this.</p>
+<div class="section" id="install-ten">
+<h2><a class="toc-backref" href="#id2">Install TEN</a><a class="headerlink" href="#install-ten" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way to install TEN is using pip:</p>
+<div class="highlight-python"><div class="highlight"><pre>pip install -U ten
+</pre></div>
+</div>
+<p>But also, you can get the last version from the sourcce code repo:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd ~
+git clon https://github.com/pewen/ten.git
+cd ten
+python setup.py install
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -80,29 +91,31 @@ with shared/dynamic libraries.</li>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#">Install</a><ul>
 <li><a class="reference internal" href="#requirements">Requirements</a></li>
-<li><a class="reference internal" href="#using-pip">Using <strong>pip</strong></a></li>
+<li><a class="reference internal" href="#install-ten">Install TEN</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="overview.html"
-                        title="previous chapter">&lt;no title&gt;</a></p>
+  <p class="topless"><a href="intro.html"
+                        title="previous chapter">Introduction</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="tutorial.html"
-                        title="next chapter">&lt;no title&gt;</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/install.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <p class="topless"><a href="started.html"
+                        title="next chapter">Getting Started</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/install.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -119,24 +132,24 @@ with shared/dynamic libraries.</li>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="tutorial.html" title="&lt;no title&gt;"
+          <a href="started.html" title="Getting Started"
              >next</a> |</li>
         <li class="right" >
-          <a href="overview.html" title="&lt;no title&gt;"
+          <a href="intro.html" title="Introduction"
              >previous</a> |</li>
-        <li><a href="index.html">TEN 0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">TEN 0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2015, the TEN development team.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
     </div>
   </body>
 </html>

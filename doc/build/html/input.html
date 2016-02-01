@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Input Parameters &mdash; TEN 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="TEN 0.1 documentation" href="index.html" />
+    <link rel="next" title="Overview" href="overview.html" />
+    <link rel="prev" title="Install" href="install.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Install"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">TEN 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="input-parameters">
+<h1>Input Parameters<a class="headerlink" href="#input-parameters" title="Permalink to this headline">¶</a></h1>
+<p>This section describes the parameters of the input file used to define a TEN simulation</p>
+<div class="contents local topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#ten-input-file" id="id1">TEN input file</a></li>
+<li><a class="reference internal" href="#parsing-rules" id="id2">Parsing rules</a></li>
+<li><a class="reference internal" href="#np-parameters" id="id3">NP Parameters</a></li>
+<li><a class="reference internal" href="#experiment-parameters" id="id4">Experiment Parameters</a></li>
+<li><a class="reference internal" href="#simulation-parameters" id="id5">Simulation Parameters</a></li>
+</ul>
+</div>
+<div class="section" id="ten-input-file">
+<h2><a class="toc-backref" href="#id1">TEN input file</a><a class="headerlink" href="#ten-input-file" title="Permalink to this headline">¶</a></h2>
+<p>When you run TEN from the command-line, the first thing is to read and parsing the entire input file. So, no matter the order of the parameters in the file.</p>
+</div>
+<div class="section" id="parsing-rules">
+<h2><a class="toc-backref" href="#id2">Parsing rules</a><a class="headerlink" href="#parsing-rules" title="Permalink to this headline">¶</a></h2>
+<p>Each non-blank line in the input file is treated as a parameter. TEN parameters are case sensitive. The input file must have only one parameter per line.</p>
+<p>All characters from the  <em>#</em> character to the end of the line are treated as comment and discarded. Also, all the lines between <em>&#8220;&#8221;&#8220;</em> and other <em>&#8220;&#8221;&#8220;</em> are a block of comment.</p>
+</div>
+<div class="section" id="np-parameters">
+<h2><a class="toc-backref" href="#id3">NP Parameters</a><a class="headerlink" href="#np-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>r_mean : float
+</pre></div>
+</div>
+<p>Mean of the normal distribution nanoparticle radius. [r] = nm</p>
+<div class="highlight-python"><div class="highlight"><pre>r_deviation float, optional
+</pre></div>
+</div>
+<p>Standard deviation of the normal distribution nanoparticle radius. if not, the radius is considered constant. [r] = nm</p>
+<div class="highlight-python"><div class="highlight"><pre>R_Forster : float
+</pre></div>
+</div>
+<p>Forster radius. [R_Forster] = nm</p>
+<div class="highlight-python"><div class="highlight"><pre>mean_path : float
+</pre></div>
+</div>
+<p>Mean free path. [mean_path] = nm</p>
+<div class="highlight-python"><div class="highlight"><pre>tau_D : float
+</pre></div>
+</div>
+<p>Lifetime of donor. [tau_D] = ns</p>
+<div class="highlight-python"><div class="highlight"><pre>epsilon : float
+</pre></div>
+</div>
+<p>Size of the random walk [epsilon] = nm</p>
+<div class="highlight-python"><div class="highlight"><pre>acceptors : str
+</pre></div>
+</div>
+<p>Way to create the acceptors. Can be &#8216;vol&#8217; (volumetrically) for uniform distribution inside of nanoparticle or &#8216;sup&#8217; (superficialy) for uniform distributions on the surface of the nanoparticle.</p>
+</div>
+<div class="section" id="experiment-parameters">
+<h2><a class="toc-backref" href="#id4">Experiment Parameters</a><a class="headerlink" href="#experiment-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>exiton : str
+</pre></div>
+</div>
+<p>Way to create the exiton. Can be &#8216;laser&#8217; to generate uniformily in the nanoparticle or &#8216;elec&#8217; (electrolysis) to generate between the radius R of the nanoparticle and a r (R &gt; r).</p>
+<div class="highlight-python"><div class="highlight"><pre>r_electro : float, optional
+</pre></div>
+</div>
+<p>In a chemical electrolysis, the exiton position is generated between the radius R of the nanoparticle and a radius r (r&lt;R), where r depends electrolysis.</p>
+</div>
+<div class="section" id="simulation-parameters">
+<h2><a class="toc-backref" href="#id5">Simulation Parameters</a><a class="headerlink" href="#simulation-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>num_acceptors_min : int, optional
+</pre></div>
+</div>
+<p>Minimum number of acceptores to simulate. Default value = 1</p>
+<div class="highlight-python"><div class="highlight"><pre>num_acceptors_max : int
+</pre></div>
+</div>
+<p>Maximum number of acceptores to simulate.</p>
+<div class="highlight-python"><div class="highlight"><pre>acceptors_step : int
+</pre></div>
+</div>
+<p>Step number of acceptores.</p>
+<div class="highlight-python"><div class="highlight"><pre>num_exc : int
+</pre></div>
+</div>
+<p>Numbers of exitation of the same nanoparticle.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Input Parameters</a><ul>
+<li><a class="reference internal" href="#ten-input-file">TEN input file</a></li>
+<li><a class="reference internal" href="#parsing-rules">Parsing rules</a></li>
+<li><a class="reference internal" href="#np-parameters">NP Parameters</a></li>
+<li><a class="reference internal" href="#experiment-parameters">Experiment Parameters</a></li>
+<li><a class="reference internal" href="#simulation-parameters">Simulation Parameters</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="previous chapter">Install</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="next chapter">Overview</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/input.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Install"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">TEN 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, the TEN development team.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

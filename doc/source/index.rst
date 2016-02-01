@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to TEN's documentation!
-===============================
+TEN's documentation!
+====================
 
 .. warning::
 
@@ -17,9 +17,20 @@ Welcome to TEN's documentation!
  - https://twitter.com/fnbellomo    
  - https://twitter.com/ucaomo 
 :Web Site: https://github.com/pewen/ten 
+:Last Reviewed: 2016-01-01
 
-Mediante simulaciones de Monte Carlo, se quiere estudiar la eficiencia de Quenching para una nanopartícula (NP) determinada. Estas simulaciones van a ser contrastadas con las mediciones experimentales realizadas en el Laboratorio de Microscopia Optica Avanzada (LMOA) de la Universidad Nacional de Río Cuarto (UNRC).
+Collection of algorithms to simulate, using Monte Carlo method, the quantum
+process of Energy Transfer in Nanoparticles (TEN for its acronym in Spanish)
+in conjugated polymers.
+TEN is designed to run efficiently on parallel computers.
 
+It was developed at Laboratory of Advanced Optical Microscopy,
+Universidad Nacional de Río Cuarto, Argentina. It is an open-source code,
+distributed freely under the terms of the MIT License.
+
+---------
+
+The TEN documentation is organized into the following sections. If you find errors or omissions in this manual or have suggestions for useful information to add, please send an email to the developers so we can improve the TEN documentation.
 
 Contents
 ========
@@ -27,9 +38,11 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-   overview
+   intro
+   started
    install
-   tutorial
+   input
+   
    example
    todo
 

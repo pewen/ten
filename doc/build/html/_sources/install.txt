@@ -1,29 +1,42 @@
-Installation
-============
+=======
+Install
+=======
+
+Instructions for install TEN
+
+.. contents:: Contents
+   :local:
 
 Requirements
-------------
+============
 
 You need to have the following software properly installed in order to
 run **TEN**:
 
-* A working MPI implementation, preferably supporting MPI-3 and built
-  with shared/dynamic libraries.
+* Python 2.7, 3.2 or above.
+* `Pip`_
+* A working MPI implementation, preferably supporting MPI-3 and built with shared/dynamic libraries (ex. `OpenMPI`_)
 
-* Python 2.6, 2.7, 3.2 or above.
+.. $ apt-get install openmpi-bin openmpi-common openmpi-doc libopenmpi-dev autoconf
 
-* Numpy_
-.. _Numpy: http://www.numpy.org/
-  
-* MPI4py_
-.. _MPI4py: https://mpi4py.readthedocs.org/en/latest/
-  
-And for the tools of post processing:
+The other depence (Numpy, MPI4Py and Matplotlib) are going to install via pip.
 
-* Matplotlib_
-.. _Matplotlib: http://matplotlib.org/
-  
-Using **pip**
--------------
+.. _Pip: https://pypi.python.org/pypi/pip/
+.. _OpenMPI: https://www.open-mpi.org/
 
-We are working in this.
+Install TEN
+===========
+
+The easiest way to install TEN is using pip:
+::
+   
+    pip install -U ten
+
+But also, you can get the last version from the sourcce code repo:
+
+::
+
+    cd ~
+    git clon https://github.com/pewen/ten.git
+    cd ten
+    python setup.py install
