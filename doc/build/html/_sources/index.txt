@@ -43,8 +43,6 @@ Contents
    install
    input
    
-   overview
-   tutorial
    example
    todo
 
