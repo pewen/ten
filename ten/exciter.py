@@ -26,11 +26,20 @@ class Exciter(object):
         r_electro : float, optional
             Radio of electrolisis in nm.
 
+
+        Raises
+        ------
+        ValueError
+            if way is diferent of 'laser' or 'electro'.
+
+        Warning
+            if use 'electro' but don't give r_electro,
+
+
         Examples
         --------
 
-        >>> import numpy as np
-        >>> exiton = Exitador('laser', 15)
+        >>> exiton = Exciter('laser', 15)
         >>> exiton.way
         'laser'
 
@@ -40,22 +49,24 @@ class Exciter(object):
         >>> exiton.np_radio
         15
 
-        >>> Exitador('las', 15)
+        >>> Exciter('las', 15)
         Traceback (most recent call last):
             ...
         ValueError: way must be 'laser' or 'electro'
 
-        TODO
-        ----
-        - Pasar el warning a algun tipo de raise Value
-        - https://docs.python.org/2/library/warnings.html
+        >>> Exciter('electro', 15)
+        Traceback (most recent call last):
+            ...
+        Warning: way = electro but r_electro is not give
+
         """
         posible_way = ['laser', 'electro']
         if way not in posible_way:
             raise ValueError("way must be 'laser' or 'electro'")
 
         if way == 'electro' and r_electro == 0:
-            print('Warning: way = electro but r_electro is not give')
+            raise Warning("way = electro but" +
+                          " r_electro is not give")
 
         self.way = way
         self.r_electro = r_electro
@@ -80,7 +91,7 @@ class Exciter(object):
 
         >>> import numpy as np
         >>> np.random.seed(2)
-        >>> exiton = Exitador('laser', 15)
+        >>> exiton = Exciter('laser', 15)
         >>> exiton.laser_generated()
         >>> print(exiton.position)
         [-7.91504958  2.50827227 -6.21124876]
@@ -100,7 +111,7 @@ class Exciter(object):
 
         >>> import numpy as np
         >>> np.random.seed(2)
-        >>> exiton = Exitador('laser', 15, 13)
+        >>> exiton = Exciter('laser', 15, 13)
         >>> exiton.electro_generated()
         >>> print(exiton.position)
         [-10.9785979    3.47910805  -8.61533486]
@@ -124,7 +135,7 @@ class Exciter(object):
         --------
 
         >>> np_radio = 15
-        >>> exiton = Exitador('laser', np_radio)
+        >>> exiton = Exciter('laser', np_radio)
         >>> for i in range(4000):
         ...     exiton.walk(2)
         >>> np.sqrt(sum(exiton.position**2)) < np_radio

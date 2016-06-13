@@ -22,9 +22,16 @@ class Aceptor(object):
         way : str
             Can by 'sup' to generate in the surface or 'vol'.
 
+
         Returns
         -------
         out : Aceptor object
+
+        Raises
+        ------
+        ValueError
+            if way diferent of 'sup' or 'vol'.
+
 
         Examples
         --------
@@ -36,17 +43,20 @@ class Aceptor(object):
         >>> aceptors.way
         'sup'
 
-        >>> aceptors = Aceptor(10, 1.3, 'sup')
-        >>> aceptors.r_forster
+        >>> aceptors = Aceptor(10, 1.3, 'vol')
+        >>> aceptors.r_mechanisms
         1.3
 
-        TODO
-        ----
-        - Doctest del raise ValueError
+        >>> aceptors = Aceptor(10, 1.3, 'volum')
+        Traceback (most recent call last):
+            ...
+        ValueError: 'way' must be 'sup', 'superficial', 'vol' or 'volumetrical'
+
         """
         posible_way = ['sup', 'superficial', 'vol', 'volumetrical']
         if way not in posible_way:
-            raise ValueError("'way' must be 'sup' or 'vol'")
+            raise ValueError("'way' must be 'sup', 'superficial'," +
+                             " 'vol' or 'volumetrical'")
 
         self.number = number
         self.r_mechanisms = r_mechanisms
@@ -55,7 +65,7 @@ class Aceptor(object):
 
     def generate(self, radio):
         """
-        Retorna la posicion de los N aceptores dentro de la NP
+        Genera la posicion de los N aceptores dentro de la NP
         dependiendo de la forma en la que se crearon.
 
         Parameters
@@ -63,10 +73,6 @@ class Aceptor(object):
         radio : float
             NP radio.
 
-        Returns
-        -------
-        positions : array
-            3D array with the positions in cartesianas.
 
         Examples
         --------
@@ -75,14 +81,16 @@ class Aceptor(object):
         >>> import numpy as np
         >>> NP_radio = 15
         >>> aceptors = Aceptor(10, 1.3, 'sup')
-        >>> pos = aceptors.generate(NP_radio)
+        >>> aceptors.generate(NP_radio)
+        >>> pos = aceptors.position
         >>> r = np.sqrt(pos[:, 0]**2 + pos[:, 1]**2 + pos[:, 2]**2)
         >>> np.testing.assert_allclose(r, NP_radio)
 
         Check generated in the volume.
 
         >>> aceptors = Aceptor(10, 1.3, 'vol')
-        >>> pos = aceptors.generate(NP_radio)
+        >>> aceptors.generate(NP_radio)
+        >>> pos = aceptors.position
         >>> r = np.sqrt(pos[:, 0]**2 + pos[:, 1]**2 + pos[:, 2]**2)
         >>> all(r <= NP_radio) and all(r > 0)
         True
