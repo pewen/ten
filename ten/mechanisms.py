@@ -24,35 +24,6 @@ num_walks : float
 """
 
 
-def __transfer_rate(exiton_pos, aceptors_pos, tau_d, r_forster):
-    """
-    Funcion para calcular la taza de transferencia a los aceptores
-    intrinsicos o a los agregados.
-
-    Parameters
-    ----------
-    exiton_pos : like array
-        Posicion del exiton
-    aceptors_pos : like array
-        Posicion de todos los aceptores
-    tau_d : float
-        Tiempo de vida medio in ns
-    r_forster : float
-        Radio de Forster en nm
-    """
-    # constente usa para el calculo de k_et
-    cte = r_forster**6/tau_d
-
-    diff = exiton_pos - aceptors_pos
-    component_square = diff*diff
-    one_over_distance = 1/(component_square[:, 0] +
-                           component_square[:, 1] +
-                           component_square[:, 2])
-    distance_6 = one_over_distance*one_over_distance*one_over_distance
-    k = cte*sum(distance_6)
-    return(k)
-
-
 def forster(nanoparticle):
     """
     Mecanismo de transferencia del tipo Forster.
@@ -136,7 +107,7 @@ def forster(nanoparticle):
 
 def boolean(nanoparticle):
     """
-    El exiton se transfiere a un aceptor solo si esta
+    El exiton se transfiere a algun aceptor solo si esta
     menos de cierta distancia (threshold).
 
     Parameters
@@ -156,8 +127,6 @@ def boolean(nanoparticle):
     ----
     - Hacer ejemplos.
     """
-    threshold = nanoparticle.aceptors.r_mechanisms
-
     check = 0
     amount_decay = 0
     amount_transf = 0
@@ -169,11 +138,15 @@ def boolean(nanoparticle):
     prob_natural = 1 - np.exp(-nanoparticle.delta_t * k)
 
     while check == 0:
-        dif = nanoparticle.exiton.position - nanoparticle.aceptors.position
-        dif2 = dif*dif
-        distance = np.sqrt(dif2[:, 0] + dif2[:, 1] + dif2[:, 2])
+        bool_intri = __distance(nanoparticle.exiton.position,
+                                nanoparticle.intrinsic_aceptors.position,
+                                nanoparticle.intrinsic_aceptors.r_mechanisms)
 
-        if np.any(distance < threshold):
+        bool_aceptors = __distance(nanoparticle.exiton.position,
+                                   nanoparticle.aceptors.position,
+                                   nanoparticle.aceptors.r_mechanisms)
+
+        if bool_intri or bool_aceptors:
             amount_transf += 1
             check = 1
         elif prob_natural > np.random.random():
@@ -184,3 +157,62 @@ def boolean(nanoparticle):
             num_walk += 1
 
     return(amount_transf, amount_decay, num_walk)
+
+
+def __transfer_rate(exiton_pos, aceptors_pos, tau_d, r_forster):
+    """
+    Funcion para calcular la taza de transferencia a los aceptores
+    intrinsicos o a los agregados.
+
+    Parameters
+    ----------
+    exiton_pos : like array
+        Posicion del exiton
+    aceptors_pos : like array
+        Posicion de todos los aceptores
+    tau_d : float
+        Tiempo de vida medio in ns
+    r_forster : float
+        Radio de Forster en nm
+    """
+    # constente usa para el calculo de k_et
+    cte = r_forster**6/tau_d
+
+    diff = exiton_pos - aceptors_pos
+    component_square = diff*diff
+    one_over_distance = 1/(component_square[:, 0] +
+                           component_square[:, 1] +
+                           component_square[:, 2])
+    distance_6 = one_over_distance*one_over_distance*one_over_distance
+    k = cte*sum(distance_6)
+    return(k)
+
+
+def __distance(exiton_pos, aceptors_pos, threshold):
+    """
+    Retorna True si la distancia euclidea entre el exiton
+    y algun aceptor es menor que threshold.
+    False en el caso contrario.
+
+    Parameters
+    ----------
+    exiton_pos : array
+        Posicion del exiton
+    aceptors_pos : array
+        Posicion de todos los aceptores
+    threshold : float
+        Distancia a comparar
+
+    Returns
+    -------
+    out : bool
+        True si la distancia del exiton a algun aceptor es menor que threshold.
+        False caso contrario.
+    """
+    dif = exiton_pos - aceptors_pos
+    dif2 = dif*dif
+    distance = np.sqrt(dif2[:, 0] + dif2[:, 1] + dif2[:, 2])
+
+    out = np.any(distance < threshold)
+
+    return out
