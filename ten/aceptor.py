@@ -8,7 +8,7 @@ class Aceptor(object):
     Create aceptors.
     """
 
-    def __init__(self, number, r_forster, way):
+    def __init__(self, number, r_mechanisms, way):
         """
         Inialize N aceptors.
 
@@ -16,8 +16,9 @@ class Aceptor(object):
         ----------
         number : int
             Number of aceptors.
-        r_forster : float
-            Forster's radio. [R_Forster] = nm.
+        r_mechanisms : float
+            Radio usado en el macanismo de transfrencia.
+            [r_mechanisms] = nm.
         way : str
             Can by 'sup' to generate in the surface or 'vol'.
 
@@ -48,7 +49,7 @@ class Aceptor(object):
             raise ValueError("'way' must be 'sup' or 'vol'")
 
         self.number = number
-        self.r_forster = r_forster
+        self.r_mechanisms = r_mechanisms
         self.way = way
         self.position = []
 

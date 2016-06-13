@@ -150,7 +150,7 @@ def difusion_length(nanoparticle, mechanism, way='laser',
     dist = np.zeros(exitations)
 
     # Dopantes que le vamos a agregar a la NP
-    dopantes = Aceptor(number=0, r_forster=0, way='vol')
+    dopantes = Aceptor(number=0, r_mechanisms=0, way='vol')
     # Dopamiento
     nanoparticle.doped(dopantes)
 

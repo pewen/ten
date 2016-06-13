@@ -74,7 +74,7 @@ class Nanoparticle(object):
         Radio: 15 ~ U(15, 0),
         Tau: 0.333, Mean_path: 50, Epsilon: 1,
         Delta_t: 0.00666, Prob decay: 0.019801326693244747,
-        Nº Intrisic aceptors: 10, R_Forster: 1.3, way: vol
+        Nº Intrisic aceptors: 10, R_Mechanisms: 1.3, way: vol
 
         >>> import numpy as np
         >>> from aceptor import Aceptor
@@ -85,7 +85,7 @@ class Nanoparticle(object):
         Radio: 14.791621076297265 ~ U(15, 0.5),
         Tau: 0.333, Mean_path: 50, Epsilon: 1,
         Delta_t: 0.00666, Prob decay: 0.019801326693244747,
-        Nº Intrisic aceptors: 10, R_Forster: 1.3, way: vol
+        Nº Intrisic aceptors: 10, R_Mechanisms: 1.3, way: vol
 
         >>> import numpy as np
         >>> from aceptor import Aceptor
@@ -98,8 +98,8 @@ class Nanoparticle(object):
         Radio: 14.791621076297265 ~ U(15, 0.5),
         Tau: 0.333, Mean_path: 50, Epsilon: 1,
         Delta_t: 0.00666, Prob decay: 0.019801326693244747,
-        Nº Intrisic aceptors: 10, R_Forster: 1.3, way: vol
-        Nº Aceptors: 50, R_Forster: 3, way:vol
+        Nº Intrisic aceptors: 10, R_Mechanisms: 1.3, way: vol
+        Nº Aceptors: 50, R_Mechanisms: 3, way:vol
 
         >>> import numpy as np
         >>> from aceptor import Aceptor
@@ -113,38 +113,41 @@ class Nanoparticle(object):
         Radio: 14.791621076297265 ~ U(15, 0.5),
         Tau: 0.333, Mean_path: 50, Epsilon: 1,
         Delta_t: 0.00666, Prob decay: 0.019801326693244747,
-        Nº Intrisic aceptors: 10, R_Forster: 1.3, way: vol
-        Nº Aceptors: 50, R_Forster: 3, way:vol
+        Nº Intrisic aceptors: 10, R_Mechanisms: 1.3, way: vol
+        Nº Aceptors: 50, R_Mechanisms: 3, way:vol
         Exition way: laser, R_electro: 0
 
         """
 
         number = self.intrinsic_aceptors.number
-        forster = self.intrinsic_aceptors.r_forster
+        r_mechanisms = self.intrinsic_aceptors.r_mechanisms
         way = self.intrinsic_aceptors.way
+        path = self.mean_path
+        r_center = self.r_param[0]
+        sigma = self.r_param[1]
 
         # NP general information
         representation = """Radio: {0} ~ U({6}, {7}),
 Tau: {1}, Mean_path: {2}, Epsilon: {3},
 Delta_t: {4}, Prob decay: {5},
-Nº Intrisic aceptors: {8}, R_Forster: {9}, way: {10}""".format(self.radio,
-                                                               self.tau_d,
-                                                               self.mean_path,
-                                                               self.epsilon,
-                                                               self.delta_t,
-                                                               self.p_decay,
-                                                               self.r_param[0],
-                                                               self.r_param[1],
-                                                               number,
-                                                               forster,
-                                                               way)
+Nº Intrisic aceptors: {8}, R_Mechanisms: {9}, way: {10}""".format(self.radio,
+                                                                  self.tau_d,
+                                                                  path,
+                                                                  self.epsilon,
+                                                                  self.delta_t,
+                                                                  self.p_decay,
+                                                                  r_center,
+                                                                  sigma,
+                                                                  number,
+                                                                  r_mechanisms,
+                                                                  way)
 
         # NP doped information
         if self.aceptors != 'NP is not doped':
             rep_aceptors = """
-Nº Aceptors: {0}, R_Forster: {1}, way:{2}""".format(self.aceptors.number,
-                                                    self.aceptors.r_forster,
-                                                    self.aceptors.way)
+Nº Aceptors: {0}, R_Mechanisms: {1}, way:{2}""".format(self.aceptors.number,
+                                                       self.aceptors.r_forster,
+                                                       self.aceptors.way)
             representation = representation + rep_aceptors
 
         # NP exited information

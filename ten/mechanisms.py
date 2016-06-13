@@ -104,13 +104,13 @@ def forster(nanoparticle):
         k_et_in = __transfer_rate(nanoparticle.exiton.position,
                                   nanoparticle.intrinsic_aceptors.position,
                                   nanoparticle.tau_d,
-                                  nanoparticle.intrinsic_aceptors.r_forster)
+                                  nanoparticle.intrinsic_aceptors.r_mechanisms)
 
         # Calculo de k_et debido a los aceptores agregados
         k_et_agre = __transfer_rate(nanoparticle.exiton.position,
                                     nanoparticle.aceptors.position,
                                     nanoparticle.tau_d,
-                                    nanoparticle.aceptors.r_forster)
+                                    nanoparticle.aceptors.r_mechanisms)
 
         # Taza total de tranferencia a cualqueir aceptor
         k_et = k_et_in + k_et_agre
@@ -156,7 +156,7 @@ def boolean(nanoparticle):
     ----
     - Hacer ejemplos.
     """
-    threshold = 0.5
+    threshold = nanoparticle.aceptors.r_mechanisms
 
     check = 0
     amount_decay = 0
