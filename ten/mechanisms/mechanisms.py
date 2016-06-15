@@ -1,5 +1,7 @@
 import numpy as np
 
+from .transferF90 import transfer_rate
+
 """
 Se definen distintos mecanismos por los que puede decaer un exiton
 (algo similar a los potenciales en LAMPS). La idea es que el usuario
@@ -72,16 +74,16 @@ def forster(nanoparticle):
     while check == 0:
 
         # Calculo de k_et debido a los aceptores intrinsicos
-        k_et_in = __transfer_rate(nanoparticle.exiton.position,
-                                  nanoparticle.intrinsic_aceptors.position,
-                                  nanoparticle.tau_d,
-                                  nanoparticle.intrinsic_aceptors.r_mechanisms)
+        k_et_in = transfer_rate(nanoparticle.exiton.position,
+                                nanoparticle.intrinsic_aceptors.position,
+                                nanoparticle.tau_d,
+                                nanoparticle.intrinsic_aceptors.r_mechanisms)
 
         # Calculo de k_et debido a los aceptores agregados
-        k_et_agre = __transfer_rate(nanoparticle.exiton.position,
-                                    nanoparticle.aceptors.position,
-                                    nanoparticle.tau_d,
-                                    nanoparticle.aceptors.r_mechanisms)
+        k_et_agre = transfer_rate(nanoparticle.exiton.position,
+                                  nanoparticle.aceptors.position,
+                                  nanoparticle.tau_d,
+                                  nanoparticle.aceptors.r_mechanisms)
 
         # Taza total de tranferencia a cualqueir aceptor
         k_et = k_et_in + k_et_agre
@@ -157,35 +159,6 @@ def boolean(nanoparticle):
             num_walk += 1
 
     return(amount_transf, amount_decay, num_walk)
-
-
-def __transfer_rate(exiton_pos, aceptors_pos, tau_d, r_forster):
-    """
-    Funcion para calcular la taza de transferencia a los aceptores
-    intrinsicos o a los agregados.
-
-    Parameters
-    ----------
-    exiton_pos : like array
-        Posicion del exiton
-    aceptors_pos : like array
-        Posicion de todos los aceptores
-    tau_d : float
-        Tiempo de vida medio in ns
-    r_forster : float
-        Radio de Forster en nm
-    """
-    # constente usa para el calculo de k_et
-    cte = r_forster**6/tau_d
-
-    diff = exiton_pos - aceptors_pos
-    component_square = diff*diff
-    one_over_distance = 1/(component_square[:, 0] +
-                           component_square[:, 1] +
-                           component_square[:, 2])
-    distance_6 = one_over_distance*one_over_distance*one_over_distance
-    k = cte*sum(distance_6)
-    return(k)
 
 
 def __distance(exiton_pos, aceptors_pos, threshold):
