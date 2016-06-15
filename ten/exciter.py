@@ -1,8 +1,7 @@
 #! /usr/bin/env python3
 
-import numpy as np
-
 from .utils import generate_random_points_in_sphere
+from .random_points import random_walk
 
 
 class Exciter(object):
@@ -142,6 +141,8 @@ class Exciter(object):
         True
 
         """
+
+        """
         check = 1
 
         while check == 1:
@@ -151,5 +152,5 @@ class Exciter(object):
             distance = np.sqrt(sum((new_positon + self.position)**2))
             if distance <= self.np_radio:
                 check = 0
-
-        self.position += new_positon
+        """
+        random_walk(self.position, self.np_radio, epsilon)

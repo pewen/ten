@@ -5,14 +5,26 @@
 Functions that appears frequently in code
 """
 from __future__ import print_function
-#Used to print the day in the output file
 from datetime import datetime
-#To save machine info
 import platform
 import sys
 
 import numpy as np
 
+from ten.random_points import points_in_sphere
+
+
+def generate_random_points_in_sphere(n_points, R, r=0):
+    if n_points == 0:
+        points = np.random.randn(0, 3)
+        return points
+
+    points = points_in_sphere(n_points, R, r)
+
+    return points
+
+
+'''
 def generate_random_points_in_sphere(n_points, R, r=0):
     """
     Return a array with the cordenades in cartesian for a
@@ -29,27 +41,29 @@ def generate_random_points_in_sphere(n_points, R, r=0):
         Radio min of generate. Default "0"
 
     Is not trivial generate random point in a sphere.
-    See the ipython notebook in: ten/doc/notebooks/Random_points_in_sphere.ipynb
+    See the ipython notebook in:
+    ten/IPython_notebooks/Random_points_in_sphere.ipynb
     to understan why we generate for this form.
     """
     U = np.random.random(n_points)
     uniform_between_R_r = (R - r) * U**(1/3) + r
 
     X = np.random.randn(n_points, 3)
-    randoms_versors = (np.sqrt(X[:, 0]**2 + X[:, 1]**2 + X[:, 2]**2))**(-1) * X.T
+    randoms_versors = (np.sqrt(X[:, 0]**2 + X[:, 1]**2 +
+                               X[:, 2]**2))**(-1) * X.T
 
     points_uniform_in_sphere = randoms_versors * uniform_between_R_r
 
     return points_uniform_in_sphere.T
+'''
 
 
 def read4file(file_path):
     """
     Read the initial parameter for a file.
     The file can have multiple lines of comments, always, starting
-    with "" "and end with" "". In addition, the symbol # is considered line comment.
-    This symbol can be used, for example, after declaring the value
-    of a variable to a comment it.
+    with "" "and end with" "".
+    The symbol # is considered line comment.
 
     Parameters
     ----------
@@ -62,19 +76,22 @@ def read4file(file_path):
 
     while True:
         a = experiment_file.readline()
-        #salteo todo los comentarios que usan """
+        print(a)
+
+        # Salteo todo los comentarios que usan """
         if '"""' in a:
+            print('entro al 1 if')
             while True:
-                #print(a)
                 a = experiment_file.readline()
                 if '"""' in a:
                     a = experiment_file.readline()
                     break
+            print('salio del 1 if')
+            print(a)
 
-        #salteo todo los comentarios que usan '''
+        # Salteo todo los comentarios que usan '''
         elif "'''" in a:
             while True:
-                #print(a)
                 a = experiment_file.readline()
                 if "'''" in a:
                     a = experiment_file.readline()
@@ -83,77 +100,74 @@ def read4file(file_path):
         if a == '\n':
             a = experiment_file.readline()
 
+        # End of file
         if a == '':
             break
 
-        #Remove all spaces
+        # Remove all spaces
         a = ''.join(a.split())
 
-        #Remove all comment with "#"
+        # Remove all comment with "#"
         if '#' in a:
             a, rest = a.split('#')
 
-        #Split the text and the value
+        print(a)
+        # Split the text and the value
         text, val = a.split(sep='=')
-        #variables
+
+        # NP variables
         if text == 'r_mean':
             init_param['r_mean'] = float(val)
-        elif text == 'r_deviation':
-            init_param['r_deviation'] = float(val)
-        elif text == 'R_Forster':
-            init_param['R_Forster'] = float(val)
-        elif text == 'mean_path':
-            init_param['mean_path'] = float(val)
+        elif text == 'r_desviation':
+            init_param['r_desviation'] = float(val)
         elif text == 'tau_D':
             init_param['tau_D'] = float(val)
+        elif text == 'mean_path':
+            init_param['mean_path'] = float(val)
         elif text == 'epsilon':
             init_param['epsilon'] = float(val)
 
-        elif text == 'num_acceptors_min':
-            init_param['num_acceptors_min'] = int(val)
-        elif text == 'num_acceptors_max':
-            init_param['num_acceptors_max'] = int(val)
-        elif text == 'acceptors_step':
-            init_param['acceptors_step'] = int(val)
-        elif text == 'num_exc':
-            init_param['num_exc'] = int(val)
-        elif text == 'arbitrary_list':
-            init_param['arbitrary_list'] = bool(int(val))
-        elif text == 'list_num_acceptors':
-            init_param['list_num_acceptors'] = [int(x) for x in val.split(',')]
+        # Instrinsic aceptors variables
+        elif text == 'intrinsic_r_mechanisms':
+            init_param['intrinsic_r_mechanisms'] = float(val)
+        elif text == 'intrinsic_aceptors':
+            init_param['intrinsic_aceptors'] = val
+        elif text == 'intrinsic_way':
+            init_param['intrinsic_way'] = val
 
-        elif text == 'acceptors':
-            init_param['acceptors'] = val
+        # Aceptors variables
+        elif text == 'r_mechanisms':
+            init_param['r_mechanisms'] = float(val)
+        elif text == 'aceptors':
+            init_param['aceptors'] = val
+        elif text == 'way':
+            init_param['way'] = val
+
+        # Exiton variables
         elif text == 'exiton':
             init_param['exiton'] = val
         elif text == 'r_electro':
             init_param['r_electro'] = float(val)
+
+        # Experiments variables
+        elif text == 'experiments':
+            init_param['experiments'] = val
+        elif text == 'mechanisms':
+            init_param['mechanisms'] = val
+        elif text == 'excitations':
+            init_param['excitations'] = float(val)
         else:
-            print('Warning, the parameter %s is not defined' %text)
+            print('Warning, the parameter {0} is not defined'.format(text))
 
     experiment_file.close()
 
-    if init_param['exiton'] == 'elec':
-        if not 'r_electro' in init_param:
-            print('Error: If you generate the exiton by electrolysis,\
-                  you have to give a value of r_electro')
-            sys.exit(-1)
+    if init_param['exiton'] == 'elec' and 'r_electro' not in init_param:
+        print('Error: If you generate the exiton by electrolysis,\
+              you have to give a value of r_electro')
+        sys.exit(-1)
 
-    if not 'r_deviation' in init_param:
+    if 'r_deviation' not in init_param:
         init_param['r_deviation'] = 0
-
-    if not 'num_acceptors_min' in init_param:
-        init_param['num_acceptors_min'] = 1
-
-    if not 'each' in init_param:
-        init_param['each'] = True
-
-    if not init_param['arbitrary_list']:
-        list_num_acceptors = range(init_param['num_acceptors_min'],
-                                   init_param['num_acceptors_max'],
-                                   init_param['acceptors_step'])
-        init_param['list_num_acceptors'] = list_num_acceptors
-
 
     return init_param
 
