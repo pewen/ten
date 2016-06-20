@@ -2,7 +2,7 @@ import time
 
 import numpy as np
 
-from .aceptor import Aceptor
+from ..core.aceptor import Aceptor
 
 
 """

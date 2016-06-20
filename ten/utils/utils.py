@@ -1,27 +1,11 @@
-#! /usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 """
 Functions that appears frequently in code
 """
-from __future__ import print_function
+
+from __future__ import division, absolute_import, print_function
 from datetime import datetime
 import platform
 import sys
-
-import numpy as np
-
-from ten.random_points import points_in_sphere
-
-
-def generate_random_points_in_sphere(n_points, R, r=0):
-    if n_points == 0:
-        points = np.random.randn(0, 3)
-        return points
-
-    points = points_in_sphere(n_points, R, r)
-
-    return points
 
 
 '''
@@ -194,7 +178,6 @@ def save_out(input_parameters, output_parameters,
         process_text = "with serial code"
     else:
         process_text = " with %.0f process"%num_process
-
 
     text_input = """TEN {0}
 

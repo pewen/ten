@@ -1,6 +1,6 @@
 import numpy as np
 
-from .transferF90 import transfer_rate
+from .mechanismsF90 import transfer_rate, fors
 
 """
 Se definen distintos mecanismos por los que puede decaer un exiton
@@ -24,6 +24,15 @@ amount_decay : float
 num_walks : float
     Number of total walks
 """
+
+
+def forsterF90(NP):
+    out = fors(NP.exiton.position, NP.aceptors.position,
+               NP.aceptors.r_mechanisms, NP.intrinsic_aceptors.position,
+               NP.intrinsic_aceptors.r_mechanisms, NP.tau_d, NP.delta_t,
+               NP.radio, NP.epsilon)
+
+    return out
 
 
 def forster(nanoparticle):

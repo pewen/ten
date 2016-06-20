@@ -1,7 +1,11 @@
-#! /usr/bin/env python3
+"""
+Exciter Object
+"""
 
-from .utils import generate_random_points_in_sphere
-from .random_points import random_walk
+from __future__ import division, absolute_import, print_function
+
+from ..utils.extMath import random_points_in_sphere
+from ..utils.random import random_walk
 
 
 class Exciter(object):
@@ -96,7 +100,7 @@ class Exciter(object):
         [-7.91504958  2.50827227 -6.21124876]
 
         """
-        point = generate_random_points_in_sphere(1, self.np_radio)
+        point = random_points_in_sphere(1, self.np_radio)
         self.position = point[0]
 
     def electro_generated(self):
@@ -116,8 +120,8 @@ class Exciter(object):
         [-10.9785979    3.47910805  -8.61533486]
 
         """
-        point = generate_random_points_in_sphere(1, self.np_radio,
-                                                 self.r_electro)
+        point = random_points_in_sphere(1, self.np_radio,
+                                        self.r_electro)
         self.position = point[0]
 
     def walk(self, epsilon):

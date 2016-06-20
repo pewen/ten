@@ -1,4 +1,8 @@
-#! /usr/bin/env python3
+"""
+Nanoparticle Object
+"""
+
+from __future__ import division, absolute_import, print_function
 
 from numpy import e
 from numpy.random import normal

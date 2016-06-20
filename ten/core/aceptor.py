@@ -1,6 +1,10 @@
-#! /usr/bin/env python3
+"""
+Aceptor Object
+"""
 
-from .utils import generate_random_points_in_sphere
+from __future__ import division, absolute_import, print_function
+
+from ..utils.extMath import random_points_in_sphere
 
 
 class Aceptor(object):
@@ -105,6 +109,6 @@ class Aceptor(object):
         else:
             second_radio = 0
 
-        self.position = generate_random_points_in_sphere(self.number,
-                                                         radio,
-                                                         second_radio)
+        self.position = random_points_in_sphere(self.number,
+                                                radio,
+                                                second_radio)
