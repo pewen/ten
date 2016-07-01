@@ -70,6 +70,9 @@ def quenching(nanoparticle, aceptors, mechanism, way,
     transf = 0
     walk = 0
 
+    # contador de convergencias
+    convergence_cnt = 0
+
     while True:
         for cont in range(step):
 
@@ -87,10 +90,16 @@ def quenching(nanoparticle, aceptors, mechanism, way,
         exitations += step
 
         # Calculo la diferencia entre esta corrida y la anterior
-        # Si es menor que convergence, termino el experimento.
+        # Si es menor que convergence 3 veces,
+        # termino el experimento.
         efficiency_new = transf/exitations
         diff = abs(efficiency_new - efficiency_old)
         if convergence > diff:
+            convergence_cnt += 1
+        else:
+            convergence_cnt = 0
+
+        if convergence_cnt == 3:
             break
 
         efficiency_old = efficiency_new
