@@ -1,7 +1,26 @@
-# TEN
-**Transferencia de Energía en NanoParticulas**
+.. -*- mode: rst -*-
 
-##Equipo de trabajo
+|Travis|_  |Coveralls|_ 
+
+.. |Travis| image:: https://api.travis-ci.org/scikit-learn/scikit-learn.svg?branch=master
+.. _Travis: https://travis-ci.org/scikit-learn/scikit-learn
+
+.. |Coveralls| image:: https://coveralls.io/repos/github/pewen/ten/badge.svg?branch=master
+.. _Coveralls: https://coveralls.io/github/pewen/ten?branch=master 
+
+
+
+# TEN
+
+Colección de algoritmos para simular, usando el método de Monte Carlo, los procesos de Transferencia de Energía en Nanoparticulas (TEN) de polímeros conjugados.
+TEN esta diseñado para correr eficientemente en paralelo.
+
+Las simulaciones son contrastadas con las mediciones experimentales realizadas en el Laboratorio de Microscopia Óptica Avanzada (LMOA) de la Universidad Nacional de Río Cuarto (UNRC).
+
+Es desarrollado en por el LMOA, UNRC, Argentina. Es un proyecto open-source, distribuido gratuitamente bajo los términos de la licencia MIT.
+
+
+## Equipo de trabajo
 
 * Químico **Dr. Rodrigo Palacio**  
 * Químico **Dr. Carlos Chesta**  
@@ -12,66 +31,50 @@
 * Estudiante de Grado (desarrolladores del código) [**Franco Bellomo**](https://github.com/fnbellomo) [@fnbellomo](https://twitter.com/fnbellomo)  
 * Estudiante de Grado (desarrolladores del código )[**Lucas Bellomo**](https://github.com/lbellomo) [@ucaomo](https://twitter.com/ucaomo)
 
-##Objetivo
 
-Calcular la eficiencia de Quenching.
+## Documentación
 
-Mediante simulaciones de Monte Carlo, se quiere estudiar la eficiencia de Quenching para una nanopartícula (NP) determinada. Estas simulaciones van a ser contrastadas con las mediciones experimentales realizadas en el Laboratorio de Microscopia Optica Avanzada (LMOA) de la Universidad Nacional de Río Cuarto (UNRC).
+La documentación esta disponible en: https://ten.readthedocs.org. Todas las contribuciones son bien venidas.
 
-En principio, son tres los experimentos en los que queremos corroborar la eficiencia de Quenching:
-1. En el caso de tener los aceptores distribuidos volumetricamente en la NP.
-2. Que los aceptores estén sobre la superficie de la NP.
-3. En los dos casos anteriores el fotón es generado mediante un laser. Se quiere estudiar que sucede en el caso de que sea generado mediante una electrólisis química.
 
-Para el experimento 1, estamos trabajando basados en este [paper](http://pubs.acs.org/doi/abs/10.1021/jp074149%2B) desarrollando nuestra herramienta computacional. Para los experimentos 2 y 3 se quiere verificar una hipótesis de trabajo, no existiendo trabajos de referencia.
+## Funcionalidades
 
-##Documentación
+Existen 3 objetos principales: Nanoparticle, Aceptors y Exiton que nos permiten poder simular a una nanoparticula por completo. Además, TEN cuenta con una serie de experimentos y mecanismos de transferencia de energía implementados.
 
-ReadTheDocs: https://ten.readthedocs.org
+Experimentos:
+* Quenching : calculo de la eficiencia de Quenching.
+* Single photon counting : histograma de vida media del exitón.
+* tau_d : calculo de la distancia media del exiton.
 
-##Instalación
-###Requerimientos
+Mecanismos:
+* Forster
+* Boolean : El exitón solo se transfiere si esta a menos de cierta distancia de un aceptor.
+
+TEN esta diseñado para aceptar mecanismos de transferencia generados por el usuario.
+
+
+
+## Instalación
+### Requerimientos
 
 *Core*:
 * Python (2.x o 3.x)
 * Numpy
-* Scipy (Solo es para importar pi. Si no esta instalado, se usa un valor con menor precisión).
 * MPI4py
 * OpenMPI o MPICH
 
 *Herramientas de post-procesamiento:*
 * Matplotlib
 
-###Instalación
+### Instalación
 TODO setup.py
 
-##Funcionalidades
 
-* Podemos generar aceptores:
-    1. En toda la NP con el método: **Nanoparticle.deposit_volumetrically_acceptors()**
-    2. En la superficie: **Nanoparticle.deposit_superficial_acceptors()**
-
-* Podemos generar exitones:
-    1. En cualquier lugar de la NP, simulando que a esta se la bombardeamos con un laser **Exiton.laser_generated()**
-    2. Entre dos radios, simulando que este es generado mediante una electrolisis química **Exiton.electro_generate()**
-
-En todos los casos, las generaciones son con distribución uniforme.
-
-##Resumen de funcionamiento.
-
-Basicamente, el código (escrito en python3) funciona de la siguiente forma:
-* **Creamos un objeto NP** con sus propiedades como el radio, cantidad de aceptores, etc. Dichas propiedades se especifican en el archivo `experimento.conf`.
-* **Generamos los aceptores** distribuidos uniformemente sobre la NP, usando alguno de los dos métodos explicados anteriormente.
-* **Creamos el exiton** generandolo aleatoriamente sobre la NP, usando alguno de los dos métodos explicados anteriormente.
-* **Movemos el exiton** calculando las probabilidades de decae, transferencia o de realizar un random walk. En caso de que el exiton se mueva, se realiza este ultima paso nuevamente.
-
-Por la manera en la que esta modulizado el código, podemos bombardear a la misma NP con los mismo aceptores, la cantidad de veces que deseemos.
-
-##Experimento.
+## Experimento
 
 En la *Fig. 1* se muestran los procesos que intervienen en el experimento, con el objeto de detallar los procesos secuenciales y paralelos (multicore/cluster/GPU).
 
-###Existen dos niveles de paralelismo:
+### Existen dos niveles de paralelismo:
 
 1. Bombardeo de fotones, el punto *3)* de la fig.  
    - Paralelizar en multicore/cluster/GPU.  
@@ -174,37 +177,30 @@ En la *Fig. 1* se muestran los procesos que intervienen en el experimento, con e
 	|     400      |      191.0       |        4809.0       |        0.9618        |   3.0122   |   0.680698207744  |  3.29254078865   |
 	+--------------+------------------+---------------------+----------------------+------------+-------------------+------------------+
 
-	*Means walk are the number, not the distance.For the distance must be multiplied by epsilon
+	*Means walk are the number, not the distance. For the distance must be multiplied by epsilon
 
 
-##Plan de trabajo.
-1. Entender el modelo teórico.
-2. Realizar prototipo de la aplicación verificando la teória (dominio de la aplicación mínimo).
-3. Optimizar performance del código.
-4. Ampliar el dominio de estudio (números de NP y de los aceptores).
-5. Paralelizar el bombardeo de fotónes usando MPI / OpenCL.
+## TODO.
 
-##TODO.
-
-###Física del problema:
+### Física del problema:
 - [x] Generar el photon mediante una electrolisis química.
-- [ ] Calcular L_D **(trabajando en esto)**
+- [x] Calcular L_D
 - [x] R variable usando una distribución normal. Se pasa en el config los dos parámetros de la normal. Si solo se pasa un parámtro, se toma R como constante.
 - [ ] Dotar de volumen a los aceptores.
 
-###Optimización y paralelismo:
-- [x] hacer gráfico detallando procesos seriales y paralelos (detallando paralelismo en el cluster/multicore)
+### Optimización y paralelismo:
+- [x] hacer gráfico detallando procesos seriales y paralelos.
 - [x] Medir la performance del código serial.
 - [ ] Medir speed-up.
 - [x] Para una NP, queremos paralelizar el bombardeo de fotónes.
-- [ ] Usando OpenCL, paralelizar la cantidad de bombardeos para multicore/GPU
+- [ ] Usando Cuda, paralelizar la cantidad de bombardeos para GPU.
 - [ ] Cuando este funcionando la implementación de MPI, que en el output indique cuantos cpu usa, el porcentaje de cada uno y la memoria por proceso (igual que LAMPS).
 
-###Herramientas de post procesamiento:
+### Herramientas de post procesamiento:
 - [ ] De un directorio, lea todos los output y grafique la eficiencia de Quenching.
 - [ ] Histográmas de la distribución de los aceptores.
 
-###Input, output, log y código:
+### Input, output, log y código:
 - [x] Usar [Sphinx](http://sphinx-doc.org/) para la documentación.
 - [x] Agregar al config:
   * Elección del método de depositado de dopantes.
@@ -219,6 +215,7 @@ En la *Fig. 1* se muestran los procesos que intervienen en el experimento, con e
 - [ ] En el main.py, ir informando del avance.
 - [ ] Actualizar la documentación.
 - [ ] Calculo automático de la convergencia.
+- [ ] Hacer el requeriments.txt  
 
 
 ##Licencia.
