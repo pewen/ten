@@ -42,6 +42,11 @@ class Nanoparticle(object):
         --------
         """
         # NanoParticle paremeters
+        if isinstance(r_param, (int, float)):
+            r_param = [r_param, 0]
+        elif r_param.shape == 1:
+            r_param = [r_param, 0]
+
         self.r_param = r_param
 
         if r_param[1] == 0:
