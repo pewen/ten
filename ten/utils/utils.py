@@ -60,18 +60,15 @@ def read4file(file_path):
 
     while True:
         a = experiment_file.readline()
-        print(a)
 
         # Salteo todo los comentarios que usan """
         if '"""' in a:
-            print('entro al 1 if')
             while True:
                 a = experiment_file.readline()
                 if '"""' in a:
                     a = experiment_file.readline()
+                    print("Sali del comentario multi linea")
                     break
-            print('salio del 1 if')
-            print(a)
 
         # Salteo todo los comentarios que usan '''
         elif "'''" in a:
@@ -82,18 +79,22 @@ def read4file(file_path):
                     break
 
         if a == '\n':
-            a = experiment_file.readline()
+            continue
 
         # End of file
         if a == '':
             break
-
-        # Remove all spaces
-        a = ''.join(a.split())
-
+            
+        if a.startswith('#'):
+            continue    
+            
         # Remove all comment with "#"
         if '#' in a:
             a, rest = a.split('#')
+
+            
+        # Remove all spaces
+        a = ''.join(a.split())
 
         print(a)
         # Split the text and the value
