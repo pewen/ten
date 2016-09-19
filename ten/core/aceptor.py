@@ -21,7 +21,7 @@ class Aceptor(object):
         number : int
             Number of aceptors.
         r_mechanisms : float
-            Radio usado en el macanismo de transfrencia.
+            Radio usado en el mecanismo de transfrencia.
             [r_mechanisms] = nm.
         way : str
             Can by 'sup' to generate in the surface or 'vol'.
