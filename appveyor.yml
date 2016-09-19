@@ -1,8 +1,6 @@
 build: false
 
 environment:
-  global:
-     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\build_tools\\appveyor\\run_with_env.cmd"
   matrix:
     - PYTHON_VERSION: 3.4
       MINICONDA: C:\Miniconda3
@@ -18,8 +16,8 @@ install:
   - "conda create -q -n test-environment python=%PYTHON_VERSION% numpy scipy nose"
   - activate test-environment
   - pip install coverage
-  - "%CMD_IN_ENV% python3 setup.py build"
-  - "%CMD_IN_ENV% python3 setup.py install"
+  - "python3 setup.py build"
+  - "python3 setup.py install"
 test_script:
   - nosetests
 
