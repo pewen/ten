@@ -41,6 +41,27 @@ def generate_random_points_in_sphere(n_points, R, r=0):
     return points_uniform_in_sphere.T
 '''
 
+def scrapyline(dic, keys, line):
+    # Split the text and the value
+    text, val = line.split(sep='=')
+    # Sacamos las dobles comillas si las hay
+    if "'" in val:
+        val = val.replace("'", '')
+    elif '"' in val:
+        val = val.replace('"', '')
+    # Si es una lista, la agarramos como tal
+    if "[" in val:
+        val = val[1:-1].split(',')
+    # Intentar combirtirlos es float (cuando sea posible)
+    try:
+        val = float(val)
+    except:
+        pass
+    for key in keys:
+        if text == key:
+            dic[key] = val
+    #    else:
+    #        print('Warning, the parameter {0} is not defined'.format(text))
 
 def read4file(file_path):
     """
@@ -54,6 +75,9 @@ def read4file(file_path):
     file_path : str
         Path to the file
     """
+    keys = ['r_deviation', 'aceptors', 'intrinsic_aceptors', 'intrinsic_way', 'tau_D', 'r_mechanisms',
+            'r_desviation', 'way', 'epsilon', 'mean_path', 'r_electro', 'experiments', 'r_mean', 'intrinsic_r_mechanisms',
+            'excitations', 'exiton', 'mechanisms']
     experiment_file = open(file_path, 'r')
 
     init_param = {}
@@ -67,7 +91,6 @@ def read4file(file_path):
                 a = experiment_file.readline()
                 if '"""' in a:
                     a = experiment_file.readline()
-                    print("Sali del comentario multi linea")
                     break
 
         # Salteo todo los comentarios que usan '''
@@ -92,58 +115,10 @@ def read4file(file_path):
         if '#' in a:
             a, rest = a.split('#')
 
-            
         # Remove all spaces
         a = ''.join(a.split())
 
-        print(a)
-        # Split the text and the value
-        text, val = a.split(sep='=')
-
-        # NP variables
-        if text == 'r_mean':
-            init_param['r_mean'] = float(val)
-        elif text == 'r_desviation':
-            init_param['r_desviation'] = float(val)
-        elif text == 'tau_D':
-            init_param['tau_D'] = float(val)
-        elif text == 'mean_path':
-            init_param['mean_path'] = float(val)
-        elif text == 'epsilon':
-            init_param['epsilon'] = float(val)
-
-        # Instrinsic aceptors variables
-        elif text == 'intrinsic_r_mechanisms':
-            init_param['intrinsic_r_mechanisms'] = float(val)
-        elif text == 'intrinsic_aceptors':
-            init_param['intrinsic_aceptors'] = val
-        elif text == 'intrinsic_way':
-            init_param['intrinsic_way'] = val
-
-        # Aceptors variables
-        elif text == 'r_mechanisms':
-            init_param['r_mechanisms'] = float(val)
-        elif text == 'aceptors':
-            init_param['aceptors'] = val
-        elif text == 'way':
-            init_param['way'] = val
-
-        # Exiton variables
-        elif text == 'exiton':
-            init_param['exiton'] = val
-        elif text == 'r_electro':
-            init_param['r_electro'] = float(val)
-
-        # Experiments variables
-        elif text == 'experiments':
-            init_param['experiments'] = val
-        elif text == 'mechanisms':
-            init_param['mechanisms'] = val
-        elif text == 'excitations':
-            init_param['excitations'] = float(val)
-        else:
-            print('Warning, the parameter {0} is not defined'.format(text))
-
+        scrapyline(init_param, keys, a)
     experiment_file.close()
 
     if init_param['exiton'] == 'elec' and 'r_electro' not in init_param:

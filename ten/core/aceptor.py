@@ -61,7 +61,6 @@ class Aceptor(object):
         if way not in posible_way:
             raise ValueError("'way' must be 'sup', 'superficial'," +
                              " 'vol' or 'volumetrical'")
-
         self.number = number
         self.r_mechanisms = r_mechanisms
         self.way = way
@@ -108,7 +107,6 @@ class Aceptor(object):
             second_radio = radio
         else:
             second_radio = 0
-
         self.position = random_points_in_sphere(self.number,
                                                 radio,
                                                 second_radio)
