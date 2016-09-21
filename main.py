@@ -21,7 +21,8 @@ if 'quenching' in init_param['experiments']:
         NP.doped(dopantes)
 
         out = ten.experiments.quenching(NP, dopantes, ten.forster,
-                                    init_param['exiton'])
+                                        init_param['exiton'], step=init_param['steps'],
+                                        convergence=init_param['convergence'])
         print("Eficiencia: {0}, Nº decaidos: {1},\
               Nº transferidos: {2}".format(out[0], out[1], out[3]-out[1]))
         print("Pasos promedio: {0:.2f} nm, \

@@ -74,7 +74,7 @@ def quenching(nanoparticle, aceptors, mechanism, way,
     convergence_cnt = 0
 
     while True:
-        for cont in range(step):
+        for cont in range(int(step)):
 
             # Dopamiento
             nanoparticle.doped(aceptors)

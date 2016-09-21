@@ -77,7 +77,7 @@ def read4file(file_path):
     """
     keys = ['r_deviation', 'aceptors', 'intrinsic_aceptors', 'intrinsic_way', 'tau_D', 'r_mechanisms',
             'r_desviation', 'way', 'epsilon', 'mean_path', 'r_electro', 'experiments', 'r_mean', 'intrinsic_r_mechanisms',
-            'excitations', 'exiton', 'mechanisms']
+            'excitations', 'exiton', 'mechanisms', 'steps', 'convergence']
     experiment_file = open(file_path, 'r')
 
     init_param = {}
