@@ -15,7 +15,7 @@ class Nanoparticle(object):
     Nanoaprticle object
     """
 
-    def __init__(self, r_param, tau_d, mean_path, epsilon, intrinsic_aceptors):
+    def __init__(self, r_param, tau_d, mean_path, epsilon, traps):
         """
         Create a NanoParticle object.
 
@@ -30,7 +30,7 @@ class Nanoparticle(object):
             Length of mean free path. [mean_path] = nm.
         epsilon : float
             Step length on the random walk. [epsilon] = nm.
-        intrinsic_aceptors : Aceptor
+        traps : Aceptor
             Aceptores propios de la NP.
 
         Returns
@@ -40,6 +40,10 @@ class Nanoparticle(object):
 
         Examples
         --------
+
+        TODO
+        ----
+        * Docstring
         """
         # NanoParticle paremeters
         if isinstance(r_param, (int, float)):
@@ -64,8 +68,8 @@ class Nanoparticle(object):
         self.p_decay = 1 - e**(-self.delta_t/tau_d)
 
         # Aceptores intrisicos
-        self.intrinsic_aceptors = intrinsic_aceptors
-        self.intrinsic_aceptors.generate(self.radio)
+        self.traps = traps
+        self.traps.generate(self.radio)
 
         self.aceptors = 'NP is not doped'
         self.exiton = 'NP is not exited'
@@ -77,60 +81,60 @@ class Nanoparticle(object):
         Examples
         --------
         >>> from aceptor import Aceptor
-        >>> dopantes_propios = Aceptor(10, 1.3, 'vol')
-        >>> NP = Nanoparticle([15, 0], 0.333, 50, 1, dopantes_propios)
+        >>> traps = Aceptor(10, 1.3, 'vol')
+        >>> NP = Nanoparticle([15, 0], 0.333, 50, 1, traps)
         >>> print(NP)
         Radio: 15 ~ U(15, 0),
         Tau: 0.333, Mean_path: 50, Epsilon: 1,
         Delta_t: 0.00666, Prob decay: 0.019801326693244747,
-        Number Intrisic aceptors: 10, R_Mechanisms: 1.3, way: vol
+        Number traps: 10, R_Mechanisms: 1.3, way: vol
 
         >>> import numpy as np
         >>> from aceptor import Aceptor
         >>> np.random.seed(2)
-        >>> dopantes_propios = Aceptor(10, 1.3, 'vol')
-        >>> NP = Nanoparticle([15, 0.5], 0.333, 50, 1, dopantes_propios)
+        >>> traps = Aceptor(10, 1.3, 'vol')
+        >>> NP = Nanoparticle([15, 0.5], 0.333, 50, 1, traps)
         >>> print(NP)
         Radio: 14.791621076297265 ~ U(15, 0.5),
         Tau: 0.333, Mean_path: 50, Epsilon: 1,
         Delta_t: 0.00666, Prob decay: 0.019801326693244747,
-        Number Intrisic aceptors: 10, R_Mechanisms: 1.3, way: vol
+        Number traps: 10, R_Mechanisms: 1.3, way: vol
 
         >>> import numpy as np
         >>> from aceptor import Aceptor
         >>> np.random.seed(2)
-        >>> dopantes_propios = Aceptor(10, 1.3, 'vol')
+        >>> traps = Aceptor(10, 1.3, 'vol')
         >>> dopantes = Aceptor(50, 3, 'vol')
-        >>> NP = Nanoparticle([15, 0.5], 0.333, 50, 1, dopantes_propios)
+        >>> NP = Nanoparticle([15, 0.5], 0.333, 50, 1, traps)
         >>> NP.doped(dopantes)
         >>> print(NP)
         Radio: 14.791621076297265 ~ U(15, 0.5),
         Tau: 0.333, Mean_path: 50, Epsilon: 1,
         Delta_t: 0.00666, Prob decay: 0.019801326693244747,
-        Number Intrisic aceptors: 10, R_Mechanisms: 1.3, way: vol
+        Number traps: 10, R_Mechanisms: 1.3, way: vol
         Number Aceptors: 50, R_Mechanisms: 3, way:vol
 
         >>> import numpy as np
         >>> from aceptor import Aceptor
         >>> np.random.seed(2)
-        >>> dopantes_propios = Aceptor(10, 1.3, 'vol')
+        >>> traps = Aceptor(10, 1.3, 'vol')
         >>> dopantes = Aceptor(50, 3, 'vol')
-        >>> NP = Nanoparticle([15, 0.5], 0.333, 50, 1, dopantes_propios)
+        >>> NP = Nanoparticle([15, 0.5], 0.333, 50, 1, traps)
         >>> NP.doped(dopantes)
         >>> NP.excite('laser')
         >>> print(NP)
         Radio: 14.791621076297265 ~ U(15, 0.5),
         Tau: 0.333, Mean_path: 50, Epsilon: 1,
         Delta_t: 0.00666, Prob decay: 0.019801326693244747,
-        Number Intrisic aceptors: 10, R_Mechanisms: 1.3, way: vol
+        Number traps: 10, R_Mechanisms: 1.3, way: vol
         Number Aceptors: 50, R_Mechanisms: 3, way:vol
         Exition way: laser, R_electro: 0
 
         """
 
-        number = self.intrinsic_aceptors.number
-        r_mechanisms = self.intrinsic_aceptors.r_mechanisms
-        way = self.intrinsic_aceptors.way
+        number = self.traps.number
+        r_mechanisms = self.traps.r_mechanisms
+        way = self.traps.way
         path = self.mean_path
         r_center = self.r_param[0]
         sigma = self.r_param[1]
@@ -139,34 +143,35 @@ class Nanoparticle(object):
         representation = """Radio: {0} ~ U({6}, {7}),
 Tau: {1}, Mean_path: {2}, Epsilon: {3},
 Delta_t: {4}, Prob decay: {5},
-Number Intrisic aceptors: {8}, R_Mechanisms: {9}, way: {10}""".format(self.radio,
-                                                                  self.tau_d,
-                                                                  path,
-                                                                  self.epsilon,
-                                                                  self.delta_t,
-                                                                  self.p_decay,
-                                                                  r_center,
-                                                                  sigma,
-                                                                  number,
-                                                                  r_mechanisms,
-                                                                  way)
+Number traps: {8}, R_Mechanisms: {9}, way: {10}"""
+
+        info = representation.format(self.radio, self.tau_d,
+                                     path, self.epsilon,
+                                     self.delta_t, self.p_decay,
+                                     r_center, sigma,
+                                     number, r_mechanisms,
+                                     way)
 
         # NP doped information
         if self.aceptors != 'NP is not doped':
             rep_aceptors = """
-Number Aceptors: {0}, R_Mechanisms: {1}, way:{2}""".format(self.aceptors.number,
-                                                       self.aceptors.r_forster,
-                                                       self.aceptors.way)
-            representation = representation + rep_aceptors
+Number Aceptors: {0}, R_Mechanisms: {1}, way:{2}"""
+
+            info2 = rep_aceptors.format(self.aceptors.number,
+                                        self.aceptors.r_forster,
+                                        self.aceptors.way)
+            info = info + info2
 
         # NP exited information
         if self.exiton != 'NP is not exited':
             rep_exiton = """
-Exition way: {0}, R_electro: {1}""".format(self.exiton.way,
-                                           self.exiton.r_electro)
-            representation = representation + rep_exiton
+Exition way: {0}, R_electro: {1}"""
 
-        return(representation)
+            info3 = rep_exiton.format(self.exiton.way,
+                                      self.exiton.r_electro)
+            info = info + info3
+
+        return(info)
 
     def doped(self, aceptors):
         """
@@ -188,9 +193,9 @@ Exition way: {0}, R_electro: {1}""".format(self.exiton.way,
         Sup doped
 
         >>> np.random.seed(2)
-        >>> dopantes_propios = Aceptor(10, 1.3, 'vol')
+        >>> traps = Aceptor(10, 1.3, 'vol')
         >>> dopantes = Aceptor(10, 3.2, 'sup')
-        >>> NP = Nanoparticle([15, 0], 0.333, 50, 1, dopantes_propios)
+        >>> NP = Nanoparticle([15, 0], 0.333, 50, 1, traps)
         >>> NP.doped(dopantes)
         >>> pos = NP.aceptors.positions
         >>> r = np.sqrt(pos[:, 0]**2 + pos[:, 1]**2 + pos[:, 2]**2)
@@ -198,9 +203,9 @@ Exition way: {0}, R_electro: {1}""".format(self.exiton.way,
 
         Volumetrical doped
 
-        >>> dopantes_propios = Aceptor(10, 1.3, 'vol')
+        >>> traps = Aceptor(10, 1.3, 'vol')
         >>> dopantes = Aceptor(4, 3.2, 'vol')
-        >>> NP = Nanoparticle([15, 0.5], 0.333, 50, 1, dopantes_propios)
+        >>> NP = Nanoparticle([15, 0.5], 0.333, 50, 1, traps)
         >>> np.random.seed(2)
         >>> NP.doped(dopantes)
         >>> NP.aceptors.positions
@@ -213,7 +218,7 @@ Exition way: {0}, R_electro: {1}""".format(self.exiton.way,
         self.aceptors = aceptors
         self.aceptors.generate(self.radio)
 
-    def excite(self, way):
+    def excite(self, way, r_electro=0):
         """
         Generate and exiton inside the NP.
 
@@ -221,11 +226,14 @@ Exition way: {0}, R_electro: {1}""".format(self.exiton.way,
         ----------
         way : str
             Way to exite the NP. Can be 'laser' or 'electro'.
+        r_electro : float
+            Radio of electrolisis in nm.
 
         Examples
         --------
 
         TODO
         ----
+        * Docstring
         """
-        self.exiton = Exciter(way, self.radio)
+        self.exiton = Exciter(way, self.radio, r_electro)
