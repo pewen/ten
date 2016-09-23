@@ -28,8 +28,8 @@ num_walks : float
 
 def forsterF90(NP):
     out = fors(NP.exiton.position, NP.aceptors.position,
-               NP.aceptors.r_mechanisms, NP.intrinsic_aceptors.position,
-               NP.intrinsic_aceptors.r_mechanisms, NP.tau_d, NP.delta_t,
+               NP.aceptors.r_mechanisms, NP.traps.position,
+               NP.traps.r_mechanisms, NP.tau_d, NP.delta_t,
                NP.radio, NP.epsilon)
 
     return out
@@ -84,9 +84,9 @@ def forster(nanoparticle):
 
         # Calculo de k_et debido a los aceptores intrinsicos
         k_et_in = transfer_rate(nanoparticle.exiton.position,
-                                nanoparticle.intrinsic_aceptors.position,
+                                nanoparticle.traps.position,
                                 nanoparticle.tau_d,
-                                nanoparticle.intrinsic_aceptors.r_mechanisms)
+                                nanoparticle.traps.r_mechanisms)
 
         # Calculo de k_et debido a los aceptores agregados
         k_et_agre = transfer_rate(nanoparticle.exiton.position,
