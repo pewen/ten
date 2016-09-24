@@ -1,6 +1,7 @@
 import numpy as np
 
-from .mechanismsF90 import transfer_rate, fors
+from .forster_mecha import forster_mecha
+
 
 """
 Se definen distintos mecanismos por los que puede decaer un exiton
@@ -26,16 +27,7 @@ num_walks : float
 """
 
 
-def forsterF90(NP):
-    out = fors(NP.exiton.position, NP.aceptors.position,
-               NP.aceptors.r_mechanisms, NP.traps.position,
-               NP.traps.r_mechanisms, NP.tau_d, NP.delta_t,
-               NP.radio, NP.epsilon)
-
-    return out
-
-
-def forster(nanoparticle):
+def forster(NP):
     """
     Mecanismo de transferencia del tipo Forster.
 
@@ -72,48 +64,12 @@ def forster(nanoparticle):
     ----
     - Hacer ejemplos.
     """
-    check = 0
-    amount_decay = 0
-    amount_transf = 0
-    num_walk = 0
+    out = forster_mecha(NP.exiton.position, NP.aceptors.position,
+                        NP.aceptors.r_mechanisms, NP.traps.position,
+                        NP.traps.r_mechanisms, NP.tau_d, NP.delta_t,
+                        NP.radio, NP.epsilon)
 
-    # Calculo de k
-    k = 1/nanoparticle.tau_d
-
-    while check == 0:
-
-        # Calculo de k_et debido a los aceptores intrinsicos
-        k_et_in = transfer_rate(nanoparticle.exiton.position,
-                                nanoparticle.traps.position,
-                                nanoparticle.tau_d,
-                                nanoparticle.traps.r_mechanisms)
-
-        # Calculo de k_et debido a los aceptores agregados
-        k_et_agre = transfer_rate(nanoparticle.exiton.position,
-                                  nanoparticle.aceptors.position,
-                                  nanoparticle.tau_d,
-                                  nanoparticle.aceptors.r_mechanisms)
-
-        # Taza total de tranferencia a cualqueir aceptor
-        k_et = k_et_in + k_et_agre
-
-        # Probabilidad de decaer por cualquier mecanismo
-        prob_die = 1 - np.exp(-nanoparticle.delta_t * (k_et + k))
-
-        # Eficiencia cuantica de transferencia
-        psi_et = k_et/(k_et + k)
-
-        if prob_die > np.random.random():
-            if psi_et < np.random.random():
-                amount_decay += 1
-            else:
-                amount_transf += 1
-            check = 1
-        else:
-            nanoparticle.exiton.walk(nanoparticle.epsilon)
-            num_walk += 1
-
-    return(amount_transf, amount_decay, num_walk)
+    return out
 
 
 def boolean(nanoparticle):
