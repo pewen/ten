@@ -6,6 +6,7 @@ from __future__ import division, absolute_import, print_function
 from datetime import datetime
 import platform
 import sys
+import os
 
 
 def scrapyline(dic, keys, line):
@@ -41,11 +42,11 @@ def read4file(file_path):
     file_path : str
         Path to the file
     """
-    keys = ['r_deviation', 'aceptors', 'traps_aceptors',
-            'traps_way', 'tau_D', 'r_mechanisms',
-            'r_desviation', 'way', 'epsilon', 'mean_path',
-            'r_electro', 'experiments', 'r_mean', 'traps_r_mechanisms',
-            'excitations', 'exiton', 'mechanisms', 'steps', 'convergence']
+    keys = ['r_mean', 'r_desviation', 'tau_D', 'mean_path', 'epsilon',
+            'traps', 'traps_r_mechanisms', 'traps_way',
+            'aceptors', 'r_mechanisms', 'way',
+            'exiton', 'r_electro',
+            'experiments', 'mechanisms', 'excitations', 'steps', 'convergence']
     experiment_file = open(file_path, 'r')
 
     init_param = {}
@@ -97,7 +98,33 @@ def read4file(file_path):
     if 'r_deviation' not in init_param:
         init_param['r_deviation'] = 0
 
+    init_param['traps'] = [int(i) for i in init_param['traps']]
+    init_param['aceptors'] = [int(i) for i in init_param['aceptors']]
+
     return init_param
+
+
+def generate_file_name(path='.'):
+    results_files = [i for i in os.listdir(path) if i.startswith('result')]
+
+    if not results_files:
+        file_name = 'result.dat', 'hist.dat'
+        return file_name
+
+    max_num = 0
+    for result_file in results_files:
+        text, ext = result_file.split('.')
+        a, num = text.split('result')
+        if num == '':
+            max_num = 0
+        else:
+            num = int(num)
+            if num > max_num:
+                max_num = num
+
+    file_name = ('result{0}.dat'.format(max_num + 1),
+                 'hist{0}.dat'.format(max_num + 1))
+    return file_name
 
 
 def save_out(input_parameters, output_parameters,
