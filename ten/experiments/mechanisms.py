@@ -106,8 +106,8 @@ def boolean(nanoparticle):
 
     while check == 0:
         bool_intri = __distance(nanoparticle.exiton.position,
-                                nanoparticle.intrinsic_aceptors.position,
-                                nanoparticle.intrinsic_aceptors.r_mechanisms)
+                                nanoparticle.traps.position,
+                                nanoparticle.traps.r_mechanisms)
 
         bool_aceptors = __distance(nanoparticle.exiton.position,
                                    nanoparticle.aceptors.position,
