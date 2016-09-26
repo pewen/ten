@@ -6,7 +6,12 @@ from ..core.aceptor import Aceptor
 
 
 """
-Distintos experimentos
+Experimentos posibles:
+
+* quenching
+* single_photon
+* l_d
+* tricota
 """
 
 
