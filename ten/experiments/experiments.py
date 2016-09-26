@@ -130,7 +130,7 @@ def tricota(nanoparticle, aceptors, mechanism, way,
     positions_init = positions_init[0]
     positions_end = np.array([positions_end])
     positions_end = positions_end[0]
-    dist = np.zeros(exitations)
+    dist = np.zeros(int(exitations))
 
     diference2 = (positions_init - positions_end)*(positions_init -
                                                    positions_end)
