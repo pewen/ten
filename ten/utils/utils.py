@@ -8,39 +8,6 @@ import platform
 import sys
 
 
-'''
-def generate_random_points_in_sphere(n_points, R, r=0):
-    """
-    Return a array with the cordenades in cartesian for a
-    point between two sphere of radio_out and radio_in.
-    If R == r points are in the surface
-
-    Parameters
-    ----------
-    n_points = int
-        Number of points in sphere
-    R : float
-        Radio max of generate
-    r : floar
-        Radio min of generate. Default "0"
-
-    Is not trivial generate random point in a sphere.
-    See the ipython notebook in:
-    ten/IPython_notebooks/Random_points_in_sphere.ipynb
-    to understan why we generate for this form.
-    """
-    U = np.random.random(n_points)
-    uniform_between_R_r = (R - r) * U**(1/3) + r
-
-    X = np.random.randn(n_points, 3)
-    randoms_versors = (np.sqrt(X[:, 0]**2 + X[:, 1]**2 +
-                               X[:, 2]**2))**(-1) * X.T
-
-    points_uniform_in_sphere = randoms_versors * uniform_between_R_r
-
-    return points_uniform_in_sphere.T
-'''
-
 def scrapyline(dic, keys, line):
     # Split the text and the value
     text, val = line.split(sep='=')
@@ -60,8 +27,7 @@ def scrapyline(dic, keys, line):
     for key in keys:
         if text == key:
             dic[key] = val
-    #    else:
-    #        print('Warning, the parameter {0} is not defined'.format(text))
+
 
 def read4file(file_path):
     """
@@ -75,8 +41,10 @@ def read4file(file_path):
     file_path : str
         Path to the file
     """
-    keys = ['r_deviation', 'aceptors', 'intrinsic_aceptors', 'intrinsic_way', 'tau_D', 'r_mechanisms',
-            'r_desviation', 'way', 'epsilon', 'mean_path', 'r_electro', 'experiments', 'r_mean', 'intrinsic_r_mechanisms',
+    keys = ['r_deviation', 'aceptors', 'traps_aceptors',
+            'traps_way', 'tau_D', 'r_mechanisms',
+            'r_desviation', 'way', 'epsilon', 'mean_path',
+            'r_electro', 'experiments', 'r_mean', 'traps_r_mechanisms',
             'excitations', 'exiton', 'mechanisms', 'steps', 'convergence']
     experiment_file = open(file_path, 'r')
 
@@ -107,10 +75,10 @@ def read4file(file_path):
         # End of file
         if a == '':
             break
-            
+
         if a.startswith('#'):
-            continue    
-            
+            continue
+
         # Remove all comment with "#"
         if '#' in a:
             a, rest = a.split('#')
