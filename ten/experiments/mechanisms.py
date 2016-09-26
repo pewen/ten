@@ -72,9 +72,9 @@ def forster(NP):
     return out
 
 
-def boolean(nanoparticle):
+def dexter(nanoparticle):
     """
-    El exiton se transfiere a algun aceptor solo si esta
+    El exiton se transfiere a algun aceptor si y solo si esta
     menos de cierta distancia (threshold).
 
     Parameters
@@ -93,6 +93,7 @@ def boolean(nanoparticle):
     TODO
     ----
     - Hacer ejemplos.
+    - Pasar la funcion a fortran
     """
     check = 0
     amount_decay = 0
