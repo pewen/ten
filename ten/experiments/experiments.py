@@ -10,6 +10,138 @@ Distintos experimentos
 """
 
 
+def tricota(nanoparticle, aceptors, mechanism, way,
+            step=500, convergence=0.01):
+    """
+    Calcula la eficiencia de Quenching para una nanoparticula dada.
+
+
+    Parameters
+    ----------
+    nanoparticle : NanoParticle Obj
+        Nanoparticle to study.
+    aceptors : Aceptor Obj
+        Aceptors used to doped the nanoparticle.
+    mechanism : function
+        Forma de la transferencia.
+    way : str
+        Forma de general el exiton.
+    step : float, optinal
+        Numero de exitaciones que voy a hacer antes de
+        chequear si converge o no.
+    convergence : float, optional
+        Diferencia con la simulacion anterior para definir
+        si converge o no.
+
+
+    Returns
+    -------
+    efficiency : float
+        Quenching efficiency
+    decay : float
+        Mean of decay exitons
+    walk_mean : float
+        Mean number of walks
+    exitations : float
+        Total number of exitations
+    l_d : float
+        Largo de difucion del exiton
+    walks : array
+        Cada elemento del array son la cantidad de pasos
+        por cada exitacion.
+    total_time : float
+        Total time
+
+
+    Examples
+    --------
+
+
+    TODO
+    ----
+    - Controlar que el argumento way sea correcto.
+    - Si el convergence es muy chico, podria no terminar nunca.
+      Poner un valor para que corte el calculo.
+    - Agregar ejempls.
+    - Si el valor de la primera eficiencia calculada es menor
+      que la diferencia, termina hay el experimento.
+    """
+    # Para medir el tiempo total
+    time_initial = time.time()
+
+    # Variables usadas para calcular la convergencia
+    exitations = 0
+    efficiency_old = 0
+    # Contador de convergencias
+    convergence_cnt = 0
+
+    # Variables usadas para calcular la eficiencia
+    decay = 0
+    transf = 0
+    walks = []
+
+    # Variables usadas para calcular l_d
+    positions_init = []
+    positions_end = []
+
+    while True:
+        for cont in range(int(step)):
+
+            # Dopamiento
+            nanoparticle.doped(aceptors)
+            # Exitacion
+            nanoparticle.excite(way)
+            # Posicion inicial de exiton
+            positions_init.append(nanoparticle.exiton.position.copy())
+
+            # Mecanismo de transferencia
+            out = mechanism(nanoparticle)
+            # Posicion final del exiton
+            positions_end.append(nanoparticle.exiton.position.copy())
+
+            transf += out[0]
+            decay += out[1]
+            walks.append(out[2])
+
+        exitations += step
+
+        # Calculo la diferencia entre esta corrida y la anterior
+        # Si es menor que convergence 3 veces,
+        # termino el experimento.
+        efficiency_new = transf/exitations
+        diff = abs(efficiency_new - efficiency_old)
+        if convergence > diff:
+            convergence_cnt += 1
+        else:
+            convergence_cnt = 0
+
+        if convergence_cnt == 3:
+            break
+
+        efficiency_old = efficiency_new
+
+    # Calculo de l_d
+    positions_init = np.array([positions_init])
+    positions_init = positions_init[0]
+    positions_end = np.array([positions_end])
+    positions_end = positions_end[0]
+    dist = np.zeros(exitations)
+
+    diference2 = (positions_init - positions_end)*(positions_init -
+                                                   positions_end)
+
+    dist[:] = np.sqrt(diference2[:, 0] +
+                      diference2[:, 1] +
+                      diference2[:, 2])
+    l_d = np.sqrt(sum(dist*dist)/exitations)
+
+    walk_mean = sum(walks)/exitations
+    total_time = time.time() - time_initial
+
+    return(efficiency_new, decay, walk_mean,
+           exitations, l_d, walks, total_time)
+
+
 def quenching(nanoparticle, aceptors, mechanism, way,
               step=500, convergence=0.01):
     """
