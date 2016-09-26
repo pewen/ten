@@ -148,6 +148,8 @@ def main():
                                                 out[-1]))
             hist_f.write(histo_format.format(aceptor_num, str(out[-2])[1:-1]))
 
+    result_f.write('\n\n' + '-'*80 + '\n')
+
     # End menssage
     print("\n\nTEN finished succefully")
 
