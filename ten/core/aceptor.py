@@ -4,7 +4,9 @@ Aceptor Object
 
 from __future__ import division, absolute_import, print_function
 
-from ..utils.extMath import random_points_in_sphere
+from numpy.random import randn
+
+from ..random.base import points_in_sphere
 
 
 class Aceptor(object):
@@ -107,6 +109,9 @@ class Aceptor(object):
             second_radio = radio
         else:
             second_radio = 0
-        self.position = random_points_in_sphere(self.number,
-                                                radio,
-                                                second_radio)
+
+        if self.number == 0:
+            self.position = randn(0, 3)
+        else:
+            self.position = points_in_sphere(self.number, radio,
+                                             second_radio)
