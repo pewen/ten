@@ -68,6 +68,23 @@ class Aceptor(object):
         self.way = way
         self.position = []
 
+    def __str__(self):
+        """
+        Prity print of the Aceptor property.
+
+        Examples
+        --------
+        >>> traps = Aceptor(10, 1.3, 'vol')
+        >>> print(traps)
+        Number traps: 10, R_Mechanisms: 1.3, way: vol
+        """
+
+        rep = """Number Aceptors: {0}, R_Mechanisms: {1}, way:{2}"""
+
+        text = rep.format(self.number, self.r_mechanisms, self.way)
+
+        return(text)
+
     def generate(self, radio):
         """
         Genera la posicion de los N aceptores dentro de la NP
