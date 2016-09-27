@@ -68,7 +68,7 @@ class Aceptor(object):
         self.way = way
         self.position = []
 
-    def __str__(self):
+    def __repr__(self):
         """
         Prity print of the Aceptor property.
 
@@ -84,6 +84,9 @@ class Aceptor(object):
         text = rep.format(self.number, self.r_mechanisms, self.way)
 
         return(text)
+
+    # __str__ is the same as __repr__
+    __str__ = __repr__
 
     def generate(self, radio):
         """
