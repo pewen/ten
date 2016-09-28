@@ -158,7 +158,7 @@ Number traps: {8}, R_Mechanisms: {9}, way: {10}"""
 Number Aceptors: {0}, R_Mechanisms: {1}, way:{2}"""
 
             info2 = rep_aceptors.format(self.aceptors.number,
-                                        self.aceptors.r_forster,
+                                        self.aceptors.r_mechanisms,
                                         self.aceptors.way)
             info = info + info2
 
