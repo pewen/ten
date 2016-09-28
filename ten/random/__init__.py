@@ -16,7 +16,10 @@ TODO
 * Poder setear una semilla
 """
 
+from __future__ import absolute_import
+
 from .base import points_in_sphere
 from .generator import random_walk
+from .poblation import r_aceptors, r_nanoparticle
 
-__all__ = ['points_in_sphere', 'random_walk']
+__all__ = ['points_in_sphere', 'random_walk', 'r_aceptors', 'r_nanoparticle']
