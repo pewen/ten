@@ -1,6 +1,6 @@
-subroutine forster_mecha(exiton, aceptors, m, r, intrinsic_aceptors, n, &
-                         r_intrinsic, tau_d, delta_t, np_radio, epsilon, &
-                         transfer, decay, walk)
+subroutine forster_mecha(exiton, aceptors, m, r, traps, n, &
+                         r_traps, tau_d, delta_t, np_radio, epsilon, &
+                         transfer_traps, transfer_aceptors, transfer_natural, walk)
 
   !---------------------------------------------------------------------
   !  Mecanismo de transferencia del tipo Forster.
@@ -31,20 +31,22 @@ subroutine forster_mecha(exiton, aceptors, m, r, intrinsic_aceptors, n, &
   !     Number of aceptors
   ! r : double precision
   !     Forster radio of aceptors. [r_forster] = nm.
-  ! intrinsic_aceptors : double precision, dim(3, n)
+  ! traps : double precision, dim(3, n)
   !     Positions of all intrinsic aceptors
   ! n : integer
   !     Number of intrinsic aceptors
-  ! r_intrinsic : double precision
+  ! r_traps : double precision
   !     Forster radioof intrinsic aceptors. [r_forster] = nm.
   ! tau_d : double precision
   !     Lifetime of donor. [tau_D] = ns.
   !
   ! Returns
   ! -------
-  ! transf : double presicion 
+  ! transfer_traps : double presicion 
   !     Number of total trasnference exiton
-  ! decay : double presicion
+  ! transfer_aceptors : double presicion 
+  !     Number of total trasnference exiton
+  ! transfer_natural : double presicion
   !     Number of total decay exiton
   ! walks : double presicion 
   !     Number of total walks
@@ -55,50 +57,61 @@ subroutine forster_mecha(exiton, aceptors, m, r, intrinsic_aceptors, n, &
   double precision, dimension(3),    intent(INOUT) :: exiton
   double precision, dimension(m, 3), intent(IN)    :: aceptors
   double precision,                  intent(IN)    :: r
-  double precision, dimension(n, 3), intent(IN)    :: intrinsic_aceptors
-  double precision,                  intent(IN)    :: r_intrinsic
+  double precision, dimension(n, 3), intent(IN)    :: traps
+  double precision,                  intent(IN)    :: r_traps
   double precision,                  intent(IN)    :: tau_d
   double precision,                  intent(IN)    :: delta_t
   double precision,                  intent(IN)    :: np_radio
   double precision,                  intent(IN)    :: epsilon
 
-  integer,                           intent(OUT)   :: decay
-  integer,                           intent(OUT)   :: transfer
+  integer,                           intent(OUT)   :: transfer_natural
+  integer,                           intent(OUT)   :: transfer_traps
+  integer,                           intent(OUT)   :: transfer_aceptors
   integer,                           intent(OUT)   :: walk
 
-  double precision :: k, k_et, rate, rate_intinsic
-  double precision :: prob_die, psi_et, num1,num2
+  double precision :: rate_natural, k_et, rate, rate_intinsic
+  double precision :: prob_die, psi_et, psi_intinsic, num1, num2
   integer          :: check
 
   !---------------------------------------------------------------------
   check = 0
 
-  k = 1/tau_d
+  ! Taza de decaimiento natural
+  rate_natural = 1/tau_d
 
   do while (check == 0)
+     ! Taza de decaimiento a los dopantes
      call transfer_rate(exiton, aceptors, m, tau_d, r, rate)
-     call transfer_rate(exiton, intrinsic_aceptors, n, tau_d, &
-                        r_intrinsic, rate_intinsic)
+     ! Taza de decaimiento a las trampas
+     call transfer_rate(exiton, traps, n, tau_d, &
+                        r_traps, rate_intinsic)
 
      ! Taza de transferencia a cualquier aceptor
      k_et = rate + rate_intinsic
 
      ! Probabilidad de decaer por cualquier mecanismo
-     prob_die = 1 - DEXP(-delta_t * (k_et + k))
+     ! Prob_die = 1 - DEXP(-delta_t * (k_et + k))
+     prob_die = 1 - DEXP(-delta_t * (rate + rate_intinsic + rate_natural))
 
-     ! Eficiencia cuantica de transferencia
-     psi_et = k_et/(k_et + k)
+     ! Eficiencia cuantica de transferencia a algun aceptor
+     psi_et = rate/(rate_natural + rate + rate_intinsic)
+     ! Eficiencia cuantica de transferencia a alguna trampa
+     psi_intinsic = rate_intinsic/(rate_natural + rate + rate_intinsic)
 
      call RANDOM_NUMBER(num1)
      call RANDOM_NUMBER(num2)
 
      if (prob_die > num1) then
-        if (psi_et < num2) then
-           decay = decay + 1
+        if (0 < num2 .AND. num2 < psi_et) then
+           transfer_aceptors = 1
+        else if (psi_et < num2 .AND. num2 < (psi_et + psi_intinsic)) then
+           transfer_traps = 1
         else
-           transfer = transfer + 1
+           transfer_natural = 1
         end if
+
         check = 1
+
      else
         call random_walk(exiton, np_radio, epsilon)
         walk = walk + 1
