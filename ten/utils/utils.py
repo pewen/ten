@@ -155,9 +155,10 @@ def generate_file_name(meanFreePath, numTraps, rTraps, path='.'):
         text, ext = result_file.split('_', maxsplit=1)
         a, num = text.split('result')
         if num == '':
-            max_num = 0
+            pass
         else:
             num = int(num)
+            print(num)
             if num > max_num:
                 max_num = num
 
