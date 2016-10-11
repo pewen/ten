@@ -29,20 +29,24 @@ def bi_expo(x, a1, b1, a2, b2):
     """
     Tri-exponential use to adjust the taus
     """
-    return a1*np.exp(-x*b1) + a2*np.exp(-x*b2)
+    return a1**2*np.exp(-x/b1) + a2**2*np.exp(-x/b2)
 
 
 # some used text formated
 menssage = '\rCalculating with {0} traps and {1} acceptors'
-result_header = "NumAceptores\t Decaidos\t Transferidos\t " +\
-                "CantExitaciones   Eficiencia\t   LD\t\t " +\
-                "PasosProm\t Tiempo\n\n"
-result_format = "{0:6}\t\t {1:7}\t {2:7}\t {3:7}\t   {4:1.5f}\t" +\
-                "{5:10.5f}\t{6:10.5f}\t{7:8.3f}\n"
+result_header = "Aceptores  TransfAceptores  TransfTrampas  " +\
+                "TransfNaturales  Exitaciones  Eficiencia    " +\
+                "LD(nm)\t PasosProm  Tiempo(minutos)\n\n"
+result_format = "{0:9}\t {1:9}\t {2:8}\t {3:9}    {4:9}  " +\
+                "{5:9.8f}  {6:9.5f}\t {7:9.5f}\t {8:7.3}\n"
 histo_format = "{0}, {1}\n"
-tau_head = "A1*exp(-x/b1) + A2*exp(-x/b2)\n\n"
-tau_head += "NumAceptores\t a1\t\tb1\t\ta2\t\tb2\t StandardDeviationErrors\n\n"
-tau_format = "{0:6}\t   {1:10.3f}\t {2:10.3f}\t {3:10.3f}\t {4:10.3f}\t" +\
+tau_head = "Ajuste de los decaimiento mediante la siguiente función " +\
+           "(en cada ajuste las áreas estan normalizada)\n"
+tau_head += "A1*exp(-t/b1) + A2*exp(-t/b2)\n\n"
+tau_head += "Aceptores\t\t A1\t\tb1\t\tA2\t\tb2\t " +\
+            "StandardDeviationErrors\n\n"
+tau_format = "{0:9}\t {1:10.5f}\t {2:10.5f}\t {3:10.5f}\t " +\
+             "{4:10.5f}\t" +\
              "{5:10.3f}\t {6:10.3f}\t {7:10.3f}\t {8:10.3f}\t\n"
 text_input = """TEN {0}
 
@@ -159,23 +163,32 @@ def main():
                                    r_mechanisms=init_param['r_mechanisms'],
                                    way=init_param['way'])
 
-            out = ten.experiments.tricota(nanoparticle, dopantes, forster,
+            out = ten.experiments.tricota(nanoparticle, dopantes,
+                                          forster,
                                           init_param['exiton'],
                                           init_param['steps'],
                                           init_param['convergence'])
 
             # Ajuste de los taus
-            n, bins = np.histogram(out[-2]*nanoparticle.delta_t, bins=max(out[-2]))
+            n, bins = np.histogram(out[-2]*nanoparticle.delta_t,
+                                   bins=max(out[-2]))
             popt, pcov = curve_fit(bi_expo, bins[:-1], n)
+
+            # Factor de normalizacion
+            factor = 1/(popt[0]**2*popt[1] + popt[2]**2*popt[3])
+            popt[0] = popt[0]*factor
+            popt[2] = popt[2]*factor
 
             adjust_results.append([popt, pcov])
 
             # write the result
             result_f.write(result_format.format(aceptor_num, out[1],
-                                                out[3]-out[1], out[3],
-                                                out[0], out[4], out[2],
+                                                out[2], out[3],
+                                                out[5], out[0],
+                                                out[6], out[4],
                                                 out[-1]))
-            hist_f.write(histo_format.format(aceptor_num, str(out[-2])[1:-1]))
+            hist_f.write(histo_format.format(aceptor_num,
+                                             str(out[-2])[1:-1]))
 
         result_f.write('\n\n' + '-'*80 + '\n')
 
@@ -183,10 +196,11 @@ def main():
         result_f.write(tau_head)
         for num, aceptor_num in enumerate(init_param['aceptors']):
             perr = np.sqrt(np.diag(adjust_results[num][1]))
+            # Los elevamos al cuadrado a A1 y A2 por calculamos los A1_prima
             result_f.write(tau_format.format(aceptor_num,
-                                             adjust_results[num][0][0],
+                                             adjust_results[num][0][0]**2,
                                              adjust_results[num][0][1],
-                                             adjust_results[num][0][2],
+                                             adjust_results[num][0][2]**2,
                                              adjust_results[num][0][3],
                                              perr[0], perr[1],
                                              perr[2], perr[3]))
