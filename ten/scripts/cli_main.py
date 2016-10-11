@@ -29,7 +29,7 @@ def bi_expo(x, a1, b1, a2, b2):
     """
     Tri-exponential use to adjust the taus
     """
-    return a1**2*np.exp(-x/b1) + a2**2*np.exp(-x/b2)
+    return a1**2*np.exp(-x/b1**2) + a2**2*np.exp(-x/b2**2)
 
 
 # some used text formated
@@ -172,10 +172,19 @@ def main():
             # Ajuste de los taus
             n, bins = np.histogram(out[-2]*nanoparticle.delta_t,
                                    bins=max(out[-2]))
+
             popt, pcov = curve_fit(bi_expo, bins[:-1], n)
 
+            """
             # Factor de normalizacion
             factor = 1/(popt[0]**2*popt[1] + popt[2]**2*popt[3])
+            popt[0] = popt[0]*factor
+            popt[2] = popt[2]*factor
+            """
+
+            # Factor de normalizacion
+            popt = popt**2
+            factor = 1/(popt[0]*popt[1] + popt[2]*popt[3])
             popt[0] = popt[0]*factor
             popt[2] = popt[2]*factor
 
