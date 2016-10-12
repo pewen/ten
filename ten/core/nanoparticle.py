@@ -74,7 +74,7 @@ class Nanoparticle(object):
         self.aceptors = 'NP is not doped'
         self.exiton = 'NP is not exited'
 
-    def __str__(self):
+    def __repr__(self):
         """
         Prity print of the NanoParticle
 
@@ -172,6 +172,9 @@ Exition way: {0}, R_electro: {1}"""
             info = info + info3
 
         return(info)
+
+    # __str__ is the same as __repr__
+    __str__ = __repr__
 
     def doped(self, aceptors):
         """

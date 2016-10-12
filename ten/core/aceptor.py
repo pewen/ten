@@ -4,7 +4,9 @@ Aceptor Object
 
 from __future__ import division, absolute_import, print_function
 
-from ..utils.extMath import random_points_in_sphere
+from numpy.random import randn
+
+from ..random.base import points_in_sphere
 
 
 class Aceptor(object):
@@ -66,6 +68,26 @@ class Aceptor(object):
         self.way = way
         self.position = []
 
+    def __repr__(self):
+        """
+        Prity print of the Aceptor property.
+
+        Examples
+        --------
+        >>> traps = Aceptor(10, 1.3, 'vol')
+        >>> print(traps)
+        Number traps: 10, R_Mechanisms: 1.3, way: vol
+        """
+
+        rep = """Number Aceptors: {0}, R_Mechanisms: {1}, way:{2}"""
+
+        text = rep.format(self.number, self.r_mechanisms, self.way)
+
+        return(text)
+
+    # __str__ is the same as __repr__
+    __str__ = __repr__
+
     def generate(self, radio):
         """
         Genera la posicion de los N aceptores dentro de la NP
@@ -107,6 +129,9 @@ class Aceptor(object):
             second_radio = radio
         else:
             second_radio = 0
-        self.position = random_points_in_sphere(self.number,
-                                                radio,
-                                                second_radio)
+
+        if self.number == 0:
+            self.position = randn(0, 3)
+        else:
+            self.position = points_in_sphere(self.number, radio,
+                                             second_radio)

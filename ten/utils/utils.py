@@ -100,31 +100,78 @@ def read4file(file_path):
 
     init_param['traps'] = [int(i) for i in init_param['traps']]
     init_param['aceptors'] = [int(i) for i in init_param['aceptors']]
+    init_param['mean_path'] = [float(i) for i in init_param['mean_path']]
+    init_param['traps_r_mechanisms'] = [float(i) for i in
+                                        init_param['traps_r_mechanisms']]
 
     return init_param
 
 
-def generate_file_name(path='.'):
+def generate_file_name(meanFreePath, numTraps, rTraps, path='.'):
+    """
+    Genera el nombre de los archivos de salida de la forma:
+    result_meanFreePath_numTraps_rTraps.dat
+
+    Parameters
+    ----------
+    meanFreePath: float
+      Valor del mean free path
+    numTraps: int
+      Numero de trampas
+    rTraps: float
+      Radio del mecanismo de transferencia de las tarmpas
+    path: str
+      Path donde guardar los archivos
+
+    Return
+    ------
+    result: str
+      Nombre del archivo result de salida (incluyendo el path)
+    hist: str
+      Nombre del archivo hist de salida (incluyendo el path)
+    """
+    meanFreePath = "{0:.2f}".format(meanFreePath)
+    numTraps = "{0:.0f}".format(numTraps)
+    rTraps = "{0:.2f}".format(rTraps)
+
+    # Extencion comun para los dos archivos
+    extension = "_{0}_{1}_{2}.dat"
+
+    result = 'result' + extension.format(meanFreePath, numTraps, rTraps)
+    hist = 'hist' + extension.format(meanFreePath, numTraps, rTraps)
+
+    # Busco todos los archivos que empizen con result
     results_files = [i for i in os.listdir(path) if i.startswith('result')]
 
     if not results_files:
-        file_name = 'result.dat', 'hist.dat'
-        return file_name
+        result = os.path.join(path, result)
+        hist = os.path.join(path, hist)
+        return result, hist
+
+    if result not in results_files:
+        result = os.path.join(path, result)
+        hist = os.path.join(path, hist)
+        return result, hist
 
     max_num = 0
     for result_file in results_files:
-        text, ext = result_file.split('.')
+        text, ext = result_file.split('_', maxsplit=1)
         a, num = text.split('result')
         if num == '':
-            max_num = 0
+            pass
         else:
             num = int(num)
             if num > max_num:
                 max_num = num
 
-    file_name = ('result{0}.dat'.format(max_num + 1),
-                 'hist{0}.dat'.format(max_num + 1))
-    return file_name
+    result = 'result{0}'.format(max_num + 1) + \
+             extension.format(meanFreePath, numTraps, rTraps)
+    hist = 'hist{0}'.format(max_num + 1) + \
+           extension.format(meanFreePath, numTraps, rTraps)
+    result = os.path.join(path, result)
+    hist = os.path.join(path, hist)
+
+    return result, hist
 
 
 def save_out(input_parameters, output_parameters,

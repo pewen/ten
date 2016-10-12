@@ -3,14 +3,16 @@ from __future__ import absolute_import
 from .core.nanoparticle import Nanoparticle
 from .core.aceptor import Aceptor
 from . import experiments
-from .experiments import mechanisms
-
-# from .utils import generate_random_points_in_sphere, read4file, save_out
+from . import mechanisms
+from . import random
+from . import utils
 
 __all__ = ['Nanoparticle',
            'Aceptor',
            'experiments',
-           'mechanisms']
+           'mechanisms',
+           'random',
+           'utils']
 
 
 # PEP0440 compatible formatted version, see:

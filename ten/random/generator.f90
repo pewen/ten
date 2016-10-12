@@ -50,7 +50,7 @@ END function  random_normal
 
 
 
-subroutine points_in_sphere(n_points, r_max, r_min, uniform_in_sphere)
+subroutine points_in_sphere_f90(n_points, r_max, r_min, uniform_in_sphere)
 
   !---------------------------------------------------------------------
   !  Return a array with the cordenades in cartesian for a
@@ -91,7 +91,7 @@ subroutine points_in_sphere(n_points, r_max, r_min, uniform_in_sphere)
   !CALL RANDOM_SEED()
   CALL RANDOM_NUMBER(U)
 
-  uniform_between_radios = (r_max - r_min)* U**(1/3) + r_min
+  uniform_between_radios = (r_max - r_min)* U**(1.0/3.0) + r_min
 
   do i = 1, 3
      do j = 1, n_points
@@ -107,7 +107,7 @@ subroutine points_in_sphere(n_points, r_max, r_min, uniform_in_sphere)
 
   uniform_in_sphere = TRANSPOSE(pointsT)
   
-end subroutine points_in_sphere
+end subroutine points_in_sphere_f90
 
 
 
@@ -138,7 +138,7 @@ subroutine random_walk(position, radio, epsilon)
   check = 1
 
   do while (check == 1)
-     call points_in_sphere(1, epsilon, epsilon, new_position)
+     call points_in_sphere_f90(1, epsilon, epsilon, new_position)
      distance = sqrt(sum((new_position + position)**2))
 
      if (distance <= radio) then

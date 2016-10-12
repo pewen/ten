@@ -43,8 +43,12 @@ def tricota(nanoparticle, aceptors, mechanism, way,
     -------
     efficiency : float
         Quenching efficiency
-    decay : float
-        Mean of decay exitons
+    transfer_aceptors : float
+        Mean of decay exitons by aceptors
+    transfer_traps : float
+
+    transfer_natural: float
+
     walk_mean : float
         Mean number of walks
     exitations : float
@@ -55,7 +59,7 @@ def tricota(nanoparticle, aceptors, mechanism, way,
         Cada elemento del array son la cantidad de pasos
         por cada exitacion.
     total_time : float
-        Total time
+        Tiempo total en minutos
 
 
     Examples
@@ -81,8 +85,9 @@ def tricota(nanoparticle, aceptors, mechanism, way,
     convergence_cnt = 0
 
     # Variables usadas para calcular la eficiencia
-    decay = 0
-    transf = 0
+    transfer_aceptors = 0
+    transfer_traps = 0
+    transfer_natural = 0
     walks = []
 
     # Variables usadas para calcular l_d
@@ -104,16 +109,17 @@ def tricota(nanoparticle, aceptors, mechanism, way,
             # Posicion final del exiton
             positions_end.append(nanoparticle.exiton.position.copy())
 
-            transf += out[0]
-            decay += out[1]
-            walks.append(out[2])
+            transfer_traps += out[0]
+            transfer_aceptors += out[1]
+            transfer_natural += out[2]
+            walks.append(out[3])
 
         exitations += step
 
         # Calculo la diferencia entre esta corrida y la anterior
         # Si es menor que convergence 3 veces,
         # termino el experimento.
-        efficiency_new = transf/exitations
+        efficiency_new = transfer_aceptors/exitations
         diff = abs(efficiency_new - efficiency_old)
         if convergence > diff:
             convergence_cnt += 1
@@ -141,10 +147,13 @@ def tricota(nanoparticle, aceptors, mechanism, way,
     l_d = np.sqrt(sum(dist*dist)/exitations)
 
     walk_mean = sum(walks)/exitations
-    total_time = time.time() - time_initial
+    total_time = (time.time() - time_initial)/60
 
-    return(efficiency_new, decay, walk_mean,
-           exitations, l_d, walks, total_time)
+    walks = np.array(walks)
+
+    return(efficiency_new, transfer_aceptors, transfer_traps,
+           transfer_natural, walk_mean, int(exitations), l_d,
+           walks, total_time)
 
 
 def quenching(nanoparticle, aceptors, mechanism, way,
