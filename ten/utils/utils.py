@@ -100,6 +100,9 @@ def read4file(file_path):
 
     init_param['traps'] = [int(i) for i in init_param['traps']]
     init_param['aceptors'] = [int(i) for i in init_param['aceptors']]
+    init_param['mean_path'] = [float(i) for i in init_param['mean_path']]
+    init_param['traps_r_mechanisms'] = [float(i) for i in
+                                        init_param['traps_r_mechanisms']]
 
     return init_param
 

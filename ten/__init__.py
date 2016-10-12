@@ -5,12 +5,14 @@ from .core.aceptor import Aceptor
 from . import experiments
 from . import mechanisms
 from . import random
+from . import utils
 
 __all__ = ['Nanoparticle',
            'Aceptor',
            'experiments',
            'mechanisms',
-           'random']
+           'random',
+           'utils']
 
 
 # PEP0440 compatible formatted version, see:
