@@ -3,6 +3,7 @@ Exciter Object
 """
 
 from __future__ import division, absolute_import, print_function
+import warnings
 
 from ..random.base import points_in_sphere
 from ..random.generator import random_walk
@@ -68,8 +69,9 @@ class Exciter(object):
             raise ValueError("way must be 'laser' or 'electro'")
 
         if way == 'electro' and r_electro == 0:
-            raise Warning("way = electro but" +
-                          " r_electro is not give")
+            # raise RuntimeWarning()
+            menssage = "way = electro but r_electro is not give"
+            warnings.warn(menssage, RuntimeWarning)
 
         self.way = way
         self.r_electro = r_electro
@@ -146,15 +148,4 @@ class Exciter(object):
 
         """
 
-        """
-        check = 1
-
-        while check == 1:
-            new_positon = generate_random_points_in_sphere(1, epsilon,
-                                                           epsilon)[0]
-
-            distance = np.sqrt(sum((new_positon + self.position)**2))
-            if distance <= self.np_radio:
-                check = 0
-        """
         random_walk(self.position, self.np_radio, epsilon)
