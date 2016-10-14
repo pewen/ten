@@ -38,6 +38,7 @@ conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pip numpy pyte
 # Install TEN
 source activate test-environment
 python --version
+conda list
 python setup.py install
 
 # Compile fortran dependencies
