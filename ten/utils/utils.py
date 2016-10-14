@@ -228,7 +228,7 @@ Total time = {14:4.3f} seg {15}
            ld_calculate, input_parameters[9], time, process_text)
 
 
-    table_head = "| Nº acceptors | Amount of decays | Amount of transfers | Quenching efficiency | Step's Walk mean | Total time [seg] |\n"
+    table_head = "| N acceptors | Amount of decays | Amount of transfers | Quenching efficiency | Step's Walk mean | Total time [seg] |\n"
     table_div = "+{0:-^14}+{0:-^18}+{0:-^21}+{0:-^22}+{0:-^18}+{0:-^18}+\n".format(*'-')
 
     f = open(file_path+'%s.txt' % (str(datetime.now())[:-7]), 'a+')
