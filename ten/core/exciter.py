@@ -94,12 +94,11 @@ class Exciter(object):
         Examples
         --------
 
-        >>> import numpy as np
-        >>> np.random.seed(2)
+        >>> ten.random.set_seed(8)
         >>> exiton = Exciter('laser', 15)
         >>> exiton.laser_generated()
         >>> print(exiton.position)
-        [-7.91504958  2.50827227 -6.21124876]
+        [ 3.48097515, -0.26103414,  6.16735347]
 
         """
         point = points_in_sphere(1, self.np_radio)
@@ -114,12 +113,11 @@ class Exciter(object):
         Examples
         --------
 
-        >>> import numpy as np
-        >>> np.random.seed(2)
+        >>> ten.random.set_seed(8)
         >>> exiton = Exciter('laser', 15, 13)
         >>> exiton.electro_generated()
         >>> print(exiton.position)
-        [-10.9785979    3.47910805  -8.61533486]
+        [  6.84969176,  -0.51365015,  12.13581494]
 
         """
         point = points_in_sphere(1, self.np_radio,
