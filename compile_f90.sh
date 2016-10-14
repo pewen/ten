@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd ten/random
-f2py3 -c generator.f90 -m generator
+f2py -c generator.f90 -m generator
 
 cd ../mechanisms
 gfortran -c -fPIC -O3 ../random/generator.f90 -o generator.o
