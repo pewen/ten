@@ -35,8 +35,14 @@ conda info -a
 conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pip numpy pytest pytest-cov
 #pip install python-coveralls coverage
 
+echo "**********************************************************************"
+echo "**********************************************************************"
+
 # Install TEN
 source activate test-environment
+echo "**********************************************************************"
+python --version
+echo "**********************************************************************"
 python setup.py install
 
 # Compile fortran dependencies
