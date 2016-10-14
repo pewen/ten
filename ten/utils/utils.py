@@ -43,10 +43,9 @@ def read4file(file_path):
         Path to the file
     """
     keys = ['r_mean', 'r_desviation', 'tau_D', 'mean_path', 'epsilon',
-            'traps', 'traps_r_mechanisms', 'traps_way',
-            'aceptors', 'r_mechanisms', 'way',
-            'exiton', 'r_electro',
-            'experiments', 'mechanisms', 'excitations', 'steps', 'convergence']
+            'traps', 'traps_r_mechanisms', 'traps_way', 'aceptors',
+            'r_mechanisms', 'way', 'exiton', 'r_electro', 'experiments',
+            'mechanisms', 'excitations', 'steps', 'convergence', 'seed']
     experiment_file = open(file_path, 'r')
 
     init_param = {}
@@ -103,6 +102,8 @@ def read4file(file_path):
     init_param['mean_path'] = [float(i) for i in init_param['mean_path']]
     init_param['traps_r_mechanisms'] = [float(i) for i in
                                         init_param['traps_r_mechanisms']]
+    if 'seed' in init_param:
+        init_param['seed'] = [int(i) for i in init_param['seed']]
 
     return init_param
 

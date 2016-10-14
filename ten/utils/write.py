@@ -49,10 +49,13 @@ Experiments: {16}
 Mechanisms: {17}
 Steps: {18}
 convergence: {19}
+
+seed: {20}
+seeds: {21}
 """
 
 
-def write_header(path_result, nanoparticle, init_param):
+def write_header(path_result, nanoparticle, init_param, actual_experiment):
     """
 
     """
@@ -78,7 +81,9 @@ def write_header(path_result, nanoparticle, init_param):
                                           init_param['experiments'],
                                           init_param['mechanisms'],
                                           init_param['steps'],
-                                          init_param['convergence'])
+                                          init_param['convergence'],
+                                          init_param['seed'][actual_experiment],
+                                          init_param['seed'])
         result_f.write(output_header)
 
         # Write the nanoparticle configurations
