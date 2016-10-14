@@ -3,6 +3,7 @@ Exciter Object
 """
 
 from __future__ import division, absolute_import, print_function
+import warnings
 
 from ..random.base import points_in_sphere
 from ..random.generator import random_walk
@@ -68,8 +69,9 @@ class Exciter(object):
             raise ValueError("way must be 'laser' or 'electro'")
 
         if way == 'electro' and r_electro == 0:
-            raise Warning("way = electro but" +
-                          " r_electro is not give")
+            # raise RuntimeWarning()
+            menssage = "way = electro but r_electro is not give"
+            warnings.warn(menssage, RuntimeWarning)
 
         self.way = way
         self.r_electro = r_electro
@@ -92,12 +94,11 @@ class Exciter(object):
         Examples
         --------
 
-        >>> import numpy as np
-        >>> np.random.seed(2)
+        >>> ten.random.set_seed(8)
         >>> exiton = Exciter('laser', 15)
         >>> exiton.laser_generated()
         >>> print(exiton.position)
-        [-7.91504958  2.50827227 -6.21124876]
+        [ 3.48097515, -0.26103414,  6.16735347]
 
         """
         point = points_in_sphere(1, self.np_radio)
@@ -112,12 +113,11 @@ class Exciter(object):
         Examples
         --------
 
-        >>> import numpy as np
-        >>> np.random.seed(2)
+        >>> ten.random.set_seed(8)
         >>> exiton = Exciter('laser', 15, 13)
         >>> exiton.electro_generated()
         >>> print(exiton.position)
-        [-10.9785979    3.47910805  -8.61533486]
+        [  6.84969176,  -0.51365015,  12.13581494]
 
         """
         point = points_in_sphere(1, self.np_radio,
@@ -146,15 +146,4 @@ class Exciter(object):
 
         """
 
-        """
-        check = 1
-
-        while check == 1:
-            new_positon = generate_random_points_in_sphere(1, epsilon,
-                                                           epsilon)[0]
-
-            distance = np.sqrt(sum((new_positon + self.position)**2))
-            if distance <= self.np_radio:
-                check = 0
-        """
         random_walk(self.position, self.np_radio, epsilon)

@@ -13,8 +13,8 @@ result_header = "Aceptores  TransfAceptores  TransfTrampas  " +\
 result_format = "{0:9}\t {1:9}\t {2:8}\t {3:9}    {4:9}  " +\
                 "{5:9.8f}  {6:9.5f}\t {7:9.5f}\t {8:7.3}\n"
 histo_format = "{0}, {1}\n"
-tau_head = "Ajuste de los decaimiento mediante la siguiente función " +\
-           "(en cada ajuste las áreas estan normalizada)\n"
+tau_head = "Ajuste de los decaimiento mediante la siguiente funcion " +\
+           "(en cada ajuste las areas estan normalizada)\n"
 tau_head += "A1*exp(-t/b1) + A2*exp(-t/b2)\n\n"
 tau_head += "Aceptores\t\t A1\t\tb1\t\tA2\t\tb2\t " +\
             "StandardDeviationErrors\n\n"
@@ -49,10 +49,13 @@ Experiments: {16}
 Mechanisms: {17}
 Steps: {18}
 convergence: {19}
+
+seed: {20}
+seeds: {21}
 """
 
 
-def write_header(path_result, nanoparticle, init_param):
+def write_header(path_result, nanoparticle, init_param, actual_experiment):
     """
 
     """
@@ -78,7 +81,9 @@ def write_header(path_result, nanoparticle, init_param):
                                           init_param['experiments'],
                                           init_param['mechanisms'],
                                           init_param['steps'],
-                                          init_param['convergence'])
+                                          init_param['convergence'],
+                                          init_param['seed'][actual_experiment],
+                                          init_param['seed'])
         result_f.write(output_header)
 
         # Write the nanoparticle configurations

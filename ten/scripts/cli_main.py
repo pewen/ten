@@ -16,6 +16,7 @@ import sys
 
 import numpy as np
 from scipy.optimize import curve_fit
+from scipy.integrate import quad
 
 sys.path.append('../../')
 
@@ -27,7 +28,7 @@ from ten.utils.write import write_header, write_body, \
 
 
 menssage = '\rCalculating with meanPath = {0}, traps = {1}, ' +\
-           'r_traps = {2} and {3} aceptors'
+           'r_traps = {2} and {3} aceptors ({4} of {5} experiments)\t'
 
 
 def bi_expo(x, a1, b1, a2, b2):
@@ -35,6 +36,13 @@ def bi_expo(x, a1, b1, a2, b2):
     Tri-exponential use to adjust the taus
     """
     return a1**2*np.exp(-x/b1**2) + a2**2*np.exp(-x/b2**2)
+
+
+def bi_expo_norma(x, a1, b1, a2, b2, C):
+    """
+    Tri-exponential use to adjust the taus
+    """
+    return C*a1*np.exp(-x/b1) + C*a2*np.exp(-x/b2)
 
 
 def main():
@@ -71,25 +79,46 @@ def main():
                                                init_param['epsilon'],
                                                traps)
 
+    number_experiment = len(nanoparticles)
+    actual_experiment = 0
+
+    # Set the seed
+    if 'seed' not in init_param:
+        init_param['seed'] = []
+    if not init_param['seed']:
+        seed = int(time.time())
+        init_param['seed'] = [seed + 150*i for i in range(len(nanoparticles))]
+    elif len(init_param['seed']) != len(nanoparticles):
+        print('Generando las semillas')
+        init_param['seed'] = [seed + 150*i for i in range(len(nanoparticles))]
+
     for nanoparticle in nanoparticles:
+
+        seed = init_param['seed'][actual_experiment]
+        ten.random.set_seed(seed)
+
         # Generate an unique output file name.
         path_result, path_hist = generate_file_name(nanoparticle.mean_path,
                                                     nanoparticle.traps.number,
                                                     nanoparticle.traps.r_mechanisms,
                                                     args.out_path)
 
-        write_header(path_result, nanoparticle, init_param)
+        write_header(path_result, nanoparticle,
+                     init_param, actual_experiment)
 
         adjust_results = []
         time_start = time.time()
 
+        actual_experiment += 1
         for aceptor in aceptors:
 
             # Write menssage
             sys.stdout.write(menssage.format(nanoparticle.mean_path,
                                              nanoparticle.traps.number,
                                              nanoparticle.traps.r_mechanisms,
-                                             aceptor.number))
+                                             aceptor.number,
+                                             actual_experiment,
+                                             number_experiment))
 
             out = ten.experiments.tricota(nanoparticle,
                                           aceptor,
@@ -106,6 +135,10 @@ def main():
             # Factor de normalizacion
             popt = popt**2
             factor = 1/(popt[0]*popt[1] + popt[2]*popt[3])
+            res, error = quad(bi_expo_norma, 0, np.inf,
+                              args=(popt[0], popt[1], popt[2],
+                                    popt[3], factor))
+
             popt[0] = popt[0]*factor
             popt[2] = popt[2]*factor
 

@@ -43,10 +43,9 @@ def read4file(file_path):
         Path to the file
     """
     keys = ['r_mean', 'r_desviation', 'tau_D', 'mean_path', 'epsilon',
-            'traps', 'traps_r_mechanisms', 'traps_way',
-            'aceptors', 'r_mechanisms', 'way',
-            'exiton', 'r_electro',
-            'experiments', 'mechanisms', 'excitations', 'steps', 'convergence']
+            'traps', 'traps_r_mechanisms', 'traps_way', 'aceptors',
+            'r_mechanisms', 'way', 'exiton', 'r_electro', 'experiments',
+            'mechanisms', 'excitations', 'steps', 'convergence', 'seed']
     experiment_file = open(file_path, 'r')
 
     init_param = {}
@@ -103,6 +102,8 @@ def read4file(file_path):
     init_param['mean_path'] = [float(i) for i in init_param['mean_path']]
     init_param['traps_r_mechanisms'] = [float(i) for i in
                                         init_param['traps_r_mechanisms']]
+    if 'seed' in init_param:
+        init_param['seed'] = [int(i) for i in init_param['seed']]
 
     return init_param
 
@@ -227,7 +228,7 @@ Total time = {14:4.3f} seg {15}
            ld_calculate, input_parameters[9], time, process_text)
 
 
-    table_head = "| Nº acceptors | Amount of decays | Amount of transfers | Quenching efficiency | Step's Walk mean | Total time [seg] |\n"
+    table_head = "| N acceptors | Amount of decays | Amount of transfers | Quenching efficiency | Step's Walk mean | Total time [seg] |\n"
     table_div = "+{0:-^14}+{0:-^18}+{0:-^21}+{0:-^22}+{0:-^18}+{0:-^18}+\n".format(*'-')
 
     f = open(file_path+'%s.txt' % (str(datetime.now())[:-7]), 'a+')

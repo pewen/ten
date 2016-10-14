@@ -190,69 +190,118 @@ def c_nanoparticles(r_params, taus, mean_paths,
     return out
 
 
-def x_aceptors(numbers, r_mechanisms, ways, sample):
+def x_aceptors(numbers, r_mechanisms, ways, samples):
     """
-    Genera una poblacion equiespaciada de aceptores.
-
-    Si algun valor es contante, se lo puede pasar sin la lista.
 
     Parameters
     ----------
-    number: like-list
-      [lim inf, lim sup] del numero de aceptores
-    r_mechanisms: like-list
-      [lim inf, lim sup] del radio del mecanismo
-    way: like-list
-      ['way1', 'way2'] distintas posibles formas de dopar
-    sample: int
-      Numero de elemntos a generar
+    number:
+
+    r_mechanisms:
+
+    ways:
+
+    samples: like-array
+
 
     Return
     ------
     out: list
-      Lista con los aceptores aleatorios
+      List with the aceptors
 
-    Exampels
-    --------
+    Example
+    -------
+    >>> numbers = [2, 12]
+    >>> r_mechanisms = [0.3, 0.7]
+    >>> ways = ['vol', 'sup']
+    >>> samples = [5, 5, 2]
+    >>> traps = x_aceptors(numbers, r_mechanisms, ways, samples)
+    >>> len(traps)
+    50
 
-    TODO
-    ----
-    * ejemplos
+    # Si samples es un int, se utiliza el mismo valor para
+    # numbers y r_mechanisms
+    >>> numbers = [2, 12]
+    >>> r_mechanisms = [0.3, 0.7]
+    >>> ways = ['vol', 'sup']
+    >>> samples = 5 # igual a samples = [5, 5, 2]
+    >>> traps = x_aceptors(numbers, r_mechanisms, ways, samples)
+    >>> len(traps)
+    50
     """
+    if type(samples) in [int, float]:
+        samples = [int(samples), int(samples)]
+    if len(samples) == 1:
+        samples = [int(samples[0]), int(samples[0])]
+
+    if type(numbers) in [int, float]:
+        numbers = [numbers]
+        samples[0] = 1
+    if type(r_mechanisms) in [int, float]:
+        r_mechanisms = [r_mechanisms]
+        samples[1] = 1
     if type(ways) in [str]:
         ways = [ways]
 
-    all_primes = __primes(sample/len(ways))
-
-    # en el caso de que el numero de muestras sea primo
-    if len(all_primes) == 1:
-        sample += 1
-        all_primes = __primes(sample/len(ways))
-    all_primes.sort()
-
-    cnt1 = max(all_primes)
-    cnt2 = 0
-
-    for prime in all_primes[:-1]:
-        if cnt2 > cnt1:
-            cnt1 += prime
-        else:
-            cnt2 += prime
-
-    numbers = __equi_sample(numbers, cnt1)
+    numbers = __equi_sample(numbers, samples[0])
     numbers = [round(num) for num in numbers]
-    r_mechanisms = __equi_sample(r_mechanisms, cnt2)
+    r_mechanisms = __equi_sample(r_mechanisms, samples[1])
 
     out = c_aceptors(numbers, r_mechanisms, ways)
 
     return out
 
 
-def x_nanoparticles():
+def x_nanoparticles(radios, taus, mean_paths, epsilons, traps, samples):
     """
 
+
+    Parameters
+    ----------
+
+
+    Return
+    ------
+
+
+    Example
+    -------
+    >>> r_np = 15
+    >>> taus = 0.333
+    >>> mean_paths = [70, 120]
+    >>> epsilons = 1
+    >>> traps = traps
+    >>> samples = 2
+    >>> nanos = ten.random.x_nanoparticles(r_np, taus, mean_paths, epsilons, traps, samples)
+    >>> len(nanos)
+    50
     """
-    pass
+    if type(samples) in [int, float]:
+        samples = [int(samples) for x in range(4)]
+    if len(samples) == 1:
+        samples = [int(samples[0]) for x in range(4)]
+
+    if type(radios) in [int, float]:
+        radios = [radios]
+        samples[0] = 1
+    if type(taus) in [int, float]:
+        taus = [taus]
+        samples[1] = 1
+    if type(mean_paths) in [int, float]:
+        mean_paths = [mean_paths]
+        samples[2] = 1
+    if type(epsilons) in [int, float]:
+        epsilons = [epsilons]
+        samples[3] = 1
+
+    radios = __equi_sample(radios, samples[0])
+    taus = __equi_sample(taus, samples[1])
+    mean_paths = __equi_sample(mean_paths, samples[2])
+    epsilons = __equi_sample(epsilons, samples[3])
+
+    out = c_nanoparticles(radios, taus, mean_paths,
+                          epsilons, traps)
+    return out
 
 
 def __uniform_sample(extrems, sample):
@@ -304,29 +353,11 @@ def __equi_sample(extrems, sample):
     out: list
       Lista con los valores aleatorios
     """
-    data_type = type(extrems)
-
-    # Me fijo si la variable es constante (no una lista)
-    if data_type in [int, float]:
-        out = [extrems for x in range(sample)]
     # Me fijo si es una lista con un solo elemento
-    elif len(extrems) == 1:
+    if len(extrems) == 1:
         out = [extrems[0] for x in range(sample)]
     # Sino, genero los r_mecha con una distribucion uniforme
     else:
         out = np.linspace(extrems[0], extrems[1], sample)
 
     return out
-
-
-def __primes(n):
-    primfac = []
-    d = 2
-    while d*d <= n:
-        while (n % d) == 0:
-            primfac.append(d)  # supposing you want multiple factors repeated
-            n //= d
-        d += 1
-    if n > 1:
-        primfac.append(n)
-    return primfac
