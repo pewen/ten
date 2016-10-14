@@ -66,7 +66,7 @@ def test_repr():
     NP = Nanoparticle([15, 0], 0.333, 50, 1, traps)
     out_text = """Radio: 15 ~ U(15, 0),
 Tau: 0.333, Mean_path: 50, Epsilon: 1,
-Delta_t: 0.00666, Prob decay: 0.019801326693244747,
+Delta_t: 0.00666, Prob decay: 0.01980132669,
 Number traps: 10, R_Mechanisms: 1.3, way: vol"""
 
     assert (out_text == str(NP))
@@ -78,7 +78,7 @@ def test_repr2():
     NP = Nanoparticle([15, 0.5], 0.333, 50, 1, traps)
     out_text = """Radio: 14.791621076297265 ~ U(15, 0.5),
 Tau: 0.333, Mean_path: 50, Epsilon: 1,
-Delta_t: 0.00666, Prob decay: 0.019801326693244747,
+Delta_t: 0.00666, Prob decay: 0.01980132669,
 Number traps: 10, R_Mechanisms: 1.3, way: vol"""
 
     assert(out_text == str(NP))
@@ -92,7 +92,7 @@ def test_repr3():
     NP.doped(dopantes)
     out_text = """Radio: 14.791621076297265 ~ U(15, 0.5),
 Tau: 0.333, Mean_path: 50, Epsilon: 1,
-Delta_t: 0.00666, Prob decay: 0.019801326693244747,
+Delta_t: 0.00666, Prob decay: 0.01980132669,
 Number traps: 10, R_Mechanisms: 1.3, way: vol
 Number Aceptors: 50, R_Mechanisms: 3, way:vol"""
 
@@ -108,7 +108,7 @@ def test_repr4():
     NP.excite('laser')
     out_text = """Radio: 14.791621076297265 ~ U(15, 0.5),
 Tau: 0.333, Mean_path: 50, Epsilon: 1,
-Delta_t: 0.00666, Prob decay: 0.019801326693244747,
+Delta_t: 0.00666, Prob decay: 0.01980132669,
 Number traps: 10, R_Mechanisms: 1.3, way: vol
 Number Aceptors: 50, R_Mechanisms: 3, way:vol
 Exition way: laser, R_electro: 0"""

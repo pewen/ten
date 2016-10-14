@@ -142,7 +142,7 @@ class Nanoparticle(object):
         # NP general information
         representation = """Radio: {0} ~ U({6}, {7}),
 Tau: {1}, Mean_path: {2}, Epsilon: {3},
-Delta_t: {4}, Prob decay: {5},
+Delta_t: {4}, Prob decay: {5:.10g},
 Number traps: {8}, R_Mechanisms: {9}, way: {10}"""
 
         info = representation.format(self.radio, self.tau_d,
