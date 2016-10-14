@@ -33,7 +33,7 @@ conda info -a
 
 # Install the dependencies
 conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pip numpy pytest pytest-cov
-pip install python-coveralls coverage
+#pip install python-coveralls coverage
 
 # Install TEN
 source activate test-environment
@@ -48,4 +48,3 @@ gfortran -c -fPIC -O3 ../random/generator.f90 -o generator.o
 f2py -c --fcompiler=gfortran -I. generator.o -m forster_mecha forster_mecha.f90
 
 cd ../..
-ls
