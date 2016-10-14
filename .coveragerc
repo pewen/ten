@@ -1,0 +1,7 @@
+[run]
+branch = True
+source = ten
+include = */ten/*
+omit =
+     /IPython_notebook/*
+    */setup.py

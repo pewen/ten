@@ -31,7 +31,10 @@ conda update -q conda
 conda info -a
 
 # Install the dependencies
-conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pip numpy matplotlib pytest pytest-cov
+conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pip numpy matplotlib pytest pytest-cov python-coveralls
+pip install python-coveralls coverage
+
+# Install TEN
 source activate test-environment
 python setup.py install
 
