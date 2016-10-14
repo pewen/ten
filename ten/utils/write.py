@@ -13,8 +13,8 @@ result_header = "Aceptores  TransfAceptores  TransfTrampas  " +\
 result_format = "{0:9}\t {1:9}\t {2:8}\t {3:9}    {4:9}  " +\
                 "{5:9.8f}  {6:9.5f}\t {7:9.5f}\t {8:7.3}\n"
 histo_format = "{0}, {1}\n"
-tau_head = "Ajuste de los decaimiento mediante la siguiente función " +\
-           "(en cada ajuste las áreas estan normalizada)\n"
+tau_head = "Ajuste de los decaimiento mediante la siguiente funcion " +\
+           "(en cada ajuste las areas estan normalizada)\n"
 tau_head += "A1*exp(-t/b1) + A2*exp(-t/b2)\n\n"
 tau_head += "Aceptores\t\t A1\t\tb1\t\tA2\t\tb2\t " +\
             "StandardDeviationErrors\n\n"
