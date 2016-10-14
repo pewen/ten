@@ -28,13 +28,14 @@ TODO
 
 from __future__ import absolute_import
 
-from .base import points_in_sphere
+from .base import points_in_sphere, set_seed
 from .generator import random_walk
 from .poblation import r_aceptors, r_nanoparticles, \
     c_aceptors, c_nanoparticles, \
     x_aceptors, x_nanoparticles
 
 __all__ = ['points_in_sphere',
+           'set_seed',
            'random_walk',
            'r_aceptors',
            'r_nanoparticles',

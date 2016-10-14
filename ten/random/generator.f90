@@ -149,3 +149,23 @@ subroutine random_walk(position, radio, epsilon)
   position = position + new_position
   
 end subroutine random_walk
+
+
+! initialize a random seed from the system clock at every run (fortran 95 code)
+subroutine init_random_seed(seed)
+
+  INTEGER, intent(IN)                :: seed
+  INTEGER                            :: i, n
+  INTEGER, DIMENSION(:), ALLOCATABLE :: seeds
+
+  CALL RANDOM_SEED(size = n)
+  ALLOCATE(seeds(n))
+
+  ! set the seeds
+  seeds = seed + 37 * (/ (i - 1, i = 1, n) /)
+  
+  CALL RANDOM_SEED(PUT = seeds)
+
+  DEALLOCATE(seeds)
+
+end subroutine init_random_seed
