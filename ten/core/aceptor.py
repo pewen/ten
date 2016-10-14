@@ -123,7 +123,7 @@ class Aceptor(object):
         TODO
         ----
         - Hoy se considera que los acceptores son un punto.
-          Darle realidad física y chequear que no se superpongan.
+          Darle realidad fisica y chequear que no se superpongan.
         """
         if self.way in ['sup', 'superficial']:
             second_radio = radio
