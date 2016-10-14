@@ -12,6 +12,7 @@ python:
 # command to install dependencies
 install:
   - pip install -r requirements.txt
+  - sudo apt-get install gfortran
   - ./compile_f90.sh
 
 # command to run tests
