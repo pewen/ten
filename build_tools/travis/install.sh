@@ -11,6 +11,7 @@
 # [ 2 ] http://conda.pydata.org/docs/travis.html
 
 sudo apt-get update
+sudo apt-get install gfortran
 
 # We do this conditionally because it saves us some downloading if the
 # version is the same.
@@ -39,5 +40,4 @@ source activate test-environment
 python setup.py install
 
 # Compile fortran dependencies
-sudo apt-get install gfortran
 ./compile_f90.sh
