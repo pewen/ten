@@ -10,8 +10,8 @@ python:
 install: bash build_tools/travis/install.sh
 
 # command to run tests
-script:
-  - py.test -v --cov-report term-missing:skip-covered --cov=ten
+script: py.test -v
+#  - py.test -v --cov-report term-missing:skip-covered --cov=ten
 
-#after_success:  
-#  - coveralls 
+after_success:  
+  - coveralls 
