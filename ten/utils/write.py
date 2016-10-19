@@ -104,9 +104,16 @@ def write_body(path_result, path_hist, aceptor_number, out):
                                             out[6], out[4],
                                             out[-1]))
 
+    hist_text = ''
+    len_hist = len(out[-2])
+    for num, i in enumerate(out[-2]):
+        hist_text += str(i)
+        if num < len_hist:
+            hist_text += ','
+
     with open(path_hist, 'a') as hist_f:
         hist_f.write(histo_format.format(aceptor_number,
-                                         str(out[-2])[1:-1]))
+                                         hist_text))
 
 
 def write_adjust(path_result, init_param, adjust_results):
