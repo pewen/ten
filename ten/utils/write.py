@@ -12,7 +12,7 @@ result_header = "Aceptores  TransfAceptores  TransfTrampas  " +\
                 "LD(nm)\t PasosProm  Tiempo(minutos)\n\n"
 result_format = "{0:9}\t {1:9}\t {2:8}\t {3:9}    {4:9}  " +\
                 "{5:9.8f}  {6:9.5f}\t {7:9.5f}\t {8:7.3}\n"
-histo_format = "{0}, {1}\n"
+histo_format = "[{0}, {1}]\n"
 tau_head = "Ajuste de los decaimiento mediante la siguiente funcion " +\
            "(en cada ajuste las areas estan normalizada)\n"
 tau_head += "A1*exp(-t/b1) + A2*exp(-t/b2)\n\n"
@@ -105,7 +105,7 @@ def write_body(path_result, path_hist, aceptor_number, out):
                                             out[-1]))
 
     hist_text = ''
-    len_hist = len(out[-2])
+    len_hist = len(out[-2]) - 1
     for num, i in enumerate(out[-2]):
         hist_text += str(i)
         if num < len_hist:
