@@ -1,0 +1,14 @@
+machine:
+  post:
+    - pyenv global 2.7 3.4 3.5
+
+dependencies:
+  pre:
+    - pip install numpy matplotlib pytest-cov pytest
+    - pip install python-coveralls coverage
+    - sudo apt-get install gfortran
+    - ./compile_f90.sh
+
+test:
+  post:
+    - py.test -v --cov-report term-missing:skip-covered --cov=ten
