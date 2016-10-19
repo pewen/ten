@@ -130,7 +130,7 @@ def main():
             # Ajuste de los taus
             n, bins = np.histogram(out[-2]*nanoparticle.delta_t,
                                    bins=max(out[-2]))
-            popt, pcov = curve_fit(bi_expo, bins[:-1], n)
+            popt, pcov = curve_fit(bi_expo, bins[:-1], n, method="trf")
 
             # Factor de normalizacion
             popt = popt**2
