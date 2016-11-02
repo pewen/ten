@@ -17,7 +17,8 @@ eff_teo = 1 - cociente_i**(-1)
 def bi_exp(x, a_1, b_1, a_2, b_2):
     return a_1**2  * np.exp(x / -b_1) + a_2**2 * np.exp(x / -b_2)
     
-def bi_exp_norm(x, a_1, b_1, a_2, b_2, c):
+def bi_exp_norm(x, a_1, b_1, a_2, b_2):
+    c = a_1 * b_1 + a_2 * b_2    
     return (a_1**2 * np.exp(x / -b_1) + a_2**2 * np.exp(x / -b_2)) / c
 
 def read_param_hist(path):
