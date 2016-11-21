@@ -130,6 +130,7 @@ def main():
             # Ajuste de los taus
             n, bins = np.histogram(out[-2]*nanoparticle.delta_t,
                                    bins=max(out[-2]))
+            """
             popt, pcov = curve_fit(bi_expo, bins[:-1], n, method="trf")
 
             # Factor de normalizacion
@@ -143,10 +144,10 @@ def main():
             popt[2] = popt[2]*factor
 
             adjust_results.append([popt, pcov])
-
+            """
             write_body(path_result, path_hist, aceptor.number, out)
 
-        write_adjust(path_result, init_param, adjust_results)
+        # write_adjust(path_result, init_param, adjust_results)
 
         total_time = time.time() - time_start
         write_footer(path_result, total_time)
