@@ -18,10 +18,8 @@ def bi_exp(x, a_1, b_1, a_2, b_2):
 
 
 def bi_exp_norm(x, a_1, b_1, a_2, b_2):
-    """
-    Funcion biexponencial normalizada
-    """
-    c = a_1*b_1 + a_2*b_2
+    c = a_1 * b_1 + a_2 * b_2
+
     return (a_1**2 * np.exp(x / -b_1) + a_2**2 * np.exp(x / -b_2)) / c
 
 
