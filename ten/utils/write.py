@@ -1,10 +1,12 @@
 import platform
 from datetime import datetime
+import os
 
 import numpy as np
 
 
 __all__ = ['write_header', 'write_body', 'write_adjust', 'write_footer']
+
 
 # some used text formated
 result_header = "Aceptores  TransfAceptores  TransfTrampas  " +\
@@ -51,8 +53,25 @@ Steps: {18}
 convergence: {19}
 
 seed: {20}
-seeds: {21}
 """
+
+
+def write_seed_file(seeds, path):
+    """
+    Write all the seeds to the seeds.conf file.
+
+    Parameters
+    ----------
+    seeds: list
+      List of all the seeds.
+    path: str
+      Path to out of all the experiment
+    """
+    text = "seeds = {0}".format(seeds)
+
+    seed_path = os.path.join(path, 'seeds.conf')
+    with open(seed_path, 'w') as seed_file:
+        seed_file.write(text)
 
 
 def write_header(path_result, nanoparticle, init_param, actual_experiment):
@@ -82,8 +101,7 @@ def write_header(path_result, nanoparticle, init_param, actual_experiment):
                                           init_param['mechanisms'],
                                           init_param['steps'],
                                           init_param['convergence'],
-                                          init_param['seed'][actual_experiment],
-                                          init_param['seed'])
+                                          init_param['seed'][actual_experiment])
         result_f.write(output_header)
 
         # Write the nanoparticle configurations
